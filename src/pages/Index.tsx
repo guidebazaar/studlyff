@@ -10,6 +10,83 @@ import Timeline from "@/components/Timeline";
 import StatsSection from "@/components/StatsSection";
 import StudentDiscountPreview from "@/components/StudentDiscountPreview";
 import GradientSeparator from "@/components/GradientSeparator";
+import Spline from '@splinetool/react-spline';
+import StarBorder from '@/components/ui/StarBorder';
+import Aurora from '../Aurora';
+import RollingGallery from '../RollingGallery';
+
+const FEATURES = [
+  {
+    title: 'Smart Finance Tools',
+    description: 'Plan, track, and optimize your finances with calculators, planners, and more.',
+    image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?q=80&w=600&h=900&fit=crop',
+    bg: 'from-purple-500 to-pink-400',
+  },
+  {
+    title: 'Events & Networking',
+    description: 'Join events, connect with peers, and grow your professional network.',
+    image: 'https://images.unsplash.com/photo-1506665531195-37a89d6b3095?q=80&w=600&h=900&fit=crop',
+    bg: 'from-blue-500 to-cyan-400',
+  },
+  {
+    title: 'Startup Ecosystem',
+    description: 'Discover internships, startup jobs, and entrepreneurial resources.',
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=600&h=900&fit=crop',
+    bg: 'from-green-500 to-lime-400',
+  },
+  {
+    title: 'Scholarships & Courses',
+    description: 'Access curated scholarships, free and paid courses, and learning materials.',
+    image: 'https://images.unsplash.com/photo-1495103033382-fe343886b671?q=80&w=600&h=900&fit=crop',
+    bg: 'from-yellow-500 to-orange-400',
+  },
+  {
+    title: 'Student Discounts',
+    description: 'Unlock exclusive student discounts and offers from top brands.',
+    image: 'https://images.unsplash.com/photo-1506781961370-37a89d6b3095?q=80&w=600&h=900&fit=crop',
+    bg: 'from-pink-500 to-red-400',
+  },
+  {
+    title: 'AI Study Assistant',
+    description: 'Get instant help with your studies using our AI-powered assistant.',
+    image: 'https://images.unsplash.com/photo-1599576838688-8a6c11263108?q=80&w=600&h=900&fit=crop',
+    bg: 'from-indigo-500 to-purple-400',
+  },
+  {
+    title: 'Marketplace',
+    description: 'Buy and sell study materials, gadgets, and more with fellow students.',
+    image: 'https://images.unsplash.com/photo-1494094892896-7f14a4433b7a?q=80&w=600&h=900&fit=crop',
+    bg: 'from-orange-500 to-yellow-400',
+  },
+  {
+    title: 'Podcasts & Blogs',
+    description: 'Stay inspired and informed with curated podcasts and blogs.',
+    image: 'https://plus.unsplash.com/premium_photo-1664910706524-e783eed89e71?q=80&w=600&h=900&fit=crop',
+    bg: 'from-pink-500 to-purple-400',
+  },
+  {
+    title: 'YouTube Shorts',
+    description: 'Learn on the go with bite-sized educational videos.',
+    image: 'https://images.unsplash.com/photo-1503788311183-fa3bf9c4bc32?q=80&w=600&h=900&fit=crop',
+    bg: 'from-blue-500 to-indigo-400',
+  },
+  {
+    title: 'Community Q&A',
+    description: 'Ask questions and get answers from the student community.',
+    image: 'https://images.unsplash.com/photo-1585970480901-90d6bb2a48b5?q=80&w=600&h=900&fit=crop',
+    bg: 'from-green-500 to-teal-400',
+  },
+];
+
+function FeatureGallery() {
+  return (
+    <RollingGallery
+      autoplay={true}
+      pauseOnHover={true}
+      images={FEATURES.map(f => f.image)}
+    />
+  );
+}
 
 const Index = () => {
   const [mounted, setMounted] = useState(false);
@@ -43,8 +120,7 @@ const Index = () => {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
-        ease: "easeOut"
+        duration: 0.8
       }
     },
   };
@@ -68,6 +144,33 @@ const Index = () => {
       animate="animate"
       className="min-h-screen text-white overflow-x-hidden"
     >
+      {/* Spline Animation Around Navbar */}
+      <div className="relative w-full h-[900px] flex items-start justify-center overflow-hidden">
+        {/* Spline animation as background/around Navbar */}
+        <Spline
+          scene="https://prod.spline.design/e6UtHkq9gq2Bh5sO/scene.splinecode"
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}
+        />
+        {/* Navbar overlays the Spline animation */}
+        <div className="relative w-full z-10">
+          <Navbar />
+        </div>
+        {/* Down Arrow Button for Smooth Scroll */}
+        <button
+          onClick={() => {
+            const heroSection = document.getElementById('hero-section');
+            if (heroSection) {
+              heroSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          className="absolute left-1/2 bottom-60 -translate-x-1/2 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full p-3 shadow-lg transition-all duration-300 flex items-center justify-center"
+          aria-label="Scroll to next section"
+        >
+          <svg className="w-8 h-8 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
       {/* Black background moved to the farthest back for animation visibility */}
       <div className="fixed inset-0 -z-50 bg-black" />
       {/* Enhanced Animated background */}
@@ -184,19 +287,6 @@ const Index = () => {
 
       {/* Cosmic planet arc and floating stars background */}
       <div className="fixed inset-0 -z-20 pointer-events-none">
-        {/* Large glowing arc (planet) at bottom center */}
-        <div
-          className="absolute left-1/2 bottom-[-120px] -translate-x-1/2"
-          style={{
-            width: '120vw',
-            height: '60vh',
-            borderRadius: '50% 50% 0 0/100% 100% 0 0',
-            background: 'radial-gradient(ellipse at center, rgba(139,92,246,0.25) 0%, rgba(236,72,153,0.18) 40%, rgba(17,24,39,0.01) 80%)',
-            filter: 'blur(32px)',
-            boxShadow: '0 0 120px 60px #8B5CF6, 0 0 240px 120px #EC4899',
-            opacity: 0.85,
-          }}
-        />
         {/* Soft floating stars */}
         {[...Array(18)].map((_, i) => (
           <motion.div
@@ -223,15 +313,20 @@ const Index = () => {
         ))}
       </div>
 
-      <Navbar />
-
       <motion.div
         variants={sectionVariants}
         className="relative z-10 w-full overflow-x-hidden"
       >
-        <Hero />
+        <div id="hero-section">
+          <Hero />
+        </div>
+        {/* Features Rolling Gallery */}
+        <div className="my-12">
+          <FeatureGallery />
+        </div>
         <motion.div
           variants={sectionVariants}
+          transition={{ ease: 'easeOut' }}
           className="w-full overflow-x-hidden"
         >
           <NewsTicker />
@@ -279,7 +374,7 @@ const Index = () => {
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        transition={{ duration: 1, ease: 'easeOut' }}
       >
         <StudentDiscountPreview />
       </motion.div>
@@ -299,7 +394,7 @@ const Index = () => {
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        transition={{ duration: 1, ease: 'easeOut' }}
       >
         <Timeline />
       </motion.div>
@@ -319,7 +414,7 @@ const Index = () => {
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+        transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
       >
         <StatsSection />
       </motion.div>
@@ -343,6 +438,13 @@ const Index = () => {
       >
         <Footer />
       </motion.div>
+
+      {/* Hide Spline watermark with CSS */}
+      <style>{`
+        .spline-watermark, .spline-watermark__container, [class*='watermark'] {
+          display: none !important;
+        }
+      `}</style>
     </motion.div>
   );
 };

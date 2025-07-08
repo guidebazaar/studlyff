@@ -108,7 +108,7 @@ const Profile = () => {
           </motion.h1>
           
           <motion.p
-            className="text-lg sm:text-xl lg:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed font-medium"
+            className="text-lg sm:text-xl lg:text-2xl text-white max-w-4xl mx-auto leading-relaxed font-medium"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -144,7 +144,7 @@ const Profile = () => {
                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 ${
                   activeSection === section.id
                     ? 'bg-gradient-to-r from-brand-purple to-brand-pink text-white shadow-lg'
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                    : 'text-white hover:text-white hover:bg-white/10'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

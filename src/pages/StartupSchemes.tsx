@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
@@ -93,7 +92,7 @@ const StartupSchemes = () => {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
               Startup Schemes
             </h1>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto">
+            <p className="text-xl text-white max-w-2xl mx-auto">
               Explore government and private schemes designed to support student entrepreneurs and startups.
             </p>
           </motion.div>
@@ -151,21 +150,21 @@ const StartupSchemes = () => {
                       {scheme.category}
                     </span>
                   </div>
-                  <CardDescription className="text-white/70">
+                  <CardDescription className="text-white">
                     {scheme.description}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3 mb-4">
-                    <div className="flex items-center gap-2 text-white/80">
+                    <div className="flex items-center gap-2 text-white">
                       <DollarSign className="h-4 w-4" />
                       <span>Funding: {scheme.funding}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-white/80">
+                    <div className="flex items-center gap-2 text-white">
                       <Calendar className="h-4 w-4" />
                       <span>Deadline: {scheme.deadline}</span>
                     </div>
-                    <div className="flex items-start gap-2 text-white/80">
+                    <div className="flex items-start gap-2 text-white">
                       <Users className="h-4 w-4 mt-0.5" />
                       <span>Eligibility: {scheme.eligibility}</span>
                     </div>
@@ -178,7 +177,7 @@ const StartupSchemes = () => {
                     </h4>
                     <ul className="space-y-1">
                       {scheme.benefits.map((benefit, index) => (
-                        <li key={index} className="text-white/70 text-sm">• {benefit}</li>
+                        <li key={index} className="text-white text-sm">• {benefit}</li>
                       ))}
                     </ul>
                   </div>

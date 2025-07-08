@@ -189,7 +189,7 @@ const TrendingContent = () => {
                         </div>
                         <div className="flex flex-col items-start p-2 bg-gradient-to-t from-black/70 to-transparent w-full">
                           <span className="text-white text-xs font-semibold line-clamp-2 mb-1 drop-shadow-md">{short.title}</span>
-                          <span className="text-white/80 text-[10px] font-medium drop-shadow-sm">{short.creator}</span>
+                          <span className="text-white text-[10px] font-medium drop-shadow-sm">{short.creator}</span>
                         </div>
                       </div>
                     </div>

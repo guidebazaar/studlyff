@@ -139,44 +139,6 @@ const Hero = () => {
           className="flex justify-center items-center mb-8 sm:mb-12 md:mb-16 px-3 sm:px-4 w-full max-w-2xl mx-auto"
           variants={itemVariants}
         >
-          <Link to="/marketplace" className="w-full sm:w-auto flex justify-center">
-            <div className="relative inline-block">
-              <button
-                className="relative px-10 py-4 text-lg md:text-xl font-bold text-white rounded-full min-w-[180px] shadow-lg border-4 border-transparent overflow-hidden group bg-black"
-                style={{
-                  borderRadius: '9999px',
-                  borderStyle: 'solid',
-                  borderWidth: '0px',
-                  background: '#000',
-                  transition: 'background 0.3s, color 0.3s',
-                  zIndex: 1
-                }}
-              >
-                <span className="relative z-10 flex items-center">
-                  Explore Now
-                  <ArrowRight className="ml-2 h-5 w-5 inline align-middle" />
-                </span>
-              </button>
-              {/* Animated white light border exactly at the button edge, perfectly matching the button's oval shape */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 2 }} viewBox="0 0 400 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="border-gradient-anim" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#fff">
-                      <animate attributeName="offset" values="0;1;0" dur="2.5s" repeatCount="indefinite" />
-                    </stop>
-                    <stop offset="0.2" stopColor="#fff" stopOpacity="0.7">
-                      <animate attributeName="offset" values="0.2;1;0.2" dur="2.5s" repeatCount="indefinite" />
-                    </stop>
-                    <stop offset="0.5" stopColor="#fff" stopOpacity="0.2">
-                      <animate attributeName="offset" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite" />
-                    </stop>
-                    <stop offset="1" stopColor="#fff" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <rect x="3" y="3" width="394" height="94" rx="47" ry="47" fill="none" stroke="url(#border-gradient-anim)" strokeWidth="6" />
-              </svg>
-            </div>
-          </Link>
         </motion.div>
 
         <motion.div

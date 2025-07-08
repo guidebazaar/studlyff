@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -107,7 +106,7 @@ const Network = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
               <span className="gradient-text">Network</span>
             </h1>
-            <p className="text-lg sm:text-xl text-white/70 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-white max-w-3xl mx-auto">
               Connect with fellow learners, entrepreneurs, and professionals in our community
             </p>
           </motion.div>
@@ -149,7 +148,7 @@ const Network = () => {
               ))
             ) : (
               <div className="col-span-full text-center py-12">
-                <p className="text-white/60 text-lg">No users found matching your criteria.</p>
+                <p className="text-white text-lg">No users found matching your criteria.</p>
               </div>
             )}
           </motion.div>

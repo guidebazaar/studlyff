@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
@@ -83,7 +82,7 @@ const Scholarships = () => {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
               Scholarships
             </h1>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto">
+            <p className="text-xl text-white max-w-2xl mx-auto">
               Find national and international scholarships to fund your education and dreams.
             </p>
           </motion.div>
@@ -140,25 +139,25 @@ const Scholarships = () => {
                       {scholarship.type}
                     </span>
                   </div>
-                  <CardDescription className="text-white/70">
+                  <CardDescription className="text-white">
                     {scholarship.description}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="flex items-center gap-2 text-white/80">
+                    <div className="flex items-center gap-2 text-white">
                       <Globe className="h-4 w-4" />
                       <span>{scholarship.country}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-white/80">
+                    <div className="flex items-center gap-2 text-white">
                       <DollarSign className="h-4 w-4" />
                       <span>{scholarship.amount}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-white/80">
+                    <div className="flex items-center gap-2 text-white">
                       <Calendar className="h-4 w-4" />
                       <span>Deadline: {scholarship.deadline}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-white/80">
+                    <div className="flex items-center gap-2 text-white">
                       <Users className="h-4 w-4" />
                       <span>{scholarship.eligibility}</span>
                     </div>

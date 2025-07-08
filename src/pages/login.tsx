@@ -22,7 +22,7 @@ const Login = () => {
       return;
     }
     toast.success("Welcome back! Redirecting...");
-    setTimeout(() => navigate("/"), 1200);
+    setTimeout(() => navigate("/home"), 1200);
   };
 
   return (
@@ -106,7 +106,7 @@ const Login = () => {
       >
         <motion.div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <Link to="/" className="text-2xl font-bold gradient-text inline-block mb-2">
+            <Link to="/home" className="text-2xl font-bold gradient-text inline-block mb-2">
               Guide Bazaar
             </Link>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
@@ -122,7 +122,7 @@ const Login = () => {
           <form className="space-y-6" onSubmit={handleSignIn}>
             <div>
               <Label htmlFor="email" className="flex items-center gap-2 bg-gradient-to-r from-white/90 to-gray-200 bg-clip-text text-transparent">
-                <Mail className="w-4 h-4 text-white/70" />
+                <Mail className="w-4 h-4 text-white" />
                 Email address
               </Label>
               <Input
@@ -139,7 +139,7 @@ const Login = () => {
             </div>
             <div>
               <Label htmlFor="password" className="flex items-center gap-2 bg-gradient-to-r from-white/90 to-gray-200 bg-clip-text text-transparent">
-                <Lock className="w-4 h-4 text-white/70" />
+                <Lock className="w-4 h-4 text-white" />
                 Password
               </Label>
               <div className="relative mt-2">

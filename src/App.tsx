@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import useScrollToTop from "@/hooks/useScrollToTop";
 import Index from "./pages/Index";
 import Finance from "./pages/Finance";
@@ -27,38 +27,44 @@ import YouTubeShorts from "./pages/YouTubeShorts";
 import Podcasts from "./pages/Podcasts";
 import StudentDiscounts from "./pages/StudentDiscounts";
 import AIBotFab from "@/components/ui/AIBotFab";
+import Landing from "./pages/Landing";
 
 const queryClient = new QueryClient();
 
 const AppContent: React.FC = () => {
   useScrollToTop();
+  const location = useLocation();
 
   return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/home" element={<Index />} />
-      <Route path="/finance" element={<Finance />} />
-      <Route path="/events" element={<Events />} />
-      <Route path="/startups" element={<Startups />} />
-      <Route path="/marketplace" element={<Marketplace />} />
-      <Route path="/internships" element={<Internships />} />
-      <Route path="/blogs" element={<Blogs />} />
-      <Route path="/scholarships" element={<Scholarships />} />
-      <Route path="/courses" element={<Courses />} />
-      <Route path="/paid-courses" element={<PaidCourses />} />
-      <Route path="/free-courses" element={<FreeCourses />} />
-      <Route path="/course-materials" element={<CourseMaterials />} />
-      <Route path="/startup-schemes" element={<StartupSchemes />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/network" element={<Network />} />
-      <Route path="/youtube-shorts" element={<YouTubeShorts />} />
-      <Route path="/podcasts" element={<Podcasts />} />
-      <Route path="/student-discounts" element={<StudentDiscounts />} />
-      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Index />} />
+        <Route path="/finance" element={<Finance />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/startups" element={<Startups />} />
+        <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/internships" element={<Internships />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/scholarships" element={<Scholarships />} />
+        <Route path="/courses" element={<Courses />} />
+        <Route path="/paid-courses" element={<PaidCourses />} />
+        <Route path="/free-courses" element={<FreeCourses />} />
+        <Route path="/course-materials" element={<CourseMaterials />} />
+        <Route path="/startup-schemes" element={<StartupSchemes />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/network" element={<Network />} />
+        <Route path="/youtube-shorts" element={<YouTubeShorts />} />
+        <Route path="/podcasts" element={<Podcasts />} />
+        <Route path="/student-discounts" element={<StudentDiscounts />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {/* Only show AIBotFab on allowed pages */}
+      {!(location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/") && <AIBotFab />}
+    </>
   );
 };
 
@@ -71,7 +77,6 @@ const App: React.FC = () => {
         <BrowserRouter>
           <AppContent />
         </BrowserRouter>
-        {!(window.location.pathname === "/login" || window.location.pathname === "/signup") && <AIBotFab />}
       </TooltipProvider>
     </QueryClientProvider>
   );

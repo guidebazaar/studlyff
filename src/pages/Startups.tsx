@@ -163,7 +163,7 @@ const Startups = () => {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
               Startup Founder Directory
             </h1>
-            <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-white max-w-3xl mx-auto">
               Connect with innovative startups and explore opportunities for collaboration, internships, and jobs.
             </p>
           </motion.div>
@@ -238,7 +238,7 @@ const Startups = () => {
 
           {/* Results Count */}
           <div className="mb-6">
-            <p className="text-white/70">
+            <p className="text-white">
               Showing {filteredStartups.length} of {startups.length} startups
             </p>
           </div>
@@ -277,14 +277,14 @@ const Startups = () => {
                       </div>
                     </div>
 
-                    <p className="text-white/80 mb-4">{startup.description}</p>
+                    <p className="text-white mb-4">{startup.description}</p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div className="flex items-center text-white/60">
+                      <div className="flex items-center text-white">
                         <Calendar className="w-4 h-4 mr-2" />
                         Founded: {startup.founded}
                       </div>
-                      <div className="flex items-center text-white/60">
+                      <div className="flex items-center text-white">
                         <MapPin className="w-4 h-4 mr-2" />
                         {startup.location}
                       </div>
@@ -292,7 +292,7 @@ const Startups = () => {
 
                     {/* Founders */}
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-white/70 mb-2 flex items-center">
+                      <h4 className="text-sm font-semibold text-white mb-2 flex items-center">
                         <Users className="w-4 h-4 mr-2" />
                         Founders
                       </h4>
@@ -300,7 +300,7 @@ const Startups = () => {
                         {startup.founders.map((founder, i) => (
                           <div key={i} className="bg-white/5 px-3 py-2 rounded-lg">
                             <p className="text-sm font-medium">{founder.name}</p>
-                            <p className="text-xs text-white/60">{founder.role}</p>
+                            <p className="text-xs text-white">{founder.role}</p>
                           </div>
                         ))}
                       </div>
@@ -309,7 +309,7 @@ const Startups = () => {
                     {/* Open Positions */}
                     {startup.positions.length > 0 && (
                       <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-white/70 mb-2 flex items-center">
+                        <h4 className="text-sm font-semibold text-white mb-2 flex items-center">
                           <Briefcase className="w-4 h-4 mr-2" />
                           Open Positions
                         </h4>
@@ -356,9 +356,9 @@ const Startups = () => {
                 <div key={mentor.id} className="glass-card p-6">
                   <h3 className="text-xl font-bold text-white mb-2">{mentor.name}</h3>
                   <p className="text-brand-purple font-medium mb-2">{mentor.company}</p>
-                  <p className="text-white/80 mb-2"><strong>Expertise:</strong> {mentor.expertise}</p>
-                  <p className="text-white/70 mb-3">{mentor.background}</p>
-                  <p className="text-white/60 mb-4"><strong>Availability:</strong> {mentor.availability}</p>
+                  <p className="text-white mb-2"><strong>Expertise:</strong> {mentor.expertise}</p>
+                  <p className="text-white mb-3">{mentor.background}</p>
+                  <p className="text-white mb-4"><strong>Availability:</strong> {mentor.availability}</p>
                   <div className="flex gap-3">
                     <Button variant="outline" size="sm" className="border-white/20 hover:border-brand-purple/50">
                       <ExternalLink className="w-4 h-4 mr-2" />

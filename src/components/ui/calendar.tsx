@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
@@ -33,7 +32,7 @@ function Calendar({
         table: "w-full border-collapse space-y-1",
         head_row: "flex w-full",
         head_cell:
-          "text-white/60 rounded-md w-full font-normal text-[0.8rem] flex-1 text-center",
+          "text-white rounded-md w-full font-normal text-[0.8rem] flex-1 text-center",
         row: "flex w-full mt-2",
         cell: "h-9 w-full text-center text-sm p-0 relative flex-1 [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
         day: cn(
@@ -45,8 +44,8 @@ function Calendar({
           "bg-gradient-to-r from-brand-purple to-brand-pink text-white hover:bg-gradient-to-r hover:from-brand-purple hover:to-brand-pink focus:bg-gradient-to-r focus:from-brand-purple focus:to-brand-pink",
         day_today: "bg-white/20 text-white font-bold",
         day_outside:
-          "day-outside text-white/30 opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
-        day_disabled: "text-white/30 opacity-50",
+          "day-outside text-white opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+        day_disabled: "text-white opacity-50",
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
         day_hidden: "invisible",

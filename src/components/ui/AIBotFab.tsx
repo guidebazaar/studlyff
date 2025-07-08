@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import Orb from '../../Orb';
 
 const classyReplies = [
     "That's interesting! Tell me more.",
@@ -52,37 +53,55 @@ const AIBotFab: React.FC = () => {
     };
 
     return (
-        <div style={{ position: "fixed", bottom: 24, right: 24, zIndex: 1000 }}
-            onMouseLeave={() => setOpen(false)}
-        >
-            {!open ? (
-                <button
-                    aria-label="Open Classy Chatbot"
-                    className="rounded-full gradient-bg shadow-xl w-16 h-16 flex items-center justify-center hover:scale-110 transition-transform duration-300 border-2 border-white/30"
-                    onClick={() => setOpen(true)}
-                    onMouseEnter={() => setOpen(true)}
-                    style={{ transition: 'all 0.4s cubic-bezier(.4,2,.6,1)' }}
-                >
-                    <span role="img" aria-label="Classy bot" className="text-3xl">🤖</span>
-                </button>
-            ) : (
+        <>
+            <div
+                onClick={() => setOpen(true)}
+                style={{
+                    position: 'fixed',
+                    bottom: 32,
+                    right: 32,
+                    zIndex: 1000,
+                    width: 64,
+                    height: 64,
+                    cursor: 'pointer',
+                    borderRadius: '50%',
+                    boxShadow: '0 4px 24px 0 rgba(162,89,255,0.25)',
+                    background: 'transparent',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                title="Open AI Chatbot"
+            >
+                <Orb
+                    hoverIntensity={0.5}
+                    rotateOnHover={true}
+                    hue={270}
+                    forceHoverState={false}
+                />
+            </div>
+            {open && (
                 <div
                     ref={chatRef}
                     className="chatbox-animate-in"
                     style={{
+                        position: 'fixed',
+                        bottom: 110,
+                        right: 32,
                         width: 340,
                         maxWidth: "95vw",
                         background: "#f9fafb",
                         borderRadius: "32px 32px 32px 48px/32px 32px 48px 32px",
                         boxShadow: "0 12px 40px 0 rgba(139,92,246,0.15)",
                         color: "#222",
-                        border: "2px solid #000", // Black border
+                        border: "2px solid #a259ff",
                         overflow: "hidden",
                         transition: "all 0.4s cubic-bezier(.4,2,.6,1)",
                         backdropFilter: "blur(8px)",
+                        zIndex: 1100,
                     }}
                 >
-                    <div className="gradient-bg py-3 px-6 flex items-center justify-between" style={{ borderBottom: "1px solid #e5e7eb" }}>
+                    <div className="gradient-bg py-3 px-6 flex items-center justify-between" style={{ borderBottom: "1px solid #e5e7eb", background: 'linear-gradient(90deg, #a259ff, #6a00ff, #a259ff, #e100ff)' }}>
                         <span className="text-2xl font-extrabold tracking-wide text-white drop-shadow-lg">Classy</span>
                         <button
                             aria-label="Close Classy Chatbot"
@@ -134,7 +153,7 @@ const AIBotFab: React.FC = () => {
                     }
                 }
             `}</style>
-        </div>
+        </>
     );
 };
 

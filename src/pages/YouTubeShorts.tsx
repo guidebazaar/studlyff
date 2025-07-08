@@ -101,7 +101,7 @@ const YouTubeShorts = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
               YouTube Shorts
             </h1>
-            <p className="text-xl text-white/70 mb-8">
+            <p className="text-xl text-white mb-8">
               Discover viral short-form content to boost your learning
             </p>
           </motion.div>
@@ -188,7 +188,7 @@ const YouTubeShorts = () => {
                     <h3 className="font-semibold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-brand-purple group-hover:to-brand-pink transition-all duration-300 line-clamp-2 mb-2">
                       {short.title}
                     </h3>
-                    <p className="text-sm text-white/60">{short.creator}</p>
+                    <p className="text-sm text-white">{short.creator}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -201,7 +201,7 @@ const YouTubeShorts = () => {
               animate={{ opacity: 1 }}
               className="text-center py-12"
             >
-              <p className="text-white/70 text-lg">No videos found matching your criteria.</p>
+              <p className="text-white text-lg">No videos found matching your criteria.</p>
             </motion.div>
           )}
         </div>

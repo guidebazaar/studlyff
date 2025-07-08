@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +20,7 @@ const ProfileCloseButton = () => {
       onHoverEnd={() => setIsHovered(false)}
     >
       <Button
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/home')}
         variant="ghost"
         size="icon"
         className="w-12 h-12 rounded-full bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm hover:from-white/30 hover:to-white/20 border-2 border-white/30 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"

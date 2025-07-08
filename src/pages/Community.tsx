@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -101,7 +100,7 @@ const Community = () => {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
               Join the Conversation
             </h1>
-            <p className="text-xl text-white/80 mb-10">
+            <p className="text-xl text-white mb-10">
               Connect with fellow students, share ideas, and get advice from the community.
             </p>
           </motion.div>
@@ -132,7 +131,7 @@ const Community = () => {
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="text-sm text-white/60">Share your thoughts, ask questions, or post updates</div>
+                  <div className="text-sm text-white">Share your thoughts, ask questions, or post updates</div>
                   <Button 
                     size="sm" 
                     className="relative overflow-hidden group bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 transition-all"
@@ -210,7 +209,7 @@ const Community = () => {
                         className={`w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-300 ${
                           category === "All" 
                             ? "bg-gradient-to-r from-brand-purple to-brand-pink text-white" 
-                            : "hover:bg-white/10 text-white/70 hover:text-white"
+                            : "hover:bg-white/10 text-white hover:text-white"
                         }`}
                         whileHover={{ x: 3 }}
                       >
@@ -231,15 +230,15 @@ const Community = () => {
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-2 rounded-lg bg-white/5">
-                      <span className="text-white/70">Members</span>
+                      <span className="text-white">Members</span>
                       <span className="font-medium text-white">15,240</span>
                     </div>
                     <div className="flex justify-between items-center p-2 rounded-lg bg-white/5">
-                      <span className="text-white/70">Posts</span>
+                      <span className="text-white">Posts</span>
                       <span className="font-medium text-white">32,861</span>
                     </div>
                     <div className="flex justify-between items-center p-2 rounded-lg bg-white/5">
-                      <span className="text-white/70">Online Now</span>
+                      <span className="text-white">Online Now</span>
                       <motion.span 
                         className="font-medium text-brand-purple"
                         animate={{ opacity: [1, 0.7, 1] }}
@@ -321,22 +320,22 @@ const PostList = ({ posts, activePost, setActivePost }: PostListProps) => {
             <div>
               <p className="font-medium">{post.author}</p>
               <div className="flex items-center gap-2">
-                <p className="text-xs text-white/60">{post.timeAgo}</p>
+                <p className="text-xs text-white">{post.timeAgo}</p>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-brand-purple/20 text-brand-purple">{post.category}</span>
               </div>
             </div>
           </div>
           <p className="mb-4 leading-relaxed">{post.content}</p>
           <div className="flex gap-4">
-            <button className="flex items-center gap-1 text-sm text-white/70 hover:text-brand-pink transition-colors">
+            <button className="flex items-center gap-1 text-sm text-white hover:text-brand-pink transition-colors">
               <Heart size={16} className="text-brand-pink" />
               <span>{post.likes}</span>
             </button>
-            <button className="flex items-center gap-1 text-sm text-white/70 hover:text-brand-purple transition-colors">
+            <button className="flex items-center gap-1 text-sm text-white hover:text-brand-purple transition-colors">
               <MessageSquare size={16} />
               <span>{post.comments} comments</span>
             </button>
-            <Button variant="ghost" size="sm" className="ml-auto text-white/70 hover:text-white hover:bg-white/10">
+            <Button variant="ghost" size="sm" className="ml-auto text-white hover:text-white hover:bg-white/10">
               <MessageCircle size={16} className="mr-1" />
               Reply
             </Button>

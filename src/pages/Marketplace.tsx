@@ -136,7 +136,7 @@ const Marketplace = () => {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
               Student Marketplace
             </h1>
-            <p className="text-xl text-white/80 mb-10">
+            <p className="text-xl text-white mb-10">
               Buy, sell, and save on student essentials in our digital bazaar.
             </p>
           </motion.div>
@@ -214,8 +214,8 @@ const Marketplace = () => {
                       <label className="block text-sm font-medium mb-2">Upload Image (optional)</label>
                       <div className="border border-dashed border-white/20 rounded-md p-8 text-center hover:bg-white/5 cursor-pointer transition-colors">
                         <Plus size={24} className="mx-auto mb-2 text-white/50" />
-                        <p className="text-sm text-white/70">Click to upload or drag and drop</p>
-                        <p className="text-xs text-white/50 mt-1">PNG, JPG or WEBP (max. 5MB)</p>
+                        <p className="text-sm text-white">Click to upload or drag and drop</p>
+                        <p className="text-xs text-white mt-1">PNG, JPG or WEBP (max. 5MB)</p>
                         <input type="file" name="image" className="hidden" accept="image/*" />
                       </div>
                     </div>
@@ -266,7 +266,7 @@ const Marketplace = () => {
                         className={`w-full text-left px-4 py-2 rounded-lg text-sm transition-all duration-300 ${
                           category === selectedCategory 
                             ? "bg-gradient-to-r from-brand-purple/90 to-brand-pink/90 text-white" 
-                            : "hover:bg-white/10 text-white/70 hover:text-white"
+                            : "hover:bg-white/10 text-white hover:text-white"
                         }`}
                         whileHover={{ x: 3 }}
                         onClick={() => setSelectedCategory(category)}
@@ -390,7 +390,7 @@ const Marketplace = () => {
                               <Badge className="bg-brand-purple/20 text-brand-purple hover:bg-brand-purple/30">{listing.category}</Badge>
                               <Badge variant="secondary" className="bg-white/10 text-white hover:bg-white/20">{listing.condition}</Badge>
                             </div>
-                            <div className="flex items-center mt-2 text-sm text-white/60">
+                            <div className="flex items-center mt-2 text-sm text-white">
                               <MapPin size={14} className="mr-1 text-brand-pink" />
                               {listing.location}
                             </div>
@@ -409,7 +409,7 @@ const Marketplace = () => {
                               transition={{ duration: 0.3 }}
                               className="mt-3 overflow-hidden"
                             >
-                              <p className="text-sm text-white/80 mb-3">
+                              <p className="text-sm text-white mb-3">
                                 {listing.description}
                               </p>
                             </motion.div>
@@ -417,7 +417,7 @@ const Marketplace = () => {
                         </AnimatePresence>
                         
                         <div className="flex justify-between items-center mt-3">
-                          <span className="text-xs text-white/60 flex items-center">
+                          <span className="text-xs text-white flex items-center">
                             <Clock size={12} className="mr-1" />
                             {listing.listedOn} by {listing.seller}
                           </span>
@@ -458,7 +458,7 @@ const Marketplace = () => {
                   >
                     <div className="text-6xl mb-4">🔍</div>
                     <h3 className="text-xl font-semibold mb-2">No listings found</h3>
-                    <p className="text-white/60">Try adjusting your filters or search criteria</p>
+                    <p className="text-white">Try adjusting your filters or search criteria</p>
                   </motion.div>
                 )}
               </motion.div>
