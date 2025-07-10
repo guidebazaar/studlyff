@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { SplitText } from "@/components/ui/split-text";
 
 const FreeCourses = () => {
   return (
@@ -14,9 +15,16 @@ const FreeCourses = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-blue-500">
-              Free Courses
-            </h1>
+            <SplitText
+              text="Free Courses"
+              className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-blue-500"
+              delay={50}
+              animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+              animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+              easing="easeOutCubic"
+              threshold={0.3}
+              rootMargin="-100px"
+            />
             <p className="text-xl text-white max-w-2xl mx-auto">
               Access quality education at no cost with our free course offerings.
             </p>

@@ -7,7 +7,6 @@ const NewsTicker = () => {
     "📱 Latest AI research breakthrough by MIT student team",
     "💸 Student-founded startup raises $2M in seed funding",
     "🎓 Registration for Summer Coding Bootcamp now open",
-    "⚡ New internship opportunities at top tech firms",
     "🏆 Winners announced for National Student Innovation Challenge",
     "📝 Tips for managing student loan debt effectively",
     "🌟 Interview with successful student entrepreneurs",

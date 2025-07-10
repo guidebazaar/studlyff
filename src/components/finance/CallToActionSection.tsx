@@ -63,23 +63,6 @@ const CallToActionSection = () => {
         ))}
       </div>
 
-      {/* Floating Help Button */}
-      <motion.div
-        className="fixed bottom-6 right-6 z-50"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <Button
-          size="lg"
-          className="rounded-full w-14 h-14 bg-gradient-to-r from-brand-purple to-brand-pink text-white shadow-lg hover:shadow-xl"
-        >
-          <MessageCircle className="h-6 w-6" />
-        </Button>
-      </motion.div>
-
       {/* Background decoration */}
       <div className="absolute inset-0 -z-10 opacity-20">
         <div className="absolute top-0 left-1/4 w-32 h-32 bg-brand-purple/20 rounded-full blur-3xl"></div>

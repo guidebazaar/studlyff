@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building, Calendar, Users, DollarSign, Award } from "lucide-react";
+import { SplitText } from "@/components/ui/split-text";
 
 const schemes = [
   {
@@ -89,9 +90,16 @@ const StartupSchemes = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
-              Startup Schemes
-            </h1>
+            <SplitText
+              text="Startup Schemes"
+              className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink"
+              delay={50}
+              animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+              animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+              easing="easeOutCubic"
+              threshold={0.3}
+              rootMargin="-100px"
+            />
             <p className="text-xl text-white max-w-2xl mx-auto">
               Explore government and private schemes designed to support student entrepreneurs and startups.
             </p>

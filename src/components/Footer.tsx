@@ -102,12 +102,6 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/internships" className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-1 px-2 rounded hover:bg-gray-800/30">
-                  <Briefcase className="w-4 h-4 text-blue-400" />
-                  Internships
-                </Link>
-              </li>
-              <li>
                 <Link to="/startups" className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-1 px-2 rounded hover:bg-gray-800/30">
                   <Building className="w-4 h-4 text-orange-400" />
                   Startups

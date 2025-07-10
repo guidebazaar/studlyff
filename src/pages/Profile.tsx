@@ -7,7 +7,6 @@ import ProfileCloseButton from '@/components/profile/ProfileCloseButton';
 import OverviewCards from '@/components/profile/OverviewCards';
 import DailyPlanner from '@/components/profile/DailyPlanner';
 import CoursesPanel from '@/components/profile/CoursesPanel';
-import InternshipTracker from '@/components/profile/InternshipTracker';
 import EventsSection from '@/components/profile/EventsSection';
 import ScholarshipsSection from '@/components/profile/ScholarshipsSection';
 import SkillAnalytics from '@/components/profile/SkillAnalytics';
@@ -28,7 +27,6 @@ const Profile = () => {
   const sections = [
     { id: 'overview', label: 'Overview', icon: '📊' },
     { id: 'courses', label: 'Courses', icon: '📚' },
-    { id: 'internships', label: 'Internships', icon: '💼' },
     { id: 'events', label: 'Events', icon: '📅' },
     { id: 'scholarships', label: 'Scholarships', icon: '🎓' },
     { id: 'analytics', label: 'Analytics', icon: '📈' },
@@ -47,8 +45,6 @@ const Profile = () => {
         );
       case 'courses':
         return <CoursesPanel />;
-      case 'internships':
-        return <InternshipTracker />;
       case 'events':
         return <EventsSection />;
       case 'scholarships':

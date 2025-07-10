@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GradientSeparator from "@/components/GradientSeparator";
+import { SplitText } from "@/components/ui/split-text";
 
 // Student discount data
 const studentDiscounts = [
@@ -264,8 +265,7 @@ const StudentDiscounts = () => {
             y: 0,
             scale: 1,
             transition: {
-                duration: 0.6,
-                ease: "easeOut"
+                duration: 0.6
             }
         }
     };
@@ -286,8 +286,10 @@ const StudentDiscounts = () => {
     return (
         <div className="min-h-screen bg-black text-white">
             {/* Enhanced Animated Background */}
-            <div className="fixed inset-0 -z-10 overflow-hidden">
-                <div className="absolute inset-0 bg-grid-white/[0.02] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
+            <div className="relative">
+              <div className="absolute inset-0 pointer-events-none z-0 flex justify-center items-center">
+                <div className="w-[90vw] max-w-5xl h-[340px] mx-auto bg-grid-white/10 rounded-3xl" style={{ zIndex: 1, position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)' }} />
+              </div>
 
                 {/* Floating particles */}
                 {[...Array(12)].map((_, i) => (
@@ -368,53 +370,28 @@ const StudentDiscounts = () => {
             <Navbar />
 
             <div className="container mx-auto px-4 py-8 mt-20">
-                {/* Enhanced Header */}
+                {/* Enhanced Header and Stats */}
+                <div>
+                  <div className="text-center mb-12">
                 <motion.div
-                    initial={{ opacity: 0, y: -30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="text-center mb-12"
-                >
-                    <motion.div
-                        className="inline-flex items-center gap-2 mb-4"
-                        animate={{
-                            scale: [1, 1.05, 1],
-                        }}
-                        transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
-                    >
-                        <Sparkles className="w-8 h-8 text-brand-purple" />
-                        <motion.h1
-                            className="text-4xl md:text-6xl font-bold relative"
-                            animate={{
-                                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                            }}
-                            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                            style={{
-                                background: "linear-gradient(90deg, #ffffff, #8E44AD, #F06292, #ffffff)",
-                                backgroundSize: "200% 100%",
-                                WebkitBackgroundClip: "text",
-                                WebkitTextFillColor: "transparent",
-                                backgroundClip: "text",
-                            }}
-                        >
-                            Student Discounts
-                        </motion.h1>
-                        <Sparkles className="w-8 h-8 text-brand-pink" />
-                    </motion.div>
-                    <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-white/70 text-lg max-w-3xl mx-auto"
                     >
+                      <SplitText
+                        text="Student Discounts"
+                        className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink"
+                        delay={50}
+                        animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+                        animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+                        easing="easeOutCubic"
+                        threshold={0.3}
+                        rootMargin="-100px"
+                      />
+                      <p className="text-white/70 text-lg max-w-3xl mx-auto">
                         Unlock exclusive deals and save money on tools, apps, and services that support your academic journey
-                    </motion.p>
-
-                    {/* Stats badges */}
+                      </p>
+                    </motion.div>
+                  </div>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -430,7 +407,7 @@ const StudentDiscounts = () => {
                             {studentDiscounts.reduce((sum, discount) => sum + discount.upvotes, 0)}+ Students Helped
                         </Badge>
                     </motion.div>
-                </motion.div>
+                </div>
 
                 {/* Separator after Header */}
                 <motion.div

@@ -3,10 +3,8 @@ import type { Config } from "tailwindcss";
 export default {
 	darkMode: ["class"],
 	content: [
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
+		"./index.html",
+		"./src/**/*.{js,ts,jsx,tsx}",
 	],
 	prefix: "",
 	theme: {
@@ -105,6 +103,10 @@ export default {
 					'0%': { transform: 'translate(0%, 0%)', opacity: '1' },
 					'100%': { transform: 'translate(100%, 0%)', opacity: '0' },
 				},
+				shine: {
+					'0%': { 'background-position': '100%' },
+					'100%': { 'background-position': '-100%' },
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -115,6 +117,7 @@ export default {
 				"scale-in": "scale-in 0.3s ease-out",
 				'star-movement-bottom': 'star-movement-bottom linear infinite alternate',
 				'star-movement-top': 'star-movement-top linear infinite alternate',
+				shine: 'shine 5s linear infinite',
 			},
 			backgroundImage: {
 				"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

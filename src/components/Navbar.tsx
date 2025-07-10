@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { Menu, X, ChevronDown, User } from "lucide-react";
 import {
   DropdownMenu,
@@ -14,11 +15,12 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileHovered, setIsProfileHovered] = useState(false);
-  const [isStartupsDropdownOpen, setIsStartupsDropdownOpen] = useState(false);
   const [isResourcesDropdownOpen, setIsResourcesDropdownOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const location = useLocation();
   const navigate = useNavigate();
+  // Simulate user signup state (replace with real auth logic in production)
+  const [isSignedUp, setIsSignedUp] = useState(false);
 
   // Hide navbar completely on profile page
   if (location.pathname === "/profile") {
@@ -52,11 +54,7 @@ const Navbar = () => {
     { name: "Events", href: "/events" },
     { name: "Network", href: "/network" },
     { name: "Marketplace", href: "/marketplace" },
-  ];
-
-  const startupsDropdownItems = [
     { name: "Startups", href: "/startups" },
-    { name: "Internships", href: "/internships" },
   ];
 
   const resourcesDropdownItems = [
@@ -68,7 +66,6 @@ const Navbar = () => {
     { name: "Startup Schemes", href: "/startup-schemes" },
   ];
 
-  const isStartupsActive = location.pathname === "/startups" || location.pathname === "/internships";
   const isResourcesActive = location.pathname === "/blogs" || location.pathname === "/scholarships" || location.pathname === "/courses" || location.pathname === "/paid-courses" || location.pathname === "/free-courses" || location.pathname === "/course-materials" || location.pathname === "/student-discounts" || location.pathname === "/startup-schemes";
 
   return (
@@ -99,223 +96,154 @@ const Navbar = () => {
               className="backdrop-blur-md bg-black/50 shadow-2xl rounded-full px-14 py-3 flex items-center space-x-2"
               style={{ minWidth: 520, height: 64, justifyContent: 'center' }}
             >
-              <div className="hidden lg:flex items-center space-x-1 flex-shrink-0">
-                {navItems.map((item) => (
+          <div className="hidden lg:flex items-center space-x-1 flex-shrink-0">
+            {navItems.map((item) => (
                   <div key={item.name}>
+                <Link
+                  to={item.href}
+                  className={cn(
+                        "relative px-2 xl:px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center",
+                    location.pathname === item.href
+                          ? "text-white font-bold"
+                      : "text-white/70 hover:text-white hover:bg-white/10"
+                  )}
+                >
+                      {location.pathname === item.href ? <span className="inline-block w-1.5 h-1.5 bg-white rounded-full mr-1"></span> : null}
+                  {item.name}
+                </Link>
+                  </div>
+            ))}
+          </div>
+
+          {/* Resources Dropdown */}
+          <div
+            onMouseEnter={() => isDesktop && setIsResourcesDropdownOpen(true)}
+            onMouseLeave={() => isDesktop && setIsResourcesDropdownOpen(false)}
+          >
+            <DropdownMenu open={isDesktop ? isResourcesDropdownOpen : undefined} onOpenChange={setIsResourcesDropdownOpen}>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className={cn(
+                        "relative px-2 xl:px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center",
+                    isResourcesActive
+                          ? "text-white font-bold"
+                      : "text-white/70 hover:text-white hover:bg-white/10"
+                  )}
+                  tabIndex={0}
+                >
+                    {isResourcesActive ? <span className="inline-block w-1.5 h-1.5 bg-white rounded-full mr-1"></span> : null}
+                  Resources
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="bg-black/90 backdrop-blur-xl border-white/20 shadow-2xl z-[60] rounded-2xl"
+                align="center"
+              >
+                {resourcesDropdownItems.map((item) => (
+                  <DropdownMenuItem key={item.name} asChild>
                     <Link
                       to={item.href}
                       className={cn(
-                        "relative px-2 xl:px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center",
-                        location.pathname === item.href
-                          ? "text-white font-bold"
-                          : "text-white/70 hover:text-white hover:bg-white/10"
+                        "text-white/70 hover:text-white focus:text-white cursor-pointer px-3 py-2 rounded-xl",
+                        location.pathname === item.href && "text-brand-purple"
                       )}
                     >
-                      {location.pathname === item.href ? <span className="inline-block w-1.5 h-1.5 bg-white rounded-full mr-1"></span> : null}
                       {item.name}
                     </Link>
-                  </div>
+                  </DropdownMenuItem>
                 ))}
-                  {/* Startups Dropdown */}
-                <div
-                  onMouseEnter={() => isDesktop && setIsStartupsDropdownOpen(true)}
-                  onMouseLeave={() => isDesktop && setIsStartupsDropdownOpen(false)}
-                >
-                  <DropdownMenu open={isDesktop ? isStartupsDropdownOpen : undefined} onOpenChange={setIsStartupsDropdownOpen}>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className={cn(
-                          "relative px-2 xl:px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center",
-                          isStartupsActive
-                            ? "text-white font-bold"
-                            : "text-white/70 hover:text-white hover:bg-white/10"
-                        )}
-                          tabIndex={0}
-                      >
-                        {isStartupsActive ? <span className="inline-block w-1.5 h-1.5 bg-white rounded-full mr-1"></span> : null}
-                        Startups
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      className="bg-black/90 backdrop-blur-xl border-white/20 shadow-2xl z-[60] rounded-2xl"
-                      align="center"
-                    >
-                      {startupsDropdownItems.map((item) => (
-                        <DropdownMenuItem key={item.name} asChild>
-                          <Link
-                            to={item.href}
-                            className={cn(
-                              "text-white/70 hover:text-white focus:text-white cursor-pointer px-3 py-2 rounded-xl",
-                              location.pathname === item.href && "text-brand-purple"
-                            )}
-                          >
-                            {item.name}
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-                  {/* Resources Dropdown */}
-                <div
-                  onMouseEnter={() => isDesktop && setIsResourcesDropdownOpen(true)}
-                  onMouseLeave={() => isDesktop && setIsResourcesDropdownOpen(false)}
-                >
-                  <DropdownMenu open={isDesktop ? isResourcesDropdownOpen : undefined} onOpenChange={setIsResourcesDropdownOpen}>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className={cn(
-                          "relative px-2 xl:px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center",
-                          isResourcesActive
-                            ? "text-white font-bold"
-                            : "text-white/70 hover:text-white hover:bg-white/10"
-                        )}
-                        tabIndex={0}
-                      >
-                        {isResourcesActive ? <span className="inline-block w-1.5 h-1.5 bg-white rounded-full mr-1"></span> : null}
-                        Resources
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      className="bg-black/90 backdrop-blur-xl border-white/20 shadow-2xl z-[60] rounded-2xl"
-                      align="center"
-                    >
-                      {resourcesDropdownItems.map((item) => (
-                        <DropdownMenuItem key={item.name} asChild>
-                          <Link
-                            to={item.href}
-                            className={cn(
-                              "text-white/70 hover:text-white focus:text-white cursor-pointer px-3 py-2 rounded-xl",
-                              location.pathname === item.href && "text-brand-purple"
-                            )}
-                          >
-                            {item.name}
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
             </div>
           </div>
 
-          {/* User Actions Oval */}
+          {/* User Actions Oval - Only Sign Up or Profile */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center z-20">
-            <div className="backdrop-blur-md bg-black/50 border border-white/20 shadow-2xl rounded-full px-8 py-2 flex items-center space-x-3" style={{ height: 60, minWidth: 180 }}>
-            <div className="hidden lg:flex items-center space-x-2 xl:space-x-3">
-              <Link
-                to="/login"
-                className="text-white/70 hover:text-white font-medium transition-colors px-3 xl:px-4 py-2 rounded-full hover:bg-white/10 text-sm whitespace-nowrap"
-              >
-                Login
-              </Link>
+            {!isSignedUp ? (
               <Link to="/signup">
-                <Button className="bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 rounded-full px-4 xl:px-6 shadow-lg text-sm whitespace-nowrap min-h-[40px]">
-                  Sign Up
-                </Button>
+                <InteractiveHoverButton
+                  text="Sign Up"
+                  className="w-32 text-base"
+                  onClick={() => setIsSignedUp(true)}
+                />
               </Link>
-            </div>
-            <Link to="/profile">
-              <div className="relative">
+            ) : (
+              <Link to="/profile">
                 <button
                   className="rounded-full h-9 w-9 sm:h-10 sm:w-10 flex items-center justify-center relative overflow-hidden border border-white/20 transition-all duration-500"
                   aria-label="Profile"
                 >
                   <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </button>
-              </div>
-            </Link>
-            </div>
+              </Link>
+            )}
           </div>
         </div>
       </div>
 
       {/* Mobile Menu - Completely Redesigned */}
-      {isMobileMenuOpen && (
+        {isMobileMenuOpen && (
         <div className="lg:hidden mt-2 mx-3 sm:mx-6 z-[55]">
-          <div className="bg-black/95 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/20 p-4 w-full max-w-sm mx-auto">
-            {/* Main Navigation */}
-            <div className="space-y-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={cn(
-                    "block px-4 py-3 rounded-xl font-medium transition-all duration-300 text-center text-sm",
-                    location.pathname === item.href
+            <div className="bg-black/95 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/20 p-4 w-full max-w-sm mx-auto">
+              {/* Main Navigation */}
+              <div className="space-y-2">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={cn(
+                      "block px-4 py-3 rounded-xl font-medium transition-all duration-300 text-center text-sm",
+                      location.pathname === item.href
                       ? "text-white font-bold bg-white/10"
-                      : "text-white/80 hover:text-white hover:bg-white/10"
-                  )}
+                        : "text-white/80 hover:text-white hover:bg-white/10"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Resources Section */}
+              <div className="mt-4 pt-3 border-t border-white/10">
+                <div className="text-white/60 text-xs font-medium px-2 py-1 mb-2 uppercase tracking-wider">
+                  Resources
+                </div>
+                <div className="space-y-1 max-h-48 overflow-y-auto">
+                  {resourcesDropdownItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        "block px-4 py-2.5 rounded-lg font-medium transition-all duration-300 text-sm",
+                        location.pathname === item.href
+                        ? "text-white font-bold bg-white/10"
+                          : "text-white/70 hover:text-white hover:bg-white/10"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Auth Section */}
+              <div className="mt-4 pt-3 border-t border-white/10 space-y-2">
+                <Link
+                  to="/login"
+                  className="block px-4 py-3 text-white/80 hover:text-white font-medium rounded-xl hover:bg-white/10 transition-all duration-300 text-center text-sm"
                 >
-                  {item.name}
+                  Login
                 </Link>
-              ))}
-            </div>
-
-            {/* Startups Section */}
-            <div className="mt-4 pt-3 border-t border-white/10">
-              <div className="text-white/60 text-xs font-medium px-2 py-1 mb-2 uppercase tracking-wider">
-                Startups
-              </div>
-              <div className="space-y-1">
-                {startupsDropdownItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={cn(
-                      "block px-4 py-2.5 rounded-lg font-medium transition-all duration-300 text-sm",
-                      location.pathname === item.href
-                        ? "text-white font-bold bg-white/10"
-                        : "text-white/70 hover:text-white hover:bg-white/10"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                <Link to="/signup" className="block">
+                  <Button className="bg-gradient-to-r from-brand-purple to-brand-pink w-full rounded-xl shadow-lg py-3 text-sm font-medium">
+                    Sign Up
+                  </Button>
+                </Link>
               </div>
             </div>
-
-            {/* Resources Section */}
-            <div className="mt-4 pt-3 border-t border-white/10">
-              <div className="text-white/60 text-xs font-medium px-2 py-1 mb-2 uppercase tracking-wider">
-                Resources
-              </div>
-              <div className="space-y-1 max-h-48 overflow-y-auto">
-                {resourcesDropdownItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={cn(
-                      "block px-4 py-2.5 rounded-lg font-medium transition-all duration-300 text-sm",
-                      location.pathname === item.href
-                        ? "text-white font-bold bg-white/10"
-                        : "text-white/70 hover:text-white hover:bg-white/10"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Auth Section */}
-            <div className="mt-4 pt-3 border-t border-white/10 space-y-2">
-              <Link
-                to="/login"
-                className="block px-4 py-3 text-white/80 hover:text-white font-medium rounded-xl hover:bg-white/10 transition-all duration-300 text-center text-sm"
-              >
-                Login
-              </Link>
-              <Link to="/signup" className="block">
-                <Button className="bg-gradient-to-r from-brand-purple to-brand-pink w-full rounded-xl shadow-lg py-3 text-sm font-medium">
-                  Sign Up
-                </Button>
-              </Link>
-            </div>
-          </div>
         </div>
-      )}
+        )}
     </nav>
   );
 };

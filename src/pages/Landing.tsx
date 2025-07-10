@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Spline from '@splinetool/react-spline';
 import StarBorder from '@/components/ui/StarBorder';
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { useNavigate } from 'react-router-dom';
 
 const NAV_LOGO_TOP = 24; // px from top (adjust to match Navbar)
@@ -162,15 +163,7 @@ const Landing = () => {
         {/* Explore Now button, hidden during animation */}
         {!animating && (
           <div className="absolute z-30 left-1/2" style={{top: '70%', transform: 'translate(-50%, 0)'}}>
-            <StarBorder
-              as="button"
-              color="cyan"
-              speed="5s"
-              className="shadow-xl px-12 py-4 rounded-full text-lg font-semibold flex items-center gap-2"
-              onClick={handleExplore}
-            >
-              Explore Now <span aria-hidden="true">→</span>
-            </StarBorder>
+            <InteractiveHoverButton text="Explore Now →" onClick={handleExplore} className="w-48 text-lg" />
           </div>
         )}
       </div>

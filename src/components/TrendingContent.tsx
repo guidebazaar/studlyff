@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ArrowRight } from "lucide-react";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 
 const TrendingContent = () => {
   const navigate = useNavigate();
@@ -140,16 +141,15 @@ const TrendingContent = () => {
                 </span>
                 <span className="text-xl font-semibold">YouTube Shorts</span>
               </div>
-              <Button
-                variant="outline"
+              <InteractiveHoverButton
+                text="Show More"
                 onClick={() => navigate('/youtube-shorts')}
-                className="flex items-center gap-2"
+                className="w-48 text-lg flex items-center gap-2"
               >
-                Show More
                 <ArrowRight className="h-4 w-4" />
-              </Button>
+              </InteractiveHoverButton>
             </div>
-            <ScrollArea className="w-full whitespace-nowrap">
+            <ScrollArea className="w-full whitespace-nowrap scroll-smooth">
               <div className="flex space-x-8 pb-4">
                 {youtubeShorts.concat([
                   {
@@ -212,16 +212,15 @@ const TrendingContent = () => {
                 </span>
                 <span className="text-xl font-semibold">Popular Blogs</span>
               </div>
-              <Button
-                variant="outline"
+              <InteractiveHoverButton
+                text="Show More"
                 onClick={() => navigate('/blogs')}
-                className="flex items-center gap-2"
+                className="w-48 text-lg flex items-center gap-2"
               >
-                Show More
                 <ArrowRight className="h-4 w-4" />
-              </Button>
+              </InteractiveHoverButton>
             </div>
-            <ScrollArea className="w-full whitespace-nowrap">
+            <ScrollArea className="w-full whitespace-nowrap scroll-smooth">
               <div className="flex space-x-8 pb-4">
                 {blogs.map((blog) => (
                   <div key={blog.id} className="group cursor-pointer flex-shrink-0 w-[120px] sm:w-[160px] md:w-[180px] lg:w-[200px] xl:w-[220px]">
@@ -256,16 +255,15 @@ const TrendingContent = () => {
                 </span>
                 <span className="text-xl font-semibold">Highlighted Podcast Clips</span>
               </div>
-              <Button
-                variant="outline"
+              <InteractiveHoverButton
+                text="Show More"
                 onClick={() => navigate('/podcasts')}
-                className="flex items-center gap-2"
+                className="w-48 text-lg flex items-center gap-2"
               >
-                Show More
                 <ArrowRight className="h-4 w-4" />
-              </Button>
+              </InteractiveHoverButton>
             </div>
-            <ScrollArea className="w-full whitespace-nowrap">
+            <ScrollArea className="w-full whitespace-nowrap scroll-smooth">
               <div className="flex space-x-8 pb-4">
                 {podcasts.map((podcast) => (
                   <div key={podcast.id} className="group cursor-pointer flex-shrink-0 w-[120px] sm:w-[160px] md:w-[180px] lg:w-[200px] xl:w-[220px]">

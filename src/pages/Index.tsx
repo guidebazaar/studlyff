@@ -9,11 +9,12 @@ import Footer from "@/components/Footer";
 import Timeline from "@/components/Timeline";
 import StatsSection from "@/components/StatsSection";
 import StudentDiscountPreview from "@/components/StudentDiscountPreview";
-import GradientSeparator from "@/components/GradientSeparator";
-import Spline from '@splinetool/react-spline';
 import StarBorder from '@/components/ui/StarBorder';
 import Aurora from '../Aurora';
 import RollingGallery from '../RollingGallery';
+import ContainerScroll from "@/components/ui/ContainerScroll";
+import { GradientText } from "@/components/ui/GradientText";
+import { CardCarousel } from "@/components/ui/CardCarousel";
 
 const FEATURES = [
   {
@@ -145,34 +146,56 @@ const Index = () => {
       className="min-h-screen text-white overflow-x-hidden"
     >
       {/* Spline Animation Around Navbar */}
-      <div className="relative w-full h-[900px] flex items-start justify-center overflow-hidden">
-        {/* Spline animation as background/around Navbar */}
-        <Spline
-          scene="https://prod.spline.design/e6UtHkq9gq2Bh5sO/scene.splinecode"
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}
-        />
-        {/* Navbar overlays the Spline animation */}
+      <div className="relative w-full h-[900px] flex items-start justify-center overflow-hidden bg-black">
+        {/* Video background replaces Spline animation, now demagnified, centered, and blended */}
+        <div className="absolute top-0 left-0 w-full h-full flex items-start justify-center z-0 pointer-events-none">
+          <div className="w-full max-w-2xl aspect-video" style={{ marginTop: '200px' }}>
+            <video
+              src="/anima/animation.mp4"
+              className="w-full h-full object-contain bg-black"
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ boxShadow: 'none', border: 'none', borderRadius: 0, background: 'black' }}
+            />
+          </div>
+        </div>
+        {/* Navbar overlays the video */}
         <div className="relative w-full z-10">
           <Navbar />
         </div>
         {/* Down Arrow Button for Smooth Scroll */}
-        <button
-          onClick={() => {
-            const heroSection = document.getElementById('hero-section');
-            if (heroSection) {
-              heroSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}
-          className="absolute left-1/2 bottom-60 -translate-x-1/2 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full p-3 shadow-lg transition-all duration-300 flex items-center justify-center"
-          aria-label="Scroll to next section"
-        >
-          <svg className="w-8 h-8 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+        {/* Removed arrow button as requested */}
       </div>
       {/* Black background moved to the farthest back for animation visibility */}
-      <div className="fixed inset-0 -z-50 bg-black" />
+      <ContainerScroll titleComponent={<></>}>
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-lg md:text-2xl text-center max-w-2xl mx-auto mb-4">
+            Scroll to explore our interactive features, tools, and resources designed for students.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            {/* Example feature cards or content can go here */}
+            <div className="bg-white/10 rounded-xl p-6 min-w-[200px] max-w-xs text-white shadow-lg">
+              <h3 className="font-semibold text-xl mb-2">Smart Finance Tools</h3>
+              <p>Plan, track, and optimize your finances with calculators, planners, and more.</p>
+            </div>
+            <div className="bg-white/10 rounded-xl p-6 min-w-[200px] max-w-xs text-white shadow-lg">
+              <h3 className="font-semibold text-xl mb-2">Events & Networking</h3>
+              <p>Join events, connect with peers, and grow your professional network.</p>
+            </div>
+            {/* Add more cards or content as needed */}
+          </div>
+        </div>
+      </ContainerScroll>
+      {/* Single Card Carousel with all features */}
+      <div className="my-12">
+        <GradientText className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-blue-400 bg-clip-text text-transparent">Latest News</GradientText>
+        <CardCarousel
+          images={FEATURES.map(feature => ({ src: feature.image, alt: feature.title }))}
+          autoplayDelay={1800}
+        />
+      </div>
       {/* Enhanced Animated background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         {/* Grid pattern with animation */}
@@ -317,19 +340,12 @@ const Index = () => {
         variants={sectionVariants}
         className="relative z-10 w-full overflow-x-hidden"
       >
-        <div id="hero-section">
-          <Hero />
-        </div>
         {/* Features Rolling Gallery */}
-        <div className="my-12">
-          <FeatureGallery />
-        </div>
         <motion.div
           variants={sectionVariants}
           transition={{ ease: 'easeOut' }}
           className="w-full overflow-x-hidden"
         >
-          <NewsTicker />
 
           {/* Separator after NewsTicker */}
           <motion.div
@@ -339,10 +355,7 @@ const Index = () => {
             transition={{ duration: 1, ease: "easeOut" }}
             className="container mx-auto px-4 py-8"
           >
-            <GradientSeparator thickness="medium" opacity="medium" />
           </motion.div>
-
-          <EventCarousel />
 
           {/* Separator after EventCarousel */}
           <motion.div
@@ -352,22 +365,10 @@ const Index = () => {
             transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             className="container mx-auto px-4 py-8"
           >
-            <GradientSeparator thickness="medium" opacity="medium" />
           </motion.div>
 
           <TrendingContent />
         </motion.div>
-      </motion.div>
-
-      {/* Separator before StudentDiscountPreview */}
-      <motion.div
-        initial={{ opacity: 0, scaleX: 0 }}
-        whileInView={{ opacity: 1, scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="container mx-auto px-4 py-12"
-      >
-        <GradientSeparator thickness="thick" opacity="high" />
       </motion.div>
 
       <motion.div
@@ -379,17 +380,6 @@ const Index = () => {
         <StudentDiscountPreview />
       </motion.div>
 
-      {/* Separator before Timeline */}
-      <motion.div
-        initial={{ opacity: 0, scaleX: 0 }}
-        whileInView={{ opacity: 1, scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="container mx-auto px-4 py-12"
-      >
-        <GradientSeparator thickness="thick" opacity="high" />
-      </motion.div>
-
       <motion.div
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -399,17 +389,6 @@ const Index = () => {
         <Timeline />
       </motion.div>
 
-      {/* Separator before StatsSection */}
-      <motion.div
-        initial={{ opacity: 0, scaleX: 0 }}
-        whileInView={{ opacity: 1, scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="container mx-auto px-4 py-12"
-      >
-        <GradientSeparator thickness="thick" opacity="high" />
-      </motion.div>
-
       <motion.div
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -417,17 +396,6 @@ const Index = () => {
         transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
       >
         <StatsSection />
-      </motion.div>
-
-      {/* Separator before Footer */}
-      <motion.div
-        initial={{ opacity: 0, scaleX: 0 }}
-        whileInView={{ opacity: 1, scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="container mx-auto px-4 py-12"
-      >
-        <GradientSeparator thickness="thick" opacity="high" />
       </motion.div>
 
       <motion.div

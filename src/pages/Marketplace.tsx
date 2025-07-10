@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Filter, MapPin, ShoppingCart, ZoomIn, Star, Tag, Clock, X } from "lucide-react";
+import { SplitText } from "@/components/ui/split-text";
 
 const Marketplace = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
@@ -133,9 +134,16 @@ const Marketplace = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
-              Student Marketplace
-            </h1>
+            <SplitText
+              text="Student Marketplace"
+              className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink"
+              delay={50}
+              animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+              animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+              easing="easeOutCubic"
+              threshold={0.3}
+              rootMargin="-100px"
+            />
             <p className="text-xl text-white mb-10">
               Buy, sell, and save on student essentials in our digital bazaar.
             </p>

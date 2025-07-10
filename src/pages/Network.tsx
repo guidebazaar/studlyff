@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import UserProfileCard from "@/components/network/UserProfileCard";
 import ChatModal from "@/components/network/ChatModal";
 import NetworkFilters from "@/components/network/NetworkFilters";
+import { SplitText } from "@/components/ui/split-text";
 
 // Mock user data - in a real app, this would come from your backend
 const mockUsers = [
@@ -103,9 +104,16 @@ const Network = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-8 sm:mb-12 lg:mb-16"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
-              <span className="gradient-text">Network</span>
-            </h1>
+            <SplitText
+              text="Network"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6"
+              delay={50}
+              animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+              animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+              easing="easeOutCubic"
+              threshold={0.3}
+              rootMargin="-100px"
+            />
             <p className="text-lg sm:text-xl text-white max-w-3xl mx-auto">
               Connect with fellow learners, entrepreneurs, and professionals in our community
             </p>

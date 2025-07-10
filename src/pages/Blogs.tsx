@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, User, TrendingUp, Calendar } from "lucide-react";
+import { SplitText } from "@/components/ui/split-text";
 
 const blogs = [
   {
@@ -94,9 +95,16 @@ const Blogs = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
-              Blogs
-            </h1>
+            <SplitText
+              text="Blogs"
+              className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink"
+              delay={50}
+              animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+              animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+              easing="easeOutCubic"
+              threshold={0.3}
+              rootMargin="-100px"
+            />
             <p className="text-xl text-white/80 max-w-2xl mx-auto">
               Discover insights, tips, and stories from students, entrepreneurs, and industry experts.
             </p>

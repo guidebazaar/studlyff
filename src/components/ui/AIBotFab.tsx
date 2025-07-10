@@ -55,7 +55,7 @@ const AIBotFab: React.FC = () => {
     return (
         <>
             <div
-                onClick={() => setOpen(true)}
+                    onClick={() => setOpen(true)}
                 style={{
                     position: 'fixed',
                     bottom: 32,

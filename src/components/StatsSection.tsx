@@ -10,13 +10,6 @@ const stats = [
         color: "from-pink-400 to-purple-500",
     },
     {
-        icon: "\u{1F4BC}",
-        label: "Internships Facilitated",
-        value: 1200,
-        display: "1,200+",
-        color: "from-purple-400 to-pink-500",
-    },
-    {
         icon: "\u{1F4DA}",
         label: "Courses Completed",
         value: 5000,

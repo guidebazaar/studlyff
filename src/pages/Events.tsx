@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, Clock, MapPin, Users, FilterIcon, Sparkles, Plus, X } from "lucide-react";
+import { SplitText } from "@/components/ui/split-text";
+import Spline from '@splinetool/react-spline';
 
 const Events = () => {
   const [city, setCity] = useState<string>("all");
@@ -91,6 +93,20 @@ const Events = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
+      {/* Spline Animation Background */}
+      <div className="fixed inset-0 -z-20 pointer-events-none">
+        <Suspense fallback={<div className="w-full h-full bg-black" />}>
+          <Spline
+            scene="https://prod.spline.design/xfc5Llyw8cW1FBp7/scene.splinecode"
+          />
+        </Suspense>
+        {/* Dark overlay to reduce brightness */}
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
+      
+      {/* Opaque block to hide Spline watermark and logo - positioned below AIBotFab */}
+      <div className="fixed bottom-0 right-0 w-48 h-48 bg-black z-50 pointer-events-none" />
+      
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-grid-white/[0.02] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
@@ -114,9 +130,16 @@ const Events = () => {
           >
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
               <div>
-                <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink">
-                  Next-Gen Events
-                </h1>
+                <SplitText
+                  text="Next-Gen Events"
+                  className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink"
+                  delay={50}
+                  animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+                  animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+                  easing="easeOutCubic"
+                  threshold={0.3}
+                  rootMargin="-100px"
+                />
                 <p className="text-lg md:text-xl mb-8 text-foreground/80 max-w-2xl">
                   Discover cutting-edge hackathons, workshops, and learning opportunities across the digital frontier.
                 </p>
