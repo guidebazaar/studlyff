@@ -8,8 +8,8 @@ import AllStartups from '../components/startups/AllStartups';
 import CreateStartupModal from '../components/CreateStartupModal';
 
 const initialStartups = [
-    {
-      id: 1,
+  {
+    id: 1,
     name: 'EduTech Solutions',
     domain: 'EdTech',
     stage: 'MVP',
@@ -22,9 +22,9 @@ const initialStartups = [
     views: 120,
     applications: 8,
     trending: true
-    },
-    {
-      id: 2,
+  },
+  {
+    id: 2,
     name: 'FinLearn',
     domain: 'FinTech',
     stage: 'Idea Stage',
@@ -37,9 +37,9 @@ const initialStartups = [
     views: 80,
     applications: 3,
     trending: false
-    },
-    {
-      id: 3,
+  },
+  {
+    id: 3,
     name: 'GreenCommute',
     domain: 'Sustainability',
     stage: 'Funded',
@@ -52,9 +52,9 @@ const initialStartups = [
     views: 200,
     applications: 15,
     trending: true
-    },
-    {
-      id: 4,
+  },
+  {
+    id: 4,
     name: 'CampusEats',
     domain: 'Food Tech',
     stage: 'MVP',
@@ -173,15 +173,23 @@ const Startups = () => {
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       <HeroSection />
-      <div className="flex max-w-7xl mx-auto px-4 md:px-8 pb-12">
-        <SidebarFilters filters={filters} setFilters={setFilters} clearAll={clearAll} />
-        <main className="flex-1 p-6">
-          <StartupSummary stats={stats} onCreate={() => setShowModal(true)} />
-          <FeaturedStartups startups={featuredStartups} onViewAll={() => {}} onViewDetails={() => {}} onApply={() => {}} />
-          <AllStartups startups={sortedStartups} sort={sort} setSort={setSort} view={view} setView={setView} onViewDetails={() => {}} onApply={() => {}} />
-        </main>
-        {showModal && <CreateStartupModal isOpen={showModal} onClose={() => setShowModal(false)} onSubmit={handleCreateStartup} />}
+      <div className="relative max-w-7xl mx-auto px-2 md:px-8 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] gap-6 items-start">
+          <div className="sticky top-24 self-start z-10">
+            <SidebarFilters filters={filters} setFilters={setFilters} clearAll={clearAll} />
+          </div>
+          <main className="flex-1 flex flex-col gap-8">
+            <StartupSummary stats={stats} onCreate={() => setShowModal(true)} />
+            <div className="animate-fadeInUp">
+              <FeaturedStartups startups={featuredStartups} onViewAll={() => { }} onViewDetails={() => { }} onApply={() => { }} />
+            </div>
+            <div className="w-full">
+              <AllStartups startups={sortedStartups} sort={sort} setSort={setSort} view={view} setView={setView} onViewDetails={() => { }} onApply={() => { }} />
+            </div>
+          </main>
         </div>
+        {showModal && <CreateStartupModal isOpen={showModal} onClose={() => setShowModal(false)} onSubmit={handleCreateStartup} />}
+      </div>
     </div>
   );
 };

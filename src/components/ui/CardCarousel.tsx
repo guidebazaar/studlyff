@@ -81,56 +81,50 @@ export const CardCarousel: React.FC<CarouselProps> = ({
     <>
       <style>{css}</style>
       <Swiper
-              spaceBetween={50}
-              autoplay={{
-                delay: autoplayDelay,
-                disableOnInteraction: false,
-              }}
-              effect={"coverflow"}
-              grabCursor={true}
-              centeredSlides={true}
-              loop={true}
-              slidesPerView={"auto"}
-              coverflowEffect={{
-                rotate: 0,
-                stretch: 0,
-                depth: 100,
-                modifier: 2.5,
-              }}
-              pagination={false} // disables pagination bullets
-              navigation={
-                showNavigation
-                  ? {
-                      nextEl: ".swiper-button-next",
-                      prevEl: ".swiper-button-prev",
-                    }
-                  : undefined
-              }
-              modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
-            >
-              {images.map((image, index) => (
-                <SwiperSlide key={index}>
-                  <div className="size-full rounded-3xl relative group overflow-hidden">
-                    <img
-                      src={image.src}
-                      width={500}
-                      height={500}
-                      className="size-full rounded-xl transition-transform duration-300 group-hover:scale-105"
-                      alt={image.alt}
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-80" />
-                  </div>
-                </SwiperSlide>
-              ))}
-              {/* Navigation Arrows */}
-              {showNavigation && (
-                <>
-                  <div className="swiper-button-prev" tabIndex={0} aria-label="Previous slide" />
-                  <div className="swiper-button-next" tabIndex={0} aria-label="Next slide" />
-                </>
-              )}
-            </Swiper>
+        spaceBetween={50}
+        autoplay={{
+          delay: autoplayDelay,
+          disableOnInteraction: false,
+        }}
+        effect={"coverflow"}
+        grabCursor={true}
+        centeredSlides={true}
+        loop={true}
+        slidesPerView={"auto"}
+        coverflowEffect={{
+          rotate: 0,
+          stretch: 0,
+          depth: 100,
+          modifier: 2.5,
+        }}
+        pagination={false} // disables pagination bullets
+        navigation={
+          showNavigation
+            ? {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }
+            : undefined
+        }
+        modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
+      >
+        {images.map((image, index) => (
+          <SwiperSlide key={index}>
+            <div className="size-full rounded-3xl relative group overflow-hidden">
+              <img
+                src={image.src}
+                width={500}
+                height={500}
+                className="size-full rounded-xl transition-transform duration-300 group-hover:scale-105"
+                alt={image.alt}
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-80" />
+            </div>
+          </SwiperSlide>
+        ))}
+        {/* Navigation Arrows removed as requested */}
+      </Swiper>
     </>
   );
 }; 

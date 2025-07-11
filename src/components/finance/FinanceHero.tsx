@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -15,36 +16,31 @@ const FinanceHero = ({ showAdvanced, setShowAdvanced }: FinanceHeroProps) => {
   const [showAdvancedDropdown, setShowAdvancedDropdown] = useState(false);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
       className="relative mb-12 md:mb-16 overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-to-br from-gray-900 via-black to-gray-900 shadow-2xl border border-gray-700"
     >
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div 
-          className="absolute -top-1/2 -right-1/2 w-72 h-72 md:w-96 md:h-96 bg-purple-500/10 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360] 
-          }}
-          transition={{ 
-            duration: 20, 
-            repeat: Infinity, 
-            ease: "linear" 
-          }}
+      {/* Spline Animation Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none">
+        <Spline
+          scene="https://prod.spline.design/6Mmaj0Y7QBhnRSLP/scene.splinecode"
+          className="w-full h-full"
         />
-        <motion.div 
-          className="absolute -bottom-1/2 -left-1/2 w-64 h-64 md:w-80 md:h-80 bg-pink-500/10 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1.2, 1, 1.2],
-            rotate: [360, 180, 0] 
-          }}
-          transition={{ 
-            duration: 15, 
-            repeat: Infinity, 
-            ease: "linear" 
+        {/* Black box to cover Spline watermark (bottom right, full height of the box) */}
+        <div
+          style={{
+            position: 'absolute',
+            right: 0,
+            bottom: 0,
+            width: '160px', // wider for full coverage
+            height: '60px', // taller for full coverage
+            background: 'black',
+            zIndex: 2,
+            pointerEvents: 'none',
+            borderBottomRightRadius: 'inherit',
+            borderTopLeftRadius: '18px', // smooth corner if needed
           }}
         />
       </div>
@@ -53,7 +49,7 @@ const FinanceHero = ({ showAdvanced, setShowAdvanced }: FinanceHeroProps) => {
       <div className="absolute inset-0 opacity-30">
         <div className="w-full h-full bg-gradient-to-br from-white/5 to-transparent"></div>
       </div>
-      
+
       <div className="relative z-10 p-6 md:p-8 lg:p-12 xl:p-16 flex flex-col items-center justify-center text-center">
         <SplitText
           text="Master Your Money"

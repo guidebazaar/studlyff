@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -25,21 +26,21 @@ const Finance = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black overflow-x-hidden">
+    <div className="min-h-screen bg-black overflow-x-hidden relative">
+      {/* Spline Animation moved to FinanceHero */}
       <Navbar />
-      
       <div className="relative z-10 w-full">
         <div className="w-full px-4 pt-20 pb-16">
-          <motion.div 
+          <motion.div
             className="max-w-7xl mx-auto space-y-12 sm:space-y-16 md:space-y-20 w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: isLoaded ? 1 : 0 }}
             transition={{ duration: 0.8 }}
           >
             {/* Hero Section */}
-            <FinanceHero 
-              showAdvanced={showAdvanced} 
-              setShowAdvanced={setShowAdvanced} 
+            <FinanceHero
+              showAdvanced={showAdvanced}
+              setShowAdvanced={setShowAdvanced}
             />
 
             {/* Smart Tools & Calculators - Now second section */}
@@ -59,7 +60,7 @@ const Finance = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="w-full"
             >
-              <SmartFilters 
+              <SmartFilters
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 searchQuery={searchQuery}
@@ -111,7 +112,7 @@ const Finance = () => {
           </motion.div>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

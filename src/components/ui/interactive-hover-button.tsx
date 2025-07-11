@@ -23,7 +23,14 @@ const InteractiveHoverButton = React.forwardRef<
         {text}
         {props.children}
       </span>
-      <div className="absolute left-0 top-0 h-full w-full rounded-full bg-gradient-to-r from-[#00f0ff] via-[#7f5fff] to-[#a259ff] transition-all duration-500 group-hover:scale-100 group-hover:opacity-100 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100" style={{ zIndex: 1, boxShadow: '0 0 32px 16px #00f0ff88, 0 0 64px 32px #7f5fff44' }} />
+      <div
+        className="absolute left-0 top-0 h-full w-full rounded-full transition-all duration-500 group-hover:scale-100 group-hover:opacity-100 scale-0 opacity-0"
+        style={{
+          zIndex: 1,
+          background: 'linear-gradient(90deg, #a259ff 0%, #7f5fff 50%, #e100ff 100%)',
+          boxShadow: '0 0 32px 16px #a259ff88, 0 0 64px 32px #e100ff44',
+        }}
+      />
       {/* Thicker and slower beam border */}
       <div className="pointer-events-none absolute left-0 top-0 h-full w-full rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-[1200ms] delay-[600ms]" style={{ zIndex: 2, boxShadow: '0 0 0 18px rgba(255,255,255,0.95), 0 0 48px 24px rgba(255,255,255,0.5)' }} />
     </button>

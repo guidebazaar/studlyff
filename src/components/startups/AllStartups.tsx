@@ -3,9 +3,9 @@ import StartupCard from './StartupCard';
 
 const AllStartups = ({ startups, sort, setSort, view, setView, onViewDetails, onApply }) => (
   <section>
-    <div className="flex items-center justify-between mb-4">
-      <h2 className="text-xl font-bold">All Startups ({startups.length})</h2>
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
+      <h2 className="text-xl font-bold">All Startups <span className="text-purple-400">({startups.length})</span></h2>
+      <div className="flex flex-wrap items-center gap-2">
         <select value={sort} onChange={e => setSort(e.target.value)} className="rounded-full px-3 py-1 border border-purple-500 bg-white/10 text-white transition focus:ring-2 focus:ring-purple-500">
           <option value="newest">Newest First</option>
           <option value="popular">Most Popular</option>
@@ -14,9 +14,11 @@ const AllStartups = ({ startups, sort, setSort, view, setView, onViewDetails, on
         <button className={`rounded-full px-3 py-1 border border-purple-500 bg-white/10 transition ${view === 'list' ? 'font-bold shadow' : ''}`} onClick={() => setView('list')}>List</button>
       </div>
     </div>
-    <div className={view === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-all duration-300' : 'flex flex-col gap-4 transition-all duration-300'}>
-      {startups.map(startup => (
-        <StartupCard key={startup.id} startup={startup} onViewDetails={onViewDetails} onApply={onApply} featured={false} />
+    <div className={view === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500' : 'flex flex-col gap-6 transition-all duration-500'}>
+      {startups.map((startup, i) => (
+        <div key={startup.id} style={{ animationDelay: `${i * 0.07}s` }} className="animated">
+          <StartupCard startup={startup} onViewDetails={onViewDetails} onApply={onApply} featured={false} />
+        </div>
       ))}
     </div>
   </section>
