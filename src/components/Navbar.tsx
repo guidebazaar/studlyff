@@ -54,20 +54,18 @@ const Navbar = () => {
     { name: "Finance", href: "/finance" },
     { name: "Events", href: "/events" },
     { name: "Network", href: "/network" },
-    { name: "Marketplace", href: "/marketplace" },
+    { name: "Project Hunt", href: "/project-hunt" },
     { name: "Startups", href: "/startups" },
   ];
 
   const resourcesDropdownItems = [
-    { name: "Blogs", href: "/blogs" },
+    { name: "Marketplace", href: "/marketplace" },
     { name: "Scholarships", href: "/scholarships" },
     { name: "Courses", href: "/courses" },
-    { name: "Course Materials", href: "/course-materials" },
     { name: "Student Discounts", href: "/student-discounts" },
-    { name: "Startup Schemes", href: "/startup-schemes" },
   ];
 
-  const isResourcesActive = location.pathname === "/blogs" || location.pathname === "/scholarships" || location.pathname === "/courses" || location.pathname === "/paid-courses" || location.pathname === "/free-courses" || location.pathname === "/course-materials" || location.pathname === "/student-discounts" || location.pathname === "/startup-schemes";
+  const isResourcesActive = location.pathname === "/scholarships" || location.pathname === "/courses" || location.pathname === "/paid-courses" || location.pathname === "/free-courses" || location.pathname === "/student-discounts" || location.pathname === "/marketplace";
 
   return (
     <nav
@@ -82,7 +80,7 @@ const Navbar = () => {
           <div className="absolute left-0 top-[60%] -translate-y-1/2 flex items-center z-20">
             <Link to="/home" className="flex items-center">
               <img
-                src="/logo2.png"
+                src="/logo3.png"
                 alt="Studlyf Logo"
                 style={{
                   height: '40px',
@@ -174,13 +172,15 @@ const Navbar = () => {
             )}
             {/* Sign Up or Profile */}
             {!isSignedUp ? (
-              <Link to="/signup">
-                <InteractiveHoverButton
-                  text="Sign Up"
-                  className="w-32 text-base"
-                  onClick={() => setIsSignedUp(true)}
-                />
-              </Link>
+              <div className="flex flex-col items-end gap-2">
+                <Link to="/signup">
+                  <InteractiveHoverButton
+                    text="Sign Up"
+                    className="w-32 text-base"
+                    onClick={() => setIsSignedUp(true)}
+                  />
+                </Link>
+              </div>
             ) : (
               <Link to="/profile">
                 <button

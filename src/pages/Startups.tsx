@@ -1,11 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import HeroSection from '../components/startups/HeroSection';
 import SidebarFilters from '../components/startups/SidebarFilters';
 import StartupSummary from '../components/startups/StartupSummary';
 import FeaturedStartups from '../components/startups/FeaturedStartups';
+
 import AllStartups from '../components/startups/AllStartups';
 import CreateStartupModal from '../components/CreateStartupModal';
+import StartupDetailsModal from '../components/startups/StartupDetailsModal';
 
 const initialStartups = [
   {
@@ -94,6 +97,7 @@ const Startups = () => {
   const [sort, setSort] = useState('newest');
   const [view, setView] = useState('grid');
   const [showModal, setShowModal] = useState(false);
+  const [detailsModal, setDetailsModal] = useState({ open: false, startup: null });
 
   // Filtering logic
   const filteredStartups = useMemo(() => {
@@ -173,23 +177,34 @@ const Startups = () => {
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       <HeroSection />
-      <div className="relative max-w-7xl mx-auto px-2 md:px-8 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] gap-6 items-start">
-          <div className="sticky top-24 self-start z-10">
+      <div className="relative max-w-[90rem] mx-auto px-2 md:px-8 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-[340px_1fr] gap-10 items-start">
+          <aside className="sticky top-24 self-start z-10 w-full">
             <SidebarFilters filters={filters} setFilters={setFilters} clearAll={clearAll} />
-          </div>
-          <main className="flex-1 flex flex-col gap-8">
+          </aside>
+          <main className="flex-1 flex flex-col gap-8 max-w-full">
             <StartupSummary stats={stats} onCreate={() => setShowModal(true)} />
-            <div className="animate-fadeInUp">
-              <FeaturedStartups startups={featuredStartups} onViewAll={() => { }} onViewDetails={() => { }} onApply={() => { }} />
-            </div>
             <div className="w-full">
-              <AllStartups startups={sortedStartups} sort={sort} setSort={setSort} view={view} setView={setView} onViewDetails={() => { }} onApply={() => { }} />
+              <AllStartups
+                startups={sortedStartups}
+                sort={sort}
+                setSort={setSort}
+                view={view}
+                setView={setView}
+                onViewDetails={startup => setDetailsModal({ open: true, startup })}
+                onApply={() => { }}
+              />
             </div>
           </main>
         </div>
         {showModal && <CreateStartupModal isOpen={showModal} onClose={() => setShowModal(false)} onSubmit={handleCreateStartup} />}
+        <StartupDetailsModal
+          isOpen={detailsModal.open}
+          onClose={() => setDetailsModal({ open: false, startup: null })}
+          startup={detailsModal.startup}
+        />
       </div>
+      <Footer />
     </div>
   );
 };

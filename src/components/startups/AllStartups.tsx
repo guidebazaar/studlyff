@@ -6,7 +6,7 @@ const AllStartups = ({ startups, sort, setSort, view, setView, onViewDetails, on
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
       <h2 className="text-xl font-bold">All Startups <span className="text-purple-400">({startups.length})</span></h2>
       <div className="flex flex-wrap items-center gap-2">
-        <select value={sort} onChange={e => setSort(e.target.value)} className="rounded-full px-3 py-1 border border-purple-500 bg-white/10 text-white transition focus:ring-2 focus:ring-purple-500">
+        <select value={sort} onChange={e => setSort(e.target.value)} className="rounded-full px-3 py-1 border border-purple-500 bg-black text-white transition focus:ring-2 focus:ring-purple-500">
           <option value="newest">Newest First</option>
           <option value="popular">Most Popular</option>
         </select>
