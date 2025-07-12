@@ -157,7 +157,22 @@ const Navbar = () => {
           </div>
 
           {/* User Actions Oval - Only Sign Up or Profile */}
-          <div className="absolute right-0 top-[60%] -translate-y-1/2 flex items-center z-20">
+          <div className="absolute right-0 top-[60%] -translate-y-1/2 flex items-center z-20 gap-2">
+            {/* Login button with underline animation */}
+            {!isSignedUp && (
+              <Link to="/login">
+                <button
+                  className="relative bg-transparent border-none text-white text-base font-normal px-3 py-1 outline-none shadow-none group"
+                  style={{ boxShadow: "none" }}
+                  type="button"
+                >
+                  <span className="relative z-10">Login</span>
+                  {/* Underline animation */}
+                  <span className="absolute left-0 bottom-0 w-full h-0.5 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                </button>
+              </Link>
+            )}
+            {/* Sign Up or Profile */}
             {!isSignedUp ? (
               <Link to="/signup">
                 <InteractiveHoverButton

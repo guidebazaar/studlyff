@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Filter } from 'lucide-react';
 import { SplitText } from "@/components/ui/split-text";
+import TrendingContent from '@/components/TrendingContent';
 
 const YouTubeShorts = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -83,7 +84,7 @@ const YouTubeShorts = () => {
 
   const filteredShorts = allShorts.filter(short => {
     const matchesSearch = short.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         short.creator.toLowerCase().includes(searchTerm.toLowerCase());
+      short.creator.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || short.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -91,9 +92,14 @@ const YouTubeShorts = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       <Navbar />
-      
+
       <div className="pt-20 pb-10">
         <div className="container mx-auto px-4">
+          {/* Trending Content Section Heading */}
+          <div className="mb-8">
+            <TrendingContent />
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -143,7 +149,7 @@ const YouTubeShorts = () => {
                 <Filter className="h-4 w-4 md:h-5 md:w-5 text-purple-400 flex-shrink-0" />
                 <span className="font-semibold text-white text-sm md:text-base">Categories</span>
               </div>
-              
+
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                 {categories.map((category) => (
                   <Button
@@ -151,8 +157,8 @@ const YouTubeShorts = () => {
                     variant={selectedCategory === category ? "default" : "outline"}
                     size="sm"
                     onClick={() => setSelectedCategory(category)}
-                    className={selectedCategory === category ? 
-                      "bg-gradient-to-r from-brand-purple to-brand-pink text-white" : 
+                    className={selectedCategory === category ?
+                      "bg-gradient-to-r from-brand-purple to-brand-pink text-white" :
                       "border-gray-600 text-gray-300 hover:border-purple-400 transition-all duration-300 rounded-lg md:rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm min-h-[44px] w-full bg-gray-800/50 hover:bg-gray-700/50"
                     }
                   >
@@ -214,7 +220,7 @@ const YouTubeShorts = () => {
           )}
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

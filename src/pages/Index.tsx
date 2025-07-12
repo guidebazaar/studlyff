@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import NewsTicker from "@/components/NewsTicker";
 import TrendingContent from "@/components/TrendingContent";
 import EventCarousel from "@/components/EventCarousel";
 import Footer from "@/components/Footer";
