@@ -144,10 +144,17 @@ const Index = () => {
       animate="animate"
       className="min-h-screen text-white overflow-x-hidden"
     >
-      {/* Spline Animation Around Navbar */}
-      <div className="relative w-full h-[900px] flex items-start justify-center overflow-hidden bg-black">
-        {/* Video background replaces Spline animation, now demagnified, centered, and blended */}
-        <div className="absolute top-0 left-0 w-full h-full flex items-start justify-center z-0 pointer-events-none">
+      {/* Navbar - Now visible at the top */}
+      <div className="relative w-full z-50">
+        <Navbar />
+      </div>
+
+      {/* Hero Section with Video Background */}
+      <div className="relative w-full h-[900px] flex items-start justify-center overflow-hidden">
+        {/* Black sheet to cover the background completely */}
+        <div className="absolute inset-0 bg-black z-0" />
+        {/* Video background */}
+        <div className="absolute top-0 left-0 w-full h-full flex items-start justify-center z-10 pointer-events-none">
           <div className="w-full max-w-2xl aspect-video" style={{ marginTop: '200px' }}>
             <video
               src="/anima/animation.mp4"
@@ -160,12 +167,6 @@ const Index = () => {
             />
           </div>
         </div>
-        {/* Navbar overlays the video */}
-        <div className="relative w-full z-10">
-          <Navbar />
-        </div>
-        {/* Down Arrow Button for Smooth Scroll */}
-        {/* Removed arrow button as requested */}
       </div>
       {/* Black background moved to the farthest back for animation visibility */}
       <ContainerScroll titleComponent={<></>}>
@@ -194,6 +195,7 @@ const Index = () => {
           images={FEATURES.map(feature => ({ src: feature.image, alt: feature.title }))}
           autoplayDelay={1800}
         />
+        {/* Removed Show More YouTube Shorts button */}
       </div>
       {/* Enhanced Animated background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
