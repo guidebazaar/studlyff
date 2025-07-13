@@ -137,6 +137,70 @@ const Index = () => {
     );
   }
 
+  // Define news cards for the carousel
+  const NEWS_CARDS = [
+    {
+      title: 'AI Revolutionizes Student Learning',
+      summary: 'New AI-powered tools are helping students personalize their study plans and improve outcomes across universities.',
+      image: 'https://images.unsplash.com/photo-1599576838688-8a6c11263108?q=80&w=600&h=900&fit=crop',
+      link: '#',
+    },
+    {
+      title: 'Top 5 Tech Internships for 2024',
+      summary: 'Explore the most sought-after tech internships this year and tips to land your dream role in the industry.',
+      image: 'https://images.unsplash.com/photo-1506665531195-37a89d6b3095?q=80&w=600&h=900&fit=crop',
+      link: '#',
+    },
+    {
+      title: 'Student Startups Breaking Barriers',
+      summary: 'Meet the student-led startups making waves in sustainability, fintech, and edtech across the country.',
+      image: 'https://plus.unsplash.com/premium_photo-1664910706524-e783eed89e71?q=80&w=600&h=900&fit=crop',
+      link: '#',
+    },
+    {
+      title: 'Scholarships Open for 2024',
+      summary: 'A new wave of scholarships is now available for students in tech, business, and the arts. Apply before the deadline!',
+      image: 'https://images.unsplash.com/photo-1495103033382-fe343886b671?q=80&w=600&h=900&fit=crop',
+      link: '#',
+    },
+    {
+      title: 'Remote Learning: What Works?',
+      summary: 'Universities share their best practices for effective remote and hybrid learning in the post-pandemic era.',
+      image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=600&h=900&fit=crop',
+      link: '#',
+    },
+    {
+      title: 'Women in Tech: Breaking the Glass Ceiling',
+      summary: 'Celebrating the achievements and journeys of women leaders in technology and how they inspire the next generation.',
+      image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?q=80&w=600&h=900&fit=crop',
+      link: '#',
+    },
+    {
+      title: 'Campus Events Go Hybrid',
+      summary: 'Colleges are hosting more hybrid events, combining in-person and virtual experiences for greater reach and impact.',
+      image: 'https://images.unsplash.com/photo-1503788311183-fa3bf9c4bc32?q=80&w=600&h=900&fit=crop',
+      link: '#',
+    },
+    {
+      title: 'Green Tech on Campus',
+      summary: 'Student groups are leading the way in campus sustainability with new green tech initiatives and eco-friendly projects.',
+      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80',
+      link: '#',
+    },
+    {
+      title: 'Career Fairs Go Digital',
+      summary: 'Virtual career fairs are connecting students with top employers, offering new opportunities for remote internships and jobs.',
+      image: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b41?auto=format&fit=crop&w=400&q=80',
+      link: '#',
+    },
+    {
+      title: 'Mental Health Matters',
+      summary: 'Colleges are expanding mental health resources and peer support programs to help students thrive.',
+      image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+      link: '#',
+    },
+  ];
+
   return (
     <motion.div
       variants={pageVariants}
@@ -192,10 +256,9 @@ const Index = () => {
       <div className="my-12">
         <GradientText className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-blue-400 bg-clip-text text-transparent">Latest News</GradientText>
         <CardCarousel
-          images={FEATURES.map(feature => ({ src: feature.image, alt: feature.title }))}
-          autoplayDelay={1800}
+          images={NEWS_CARDS.map(card => ({ src: card.image, alt: card.title, card }))}
+          autoplayDelay={3200}
         />
-        {/* Removed Show More YouTube Shorts button */}
       </div>
       {/* Enhanced Animated background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
