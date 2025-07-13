@@ -95,30 +95,7 @@ const YouTubeShorts = () => {
 
       <div className="pt-20 pb-10">
         <div className="container mx-auto px-4">
-          {/* Trending Content Section Heading */}
-          <div className="mb-8">
-            <TrendingContent />
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-8"
-          >
-            <SplitText
-              text="YouTube Shorts"
-              className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-pink"
-              delay={50}
-              animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
-              animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
-              easing="easeOutCubic"
-              threshold={0.3}
-              rootMargin="-100px"
-            />
-            <p className="text-xl text-white mb-8">
-              Discover viral short-form content to boost your learning
-            </p>
-          </motion.div>
+          {/* Removed TrendingContent (Popular Blogs) and YouTube Shorts heading section */}
 
           {/* Search and Filter - Updated to match Finance page style */}
           <motion.div

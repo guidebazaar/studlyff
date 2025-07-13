@@ -29,6 +29,8 @@ import AIBotFab from "@/components/ui/AIBotFab";
 import Landing from "./pages/Landing";
 import { TwentyFirstToolbar } from "@21st-extension/toolbar-react";
 import { ReactPlugin } from "@21st-extension/react";
+import ProjectHunt from "./pages/ProjectHunt";
+import StudentDashboard from "./pages/StudentDashboard";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +45,7 @@ const AppContent: React.FC = () => {
       <Route path="/home" element={<Index />} />
       <Route path="/finance" element={<Finance />} />
       <Route path="/events" element={<Events />} />
+      <Route path="/project-hunt" element={<ProjectHunt />} />
       <Route path="/startups" element={<Startups />} />
       <Route path="/marketplace" element={<Marketplace />} />
       <Route path="/blogs" element={<Blogs />} />
@@ -54,7 +57,7 @@ const AppContent: React.FC = () => {
       <Route path="/startup-schemes" element={<StartupSchemes />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile" element={<StudentDashboard />} />
       <Route path="/network" element={<Network />} />
       <Route path="/youtube-shorts" element={<YouTubeShorts />} />
       <Route path="/podcasts" element={<Podcasts />} />

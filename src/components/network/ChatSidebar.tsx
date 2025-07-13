@@ -248,17 +248,26 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                             </h2>
                         </div>
                         {selectedUser && (
-                            <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10">
-                                    <Phone className="w-4 h-4" />
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                    if (window.confirm(`Delete chat with ${selectedUser.name}?`)) {
+                                        // Remove user from chat list
+                                        setSelectedUser(null);
+                                        // Remove from mockChatUsers (if using real state, update accordingly)
+                                        // For demo, filter out from filteredUsers
+                                        const idx = mockChatUsers.findIndex(u => u.id === selectedUser.id);
+                                        if (idx !== -1) {
+                                            mockChatUsers.splice(idx, 1);
+                                        }
+                                    }
+                                }}
+                                className="text-red-500 hover:text-white hover:bg-red-600/20"
+                                title="Delete Chat"
+                            >
+                                <X className="w-5 h-5" />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10">
-                                    <Video className="w-4 h-4" />
-                                </Button>
-                                <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10">
-                                    <MoreVertical className="w-4 h-4" />
-                                </Button>
-                            </div>
                         )}
                     </div>
 
@@ -376,17 +385,7 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                             {/* Message Input */}
                             <div className="p-4 border-t border-white/10 bg-gradient-to-r from-gray-900 to-black">
                                 <div className="flex items-center gap-2">
-                                    <div className="flex gap-1">
-                                        <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10 h-10 w-10">
-                                            <Paperclip className="w-5 h-5" />
-                                        </Button>
-                                        <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10 h-10 w-10">
-                                            <Image className="w-5 h-5" />
-                                        </Button>
-                                        <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10 h-10 w-10">
-                                            <Smile className="w-5 h-5" />
-                                        </Button>
-                                    </div>
+                                    {/* Removed the three icon buttons (Paperclip, Image, Smile) */}
                                     <Input
                                         value={newMessage}
                                         onChange={(e) => setNewMessage(e.target.value)}

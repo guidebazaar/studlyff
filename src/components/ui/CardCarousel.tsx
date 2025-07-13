@@ -13,8 +13,19 @@ import {
 } from "swiper/modules";
 import { Badge } from "@/components/ui/badge";
 
+interface CarouselImage {
+  src: string;
+  alt: string;
+  card?: {
+    title: string;
+    summary: string;
+    image: string;
+    link: string;
+  };
+}
+
 interface CarouselProps {
-  images: { src: string; alt: string }[];
+  images: CarouselImage[];
   autoplayDelay?: number;
   showPagination?: boolean;
   showNavigation?: boolean;
@@ -81,16 +92,23 @@ export const CardCarousel: React.FC<CarouselProps> = ({
     <>
       <style>{css}</style>
       <Swiper
-        spaceBetween={50}
+        spaceBetween={10}
         autoplay={{
           delay: autoplayDelay,
           disableOnInteraction: false,
         }}
         effect={"coverflow"}
         grabCursor={true}
-        centeredSlides={true}
+        centeredSlides={false}
         loop={true}
-        slidesPerView={"auto"}
+        slidesPerView={7}
+        breakpoints={{
+          0: { slidesPerView: 1 },
+          640: { slidesPerView: 2 },
+          900: { slidesPerView: 3 },
+          1200: { slidesPerView: 5 },
+          1536: { slidesPerView: 7 },
+        }}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
@@ -110,17 +128,33 @@ export const CardCarousel: React.FC<CarouselProps> = ({
       >
         {images.map((image, index) => (
           <SwiperSlide key={index}>
-            <div className="size-full rounded-3xl relative group overflow-hidden">
-              <img
-                src={image.src}
-                width={500}
-                height={500}
-                className="size-full rounded-xl transition-transform duration-300 group-hover:scale-105"
-                alt={image.alt}
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-80" />
-            </div>
+            {image.card ? (
+              <div className="size-full rounded-3xl relative group overflow-hidden bg-[#18181b] border border-[#a259ff44] flex flex-col justify-between shadow-lg p-6">
+                <img
+                  src={image.card.image}
+                  width={500}
+                  height={300}
+                  className="w-full h-48 object-cover rounded-xl mb-4"
+                  alt={image.card.title}
+                  loading="lazy"
+                />
+                <h3 className="text-xl font-bold text-white mb-2">{image.card.title}</h3>
+                <p className="text-white/80 mb-4">{image.card.summary}</p>
+                <a href={image.card.link} className="text-brand-purple font-semibold hover:underline mt-auto">Read More</a>
+              </div>
+            ) : (
+              <div className="size-full rounded-3xl relative group overflow-hidden">
+                <img
+                  src={image.src}
+                  width={500}
+                  height={500}
+                  className="size-full rounded-xl transition-transform duration-300 group-hover:scale-105"
+                  alt={image.alt}
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-80" />
+              </div>
+            )}
           </SwiperSlide>
         ))}
         {/* Navigation Arrows removed as requested */}

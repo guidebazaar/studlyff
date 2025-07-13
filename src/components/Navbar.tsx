@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -76,8 +77,19 @@ const Navbar = () => {
     >
       <div className="w-full px-3 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between w-full max-w-7xl mx-auto" style={{ minHeight: 56 }}>
-          {/* Logo Holder - Outlined Studlyf Logo */}
-          <div className="absolute left-0 top-[60%] -translate-y-1/2 flex items-center z-20">
+          {/* Extended Oval Background - Now spans the entire navbar */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center z-10">
+            <div
+              className="premium-navbar-oval px-8 py-3 flex items-center"
+              style={{ 
+                width: '100%', 
+                maxWidth: '1200px',
+                height: 64, 
+                minWidth: '90vw'
+              }}
+            >
+              {/* Logo Section */}
+              <div className="flex items-center z-20 flex-shrink-0">
             <Link to="/home" className="flex items-center">
               <img
                 src="/logo3.png"
@@ -92,13 +104,9 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Pages Oval */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center z-10">
-            <div
-              className="premium-navbar-oval px-14 py-3 flex items-center space-x-2"
-              style={{ minWidth: 520, height: 64, justifyContent: 'center' }}
-            >
-              <div className="hidden lg:flex items-center space-x-1 flex-shrink-0">
+              {/* Navigation Items Section - Centered */}
+              <div className="flex-1 flex items-center justify-center">
+                <div className="hidden lg:flex items-center space-x-1">
                 {navItems.map((item) => (
                   <div key={item.name}>
                     <Link
@@ -114,10 +122,11 @@ const Navbar = () => {
                 ))}
               </div>
 
-              {/* Resources Dropdown */}
+                {/* Resources Dropdown - Centered with navigation */}
               <div
                 onMouseEnter={() => isDesktop && setIsResourcesDropdownOpen(true)}
                 onMouseLeave={() => isDesktop && setIsResourcesDropdownOpen(false)}
+                  className="hidden lg:block"
               >
                 <DropdownMenu open={isDesktop ? isResourcesDropdownOpen : undefined} onOpenChange={setIsResourcesDropdownOpen}>
                   <DropdownMenuTrigger asChild>
@@ -150,12 +159,11 @@ const Navbar = () => {
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </div>
             </div>
           </div>
 
-          {/* User Actions Oval - Only Sign Up or Profile */}
-          <div className="absolute right-0 top-[60%] -translate-y-1/2 flex items-center z-20 gap-2">
+              {/* User Actions Section */}
+              <div className="flex items-center z-20 gap-2 flex-shrink-0">
             {/* Login button with underline animation */}
             {!isSignedUp && (
               <Link to="/login">
@@ -170,8 +178,8 @@ const Navbar = () => {
                 </button>
               </Link>
             )}
-            {/* Sign Up or Profile */}
-            {!isSignedUp ? (
+            {/* Sign Up */}
+            {!isSignedUp && (
               <div className="flex flex-col items-end gap-2">
                 <Link to="/signup">
                   <InteractiveHoverButton
@@ -181,16 +189,17 @@ const Navbar = () => {
                   />
                 </Link>
               </div>
-            ) : (
-              <Link to="/profile">
-                <button
-                  className="rounded-full h-9 w-9 sm:h-10 sm:w-10 flex items-center justify-center relative overflow-hidden border border-white/20 transition-all duration-500"
-                  aria-label="Profile"
-                >
-                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                </button>
-              </Link>
             )}
+            {/* Profile Icon - Always visible with dropdown */}
+            <Link to="/profile" aria-label="Profile Dashboard">
+              <Avatar className="h-9 w-9 sm:h-10 sm:w-10 border border-white/20 bg-black cursor-pointer">
+                <AvatarFallback>
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
