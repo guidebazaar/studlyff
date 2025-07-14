@@ -214,12 +214,12 @@ const Index = () => {
       </div>
 
       {/* Hero Section with Video Background */}
-      <div className="relative w-full h-[900px] flex items-start justify-center overflow-hidden">
+      <div className="relative w-full h-[60vh] min-h-[320px] max-h-[600px] flex items-start justify-center overflow-hidden sm:h-[500px] md:h-[700px]">
         {/* Black sheet to cover the background completely */}
         <div className="absolute inset-0 bg-black z-0" />
         {/* Video background */}
         <div className="absolute top-0 left-0 w-full h-full flex items-start justify-center z-10 pointer-events-none">
-          <div className="w-full max-w-2xl aspect-video" style={{ marginTop: '200px' }}>
+          <div className="w-full max-w-2xl aspect-video mt-20 sm:mt-32 md:mt-48">
             <video
               src="/anima/animation.mp4"
               className="w-full h-full object-contain bg-black"
@@ -234,27 +234,27 @@ const Index = () => {
       </div>
       {/* Black background moved to the farthest back for animation visibility */}
       <ContainerScroll titleComponent={<></>}>
-        <div className="flex flex-col items-center justify-center h-full">
-          <p className="text-lg md:text-2xl text-center max-w-2xl mx-auto mb-4">
+        <div className="flex flex-col items-center justify-center h-full px-2 sm:px-4">
+          <p className="text-base sm:text-lg md:text-2xl text-center max-w-2xl mx-auto mb-4">
             Scroll to explore our interactive features, tools, and resources designed for students.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center w-full">
             {/* Example feature cards or content can go here */}
-            <div className="bg-white/10 rounded-xl p-6 min-w-[200px] max-w-xs text-white shadow-lg">
-              <h3 className="font-semibold text-xl mb-2">Smart Finance Tools</h3>
-              <p>Plan, track, and optimize your finances with calculators, planners, and more.</p>
+            <div className="bg-white/10 rounded-xl p-4 min-w-[160px] max-w-xs text-white shadow-lg w-full sm:w-auto">
+              <h3 className="font-semibold text-lg sm:text-xl mb-2">Smart Finance Tools</h3>
+              <p className="text-sm sm:text-base">Plan, track, and optimize your finances with calculators, planners, and more.</p>
             </div>
-            <div className="bg-white/10 rounded-xl p-6 min-w-[200px] max-w-xs text-white shadow-lg">
-              <h3 className="font-semibold text-xl mb-2">Events & Networking</h3>
-              <p>Join events, connect with peers, and grow your professional network.</p>
+            <div className="bg-white/10 rounded-xl p-4 min-w-[160px] max-w-xs text-white shadow-lg w-full sm:w-auto">
+              <h3 className="font-semibold text-lg sm:text-xl mb-2">Events & Networking</h3>
+              <p className="text-sm sm:text-base">Join events, connect with peers, and grow your professional network.</p>
             </div>
             {/* Add more cards or content as needed */}
           </div>
         </div>
       </ContainerScroll>
       {/* Single Card Carousel with all features */}
-      <div className="my-12">
-        <GradientText className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-blue-400 bg-clip-text text-transparent">Latest News</GradientText>
+      <div className="my-8 sm:my-12 px-2 sm:px-0">
+        <GradientText className="text-2xl sm:text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-blue-400 bg-clip-text text-transparent">Latest News</GradientText>
         <CardCarousel
           images={NEWS_CARDS.map(card => ({ src: card.image, alt: card.title, card }))}
           autoplayDelay={3200}

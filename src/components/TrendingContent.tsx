@@ -104,13 +104,13 @@ const TrendingContent = () => {
             <InteractiveHoverButton
               text="Show More"
               onClick={() => navigate('/youtube-shorts')}
-              className="w-48 text-lg flex items-center gap-2"
+              className="w-20 px-3 py-1.5 text-xs flex items-center gap-1 rounded-full md:w-48 md:px-6 md:py-2 md:text-lg"
             >
               <ArrowRight className="h-4 w-4" />
             </InteractiveHoverButton>
           </div>
           <ScrollArea className="w-full whitespace-nowrap scroll-smooth">
-            <div className="flex space-x-8 pb-4">
+            <div className="flex space-x-4 sm:space-x-8 pb-4">
               {youtubeShorts.concat([
                 {
                   id: 6,
@@ -134,12 +134,12 @@ const TrendingContent = () => {
                   creator: "Student Life"
                 }
               ]).map((short) => (
-                <div key={short.id} className="group cursor-pointer flex-shrink-0 w-[72px] sm:w-[100px] md:w-[120px] lg:w-[140px] xl:w-[160px] flex flex-col items-center">
+                <div key={short.id} className="group cursor-pointer flex-shrink-0 w-[110px] sm:w-[130px] md:w-[140px] lg:w-[160px] xl:w-[180px] flex flex-col items-center">
                   <div className="relative w-full rounded-xl overflow-hidden shadow-lg border border-white/10 bg-white" style={{ aspectRatio: '9/16', minHeight: 120 }}>
                     <img
                       src={short.thumbnail}
                       alt={short.title}
-                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                      className="w-full h-40 sm:h-48 md:h-56 object-cover transition-transform group-hover:scale-105"
                       style={{ aspectRatio: '9/16' }}
                     />
                     {/* Overlay for YouTube Shorts style */}
@@ -177,20 +177,20 @@ const TrendingContent = () => {
             <InteractiveHoverButton
               text="Show More"
               onClick={() => navigate('/blogs')}
-              className="w-48 text-lg flex items-center gap-2"
+              className="w-20 px-3 py-1.5 text-xs flex items-center gap-1 rounded-full md:w-48 md:px-6 md:py-2 md:text-lg"
             >
               <ArrowRight className="h-4 w-4" />
             </InteractiveHoverButton>
           </div>
           <ScrollArea className="w-full whitespace-nowrap scroll-smooth">
-            <div className="flex space-x-8 pb-4">
+            <div className="flex space-x-4 sm:space-x-8 pb-4">
               {blogs.map((blog) => (
-                <div key={blog.id} className="group cursor-pointer flex-shrink-0 w-[120px] sm:w-[160px] md:w-[180px] lg:w-[200px] xl:w-[220px]">
+                <div key={blog.id} className="group cursor-pointer flex-shrink-0 w-[160px] sm:w-[180px] md:w-[200px] lg:w-[220px] xl:w-[240px]">
                   <div className="relative overflow-hidden rounded-2xl shadow-lg bg-white">
                     <img
                       src={blog.image}
                       alt={blog.title}
-                      className="w-full h-32 object-cover transition-transform group-hover:scale-105"
+                      className="w-full h-40 sm:h-48 md:h-56 object-cover transition-transform group-hover:scale-105"
                     />
                   </div>
                   <h4 className="font-medium mt-2 line-clamp-2 group-hover:text-purple-500 transition-colors text-xs md:text-sm text-black">{blog.title}</h4>

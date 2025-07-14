@@ -136,10 +136,10 @@ const Blogs = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="grid md:grid-cols-2 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
             {sortedBlogs.map((blog) => (
-              <Card key={blog.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300">
+              <Card key={blog.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300 p-5 sm:p-4">
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
                     <span className="px-2 py-1 rounded-full text-xs font-medium bg-brand-pink/20 text-brand-pink">
@@ -152,7 +152,7 @@ const Blogs = () => {
                       </span>
                     )}
                   </div>
-                  <CardTitle className="text-xl font-bold text-white mb-2">{blog.title}</CardTitle>
+                  <CardTitle className="text-2xl sm:text-xl font-bold text-white mb-2">{blog.title}</CardTitle>
                   <CardDescription className="text-white/70">
                     {blog.excerpt}
                   </CardDescription>

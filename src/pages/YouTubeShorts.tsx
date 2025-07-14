@@ -166,7 +166,7 @@ const YouTubeShorts = () => {
                     <img
                       src={short.thumbnail}
                       alt={short.title}
-                      className="w-full h-48 object-cover transition-transform group-hover:scale-105"
+                      className="w-full h-60 sm:h-48 object-cover transition-transform group-hover:scale-105 md:h-48 lg:h-48"
                     />
                     <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs py-1 px-2 rounded">
                       {short.views} views
@@ -175,11 +175,11 @@ const YouTubeShorts = () => {
                       {short.category}
                     </div>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-brand-purple group-hover:to-brand-pink transition-all duration-300 line-clamp-2 mb-2">
+                  <CardContent className="p-5 sm:p-4">
+                    <h3 className="font-semibold text-lg sm:text-base text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-brand-purple group-hover:to-brand-pink transition-all duration-300 line-clamp-2 mb-2">
                       {short.title}
                     </h3>
-                    <p className="text-sm text-white">{short.creator}</p>
+                    <p className="text-base sm:text-sm text-white">{short.creator}</p>
                   </CardContent>
                 </Card>
               </motion.div>

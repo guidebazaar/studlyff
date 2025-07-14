@@ -99,12 +99,12 @@ export const CardCarousel: React.FC<CarouselProps> = ({
         }}
         effect={"coverflow"}
         grabCursor={true}
-        centeredSlides={false}
+        centeredSlides={true}
         loop={true}
-        slidesPerView={7}
+        slidesPerView={5}
         breakpoints={{
           0: { slidesPerView: 1 },
-          640: { slidesPerView: 2 },
+          640: { slidesPerView: 3 },
           900: { slidesPerView: 3 },
           1200: { slidesPerView: 5 },
           1536: { slidesPerView: 7 },
