@@ -8,7 +8,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "backend": "node backend/server.cjs"
   },
   "dependencies": {
     "@21st-extension/react": "^0.5.14",

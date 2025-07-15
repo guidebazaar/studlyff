@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useAuth } from "@/lib/AuthContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,6 +24,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   // Simulate user signup state (replace with real auth logic in production)
   const [isSignedUp, setIsSignedUp] = useState(false);
+  const { user } = useAuth();
 
   // Hide navbar completely on profile page
   if (location.pathname === "/profile") {
@@ -50,6 +52,7 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Always show all navItems and resourcesDropdownItems regardless of user auth state
   const navItems = [
     { name: "Home", href: "/home" },
     { name: "Finance", href: "/finance" },
@@ -58,7 +61,6 @@ const Navbar = () => {
     { name: "Project Hunt", href: "/project-hunt" },
     { name: "Startups", href: "/startups" },
   ];
-
   const resourcesDropdownItems = [
     { name: "Marketplace", href: "/marketplace" },
     { name: "Scholarships", href: "/scholarships" },
@@ -163,39 +165,39 @@ const Navbar = () => {
               {/* User Actions Section */}
               <div className="flex items-center z-20 gap-2 flex-shrink-0">
                 {/* Login button with underline animation */}
-                {!isSignedUp && (
-                  <Link to="/login">
-                    <button
-                      className="relative bg-transparent border-none text-white text-base font-normal px-3 py-1 outline-none shadow-none group"
-                      style={{ boxShadow: "none" }}
-                      type="button"
-                    >
-                      <span className="relative z-10">Login</span>
-                      {/* Underline animation */}
-                      <span className="absolute left-0 bottom-0 w-full h-0.5 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                    </button>
-                  </Link>
-                )}
-                {/* Sign Up */}
-                {!isSignedUp && (
-                  <div className="flex flex-col items-end gap-2">
+                {!user && (
+                  <div className="flex items-center gap-2">
+                    <Link to="/login">
+                      <button
+                        className="relative bg-transparent border-none text-white text-base font-normal px-3 py-1 outline-none shadow-none group"
+                        style={{ boxShadow: "none" }}
+                        type="button"
+                      >
+                        <span className="relative z-10">Login</span>
+                        {/* Underline animation */}
+                        <span className="absolute left-0 bottom-0 w-full h-0.5 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                      </button>
+                    </Link>
                     <Link to="/signup">
                       <InteractiveHoverButton
                         text="Sign Up"
                         className="w-32 text-base"
-                        onClick={() => setIsSignedUp(true)}
                       />
                     </Link>
                   </div>
                 )}
-                {/* Profile Icon - Always visible with dropdown */}
-                <Link to="/profile" aria-label="Profile Dashboard">
-                  <Avatar className="h-9 w-9 sm:h-10 sm:w-10 border border-white/20 bg-black cursor-pointer">
-                    <AvatarFallback>
-                      <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                    </AvatarFallback>
-                  </Avatar>
-                </Link>
+                {user && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-white text-base font-semibold">Hey {user.displayName || 'User'}</span>
+                    <Link to="/profile" aria-label="Profile Dashboard">
+                      <Avatar className="h-9 w-9 sm:h-10 sm:w-10 border border-white/20 bg-black cursor-pointer">
+                        <AvatarFallback>
+                          <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                        </AvatarFallback>
+                      </Avatar>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>

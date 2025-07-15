@@ -19,7 +19,6 @@ import CourseMaterials from "./pages/CourseMaterials";
 import StartupSchemes from "./pages/StartupSchemes";
 import Login from "./pages/login";
 import SignUp from "./pages/SignUp";
-import Profile from "./pages/Profile";
 import Network from "./pages/Network";
 import NotFound from "./pages/NotFound";
 import YouTubeShorts from "./pages/YouTubeShorts";
@@ -31,8 +30,16 @@ import { TwentyFirstToolbar } from "@21st-extension/toolbar-react";
 import { ReactPlugin } from "@21st-extension/react";
 import ProjectHunt from "./pages/ProjectHunt";
 import StudentDashboard from "./pages/StudentDashboard";
+import { AuthProvider, useAuth } from "@/lib/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return null; // or a loading spinner
+  return user ? <>{children}</> : <Navigate to="/login" replace />;
+};
 
 const AppContent: React.FC = () => {
   useScrollToTop();
@@ -40,31 +47,32 @@ const AppContent: React.FC = () => {
 
   return (
     <>
-    <Routes>
+      <Routes>
         <Route path="/" element={<Landing />} />
-      <Route path="/home" element={<Index />} />
-      <Route path="/finance" element={<Finance />} />
-      <Route path="/events" element={<Events />} />
-      <Route path="/project-hunt" element={<ProjectHunt />} />
-      <Route path="/startups" element={<Startups />} />
-      <Route path="/marketplace" element={<Marketplace />} />
-      <Route path="/blogs" element={<Blogs />} />
-      <Route path="/scholarships" element={<Scholarships />} />
-      <Route path="/courses" element={<Courses />} />
-      <Route path="/paid-courses" element={<PaidCourses />} />
-      <Route path="/free-courses" element={<FreeCourses />} />
-      <Route path="/course-materials" element={<CourseMaterials />} />
-      <Route path="/startup-schemes" element={<StartupSchemes />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile" element={<StudentDashboard />} />
-      <Route path="/network" element={<Network />} />
-      <Route path="/youtube-shorts" element={<YouTubeShorts />} />
-      <Route path="/podcasts" element={<Podcasts />} />
-      <Route path="/student-discounts" element={<StudentDiscounts />} />
-      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="/home" element={<Index />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        {/* Protected routes */}
+        <Route path="/finance" element={<ProtectedRoute><Finance /></ProtectedRoute>} />
+        <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
+        <Route path="/project-hunt" element={<ProtectedRoute><ProjectHunt /></ProtectedRoute>} />
+        <Route path="/startups" element={<ProtectedRoute><Startups /></ProtectedRoute>} />
+        <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
+        <Route path="/blogs" element={<ProtectedRoute><Blogs /></ProtectedRoute>} />
+        <Route path="/scholarships" element={<ProtectedRoute><Scholarships /></ProtectedRoute>} />
+        <Route path="/courses" element={<ProtectedRoute><Courses /></ProtectedRoute>} />
+        <Route path="/paid-courses" element={<ProtectedRoute><PaidCourses /></ProtectedRoute>} />
+        <Route path="/free-courses" element={<ProtectedRoute><FreeCourses /></ProtectedRoute>} />
+        <Route path="/course-materials" element={<ProtectedRoute><CourseMaterials /></ProtectedRoute>} />
+        <Route path="/startup-schemes" element={<ProtectedRoute><StartupSchemes /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
+        <Route path="/network" element={<ProtectedRoute><Network /></ProtectedRoute>} />
+        <Route path="/youtube-shorts" element={<ProtectedRoute><YouTubeShorts /></ProtectedRoute>} />
+        <Route path="/podcasts" element={<ProtectedRoute><Podcasts /></ProtectedRoute>} />
+        <Route path="/student-discounts" element={<ProtectedRoute><StudentDiscounts /></ProtectedRoute>} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
       {/* Only show AIBotFab on allowed pages */}
       {!(location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/") && <AIBotFab />}
     </>
@@ -79,9 +87,11 @@ const App: React.FC = () => {
         <Sonner />
         {/* 21st.dev Toolbar (only in dev mode, handled by the package) */}
         <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

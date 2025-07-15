@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import barba from '@barba/core';
 import { Eye, EyeOff, User, Mail, Lock, ArrowRight, Sparkles, Shield, Users } from "lucide-react";
+import { auth } from "@/lib/firebase";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +31,7 @@ const SignUp = () => {
     });
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.password) {
@@ -47,10 +49,24 @@ const SignUp = () => {
       return;
     }
 
-    toast.success("Account created successfully! Welcome aboard!");
-    console.log("Sign up with:", formData);
+    try {
+      await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      toast.success("Account created successfully! Welcome aboard!");
+      setTimeout(() => navigate("/home"), 1500);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to sign up");
+    }
+  };
 
-    setTimeout(() => navigate("/home"), 1500);
+  const handleGoogleSignUp = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      toast.success("Signed up with Google!");
+      setTimeout(() => navigate("/home"), 1200);
+    } catch (error: any) {
+      toast.error(error.message || "Google sign up failed");
+    }
   };
 
   // Remove unused variants and animation configs
@@ -276,6 +292,7 @@ const SignUp = () => {
                     type="button"
                     variant="outline"
                     className="h-12 btn-secondary hover:scale-105 transition-transform"
+                    onClick={handleGoogleSignUp}
                   >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                       <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
