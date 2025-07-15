@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Send, X, User } from "lucide-react";
+import { db } from '@/lib/firebase';
+import { collection, query, where, orderBy, addDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
+import { useAuth } from '@/lib/AuthContext';
 
 interface ChatModalProps {
   isOpen: boolean;
@@ -26,8 +29,11 @@ interface Message {
 }
 
 const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const { user: currentUser } = useAuth();
+  const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -38,50 +44,47 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
     scrollToBottom();
   }, [messages]);
 
+  // Remove default messages and only fetch from Firestore
   useEffect(() => {
-    if (isOpen && user) {
-      // Simulate initial conversation
-      setMessages([
-        {
-          id: 1,
-          text: "Hi there! Thanks for connecting!",
-          sender: "other",
-          timestamp: new Date(Date.now() - 10000),
-        },
-        {
-          id: 2,
-          text: "Hello! Nice to meet you. I saw your profile and found your interests really interesting.",
-          sender: "me",
-          timestamp: new Date(Date.now() - 5000),
-        },
-      ]);
+    if (isOpen && user && currentUser) {
+      setLoading(true);
+      setError(null);
+      const q = query(
+        collection(db, 'messages'),
+        where('participants', 'array-contains', currentUser.uid),
+        orderBy('timestamp', 'asc')
+      );
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const msgs = snapshot.docs
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .filter((m: any) => Array.isArray(m.participants) && m.participants.includes(user.id) && m.participants.includes(currentUser.uid));
+        setMessages(msgs);
+        setLoading(false);
+      }, (err) => {
+        setError('Failed to load messages.');
+        setLoading(false);
+      });
+      return () => unsubscribe();
     } else {
       setMessages([]);
     }
-  }, [isOpen, user]);
+  }, [isOpen, user, currentUser]);
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() && user) {
-      const message: Message = {
-        id: messages.length + 1,
-        text: newMessage,
-        sender: "me",
-        timestamp: new Date(),
-      };
-      
-      setMessages(prev => [...prev, message]);
-      setNewMessage("");
-
-      // Simulate response after a delay
-      setTimeout(() => {
-        const response: Message = {
-          id: messages.length + 2,
-          text: "That's great! I'd love to learn more about your projects.",
-          sender: "other",
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, response]);
-      }, 1000);
+  const handleSendMessage = async () => {
+    if (newMessage.trim() && user && currentUser) {
+      setError(null);
+      try {
+        await addDoc(collection(db, 'messages'), {
+          senderId: currentUser.uid,
+          receiverId: user.id,
+          participants: [currentUser.uid, user.id],
+          content: newMessage,
+          timestamp: serverTimestamp(),
+        });
+        setNewMessage("");
+      } catch (err: any) {
+        setError('Failed to send message: ' + (err?.message || 'Unknown error'));
+      }
     }
   };
 
@@ -132,6 +135,8 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          {loading && <div className="text-white/60 text-center">Loading messages...</div>}
+          {error && <div className="text-red-400 text-center">{error}</div>}
           <AnimatePresence>
             {messages.map((message) => (
               <motion.div
@@ -140,22 +145,19 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 className={`flex ${
-                  message.sender === "me" ? "justify-end" : "justify-start"
+                  message.senderId === currentUser?.uid ? "justify-end" : "justify-start"
                 }`}
               >
                 <div
                   className={`max-w-[70%] p-3 rounded-2xl ${
-                    message.sender === "me"
+                    message.senderId === currentUser?.uid
                       ? "bg-gradient-to-r from-brand-purple to-brand-pink text-white"
                       : "bg-white/10 text-white border border-white/20"
                   }`}
                 >
-                  <p className="text-sm">{message.text}</p>
+                  <p className="text-sm">{message.content}</p>
                   <p className="text-xs opacity-70 mt-1">
-                    {message.timestamp.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    {message.timestamp?.toDate ? message.timestamp.toDate().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}
                   </p>
                 </div>
               </motion.div>
@@ -176,7 +178,7 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
             />
             <Button
               onClick={handleSendMessage}
-              disabled={!newMessage.trim()}
+              disabled={!newMessage.trim() || loading}
               className="bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 px-3"
             >
               <Send className="w-4 h-4" />

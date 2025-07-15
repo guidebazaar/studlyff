@@ -11,122 +11,24 @@ import { SplitText } from "@/components/ui/split-text";
 import { MessageSquare, Bell, Filter, Users, UserPlus, Heart, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { db } from '@/lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { useAuth } from '@/lib/AuthContext';
 
-// Mock user data - in a real app, this would come from your backend
-const mockUsers = [
-  {
-    id: 1,
-    name: "Alex Johnson",
-    profilePicture: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    role: "Product Manager",
-    school: "Northwestern University",
-    status: "Connected",
-    tags: ["Product Management", "Agile", "User Research"],
-    interests: ["Product Management", "Agile", "User Research"],
-    connections: 389,
-    classYear: 2022,
-    bio: "Product manager with experience in fintech and edtech. Passionate about building user-centric products.",
-    isOnline: true,
-  },
-  {
-    id: 2,
-    name: "Ryan Lee",
-    profilePicture: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    role: "Finance Student",
-    school: "University of Delhi",
-    status: "Not Connected",
-    tags: ["Finance", "Accounting", "Investment Analysis"],
-    interests: ["Finance", "Accounting", "Investment Analysis"],
-    connections: 145,
-    classYear: 2025,
-    bio: "Finance student interested in investment banking and financial analysis.",
-    isOnline: false,
-  },
-  {
-    id: 3,
-    name: "Lisa Patel",
-    profilePicture: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
-    role: "Product Manager",
-    school: "Northwestern University",
-    status: "Connected",
-    tags: ["Product Management", "Agile", "User Research"],
-    interests: ["Product Management", "Agile", "User Research"],
-    connections: 389,
-    classYear: 2022,
-    bio: "Product manager with experience in fintech and edtech. Passionate about building user-centric products.",
-    isOnline: true,
-  },
-  {
-    id: 4,
-    name: "Emily Davis",
-    profilePicture: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-    role: "UX Designer",
-    school: "UC Berkeley",
-    status: "Pending",
-    tags: ["UI/UX Design", "Figma", "User Research"],
-    interests: ["UI/UX Design", "Figma", "User Research"],
-    connections: 189,
-    classYear: 2024,
-    bio: "Creating intuitive and beautiful user experiences. Interested in the intersection of design and technology.",
-    isOnline: true,
-  },
-  {
-    id: 5,
-    name: "Michael Chen",
-    profilePicture: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-    role: "Software Engineer",
-    school: "MIT",
-    status: "Not Connected",
-    tags: ["JavaScript", "React", "Node.js"],
-    interests: ["Web Development", "AI/ML", "Open Source"],
-    connections: 256,
-    classYear: 2023,
-    bio: "Full-stack developer passionate about building scalable web applications and contributing to open source projects.",
-    isOnline: false,
-  },
-  {
-    id: 6,
-    name: "Sarah Wilson",
-    profilePicture: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
-    role: "Data Scientist",
-    school: "Stanford University",
-    status: "Not Connected",
-    tags: ["Python", "Machine Learning", "Data Analysis"],
-    interests: ["AI/ML", "Data Science", "Blockchain"],
-    connections: 312,
-    classYear: 2022,
-    bio: "Data scientist with a focus on machine learning and predictive analytics. Interested in applying AI to solve real-world problems.",
-    isOnline: true,
-  },
-  {
-    id: 7,
-    name: "David Kim",
-    profilePicture: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face",
-    role: "Marketing Specialist",
-    school: "NYU",
-    status: "Not Connected",
-    tags: ["Digital Marketing", "Content Strategy", "SEO"],
-    interests: ["Marketing", "Social Media", "Content Writing"],
-    connections: 178,
-    classYear: 2024,
-    bio: "Marketing specialist with experience in digital campaigns and content strategy. Passionate about brand storytelling and audience engagement.",
-    isOnline: true,
-  },
-  {
-    id: 8,
-    name: "Priya Sharma",
-    profilePicture: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face",
-    role: "Product Designer",
-    school: "RISD",
-    status: "Not Connected",
-    tags: ["UI/UX Design", "Product Design", "Prototyping"],
-    interests: ["UX Design", "Photography", "Gaming"],
-    connections: 203,
-    classYear: 2023,
-    bio: "Product designer focused on creating intuitive and delightful user experiences. Passionate about user-centered design and accessibility.",
-    isOnline: false,
-  },
-];
+const emptyUser = {
+  id: '',
+  name: '',
+  profilePicture: '',
+  role: '',
+  school: '',
+  status: '',
+  tags: [],
+  interests: [],
+  connections: 0,
+  classYear: 0,
+  bio: '',
+  isOnline: false,
+};
 
 // Mock connection requests
 const mockConnectionRequests = [
@@ -171,6 +73,29 @@ const Network = () => {
   const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
   const [connectionRequests, setConnectionRequests] = useState(mockConnectionRequests);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const { user: currentUser } = useAuth();
+  const [users, setUsers] = useState<any[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [userError, setUserError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoadingUsers(true);
+    setUserError(null);
+    getDocs(collection(db, 'users'))
+      .then(snapshot => {
+        const userList = snapshot.docs.map(doc => ({
+          ...emptyUser,
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setUsers(userList);
+        setLoadingUsers(false);
+      })
+      .catch(err => {
+        setUserError('Failed to load users.');
+        setLoadingUsers(false);
+      });
+  }, []);
 
   const handleMessageClick = (user) => {
     setSelectedUser(user);
@@ -214,33 +139,31 @@ const Network = () => {
 
   // Filter users based on all filter criteria
   const filteredUsers = useMemo(() => {
-    return mockUsers.filter((user) => {
-      // Search by name
-      const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
-
+    // If no filters/search are active, show all users
+    const noFilters = !searchTerm && selectedInterest === "All Interests" && selectedSkills.length === 0 && selectedStatuses.length === 0 && selectedLocations.length === 0 && selectedSchools.length === 0;
+    if (noFilters) return users;
+    const safe = (val) => typeof val === 'string' ? val : '';
+    return users.filter((user) => {
+      // Search by name (skip if no name)
+      const matchesSearch = safe(user.name).toLowerCase().includes(searchTerm.toLowerCase());
       // Filter by interest
       const matchesInterest = selectedInterest === "All Interests" ||
         (user.interests && user.interests.some(interest => interest === selectedInterest));
-
       // Filter by skills
       const matchesSkills = selectedSkills.length === 0 ||
         (user.tags && user.tags.some(tag => selectedSkills.includes(tag)));
-
       // Filter by connection status
       const matchesStatus = selectedStatuses.length === 0 ||
         selectedStatuses.includes(user.status);
-
       // Filter by location (mock implementation - in a real app, you'd have location data)
       const matchesLocation = selectedLocations.length === 0;
-
       // Filter by school (mock implementation - in a real app, you'd have school data)
       const matchesSchool = selectedSchools.length === 0 ||
         (user.school && selectedSchools.includes(user.school));
-
       return matchesSearch && matchesInterest && matchesSkills && matchesStatus &&
         matchesLocation && matchesSchool;
     });
-  }, [searchTerm, selectedInterest, selectedSkills, selectedStatuses, selectedLocations, selectedSchools]);
+  }, [users, searchTerm, selectedInterest, selectedSkills, selectedStatuses, selectedLocations, selectedSchools]);
 
   // Freeze background scroll when chat sidebar is open
   useEffect(() => {
@@ -422,127 +345,51 @@ const Network = () => {
                   </select>
                 </div>
               </div>
-
+              {loadingUsers && <div className="text-white/60 text-center">Loading users...</div>}
+              {userError && <div className="text-red-400 text-center">{userError}</div>}
               {viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-16">
-                  {filteredUsers.length > 0 ? (
-                    filteredUsers.map((user, index) => (
-                      <motion.div
-                        key={user.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: index * 0.1 }}
-                      >
-                        <UserProfileCard
-                          user={user}
-                          onMessageClick={() => handleMessageClick(user)}
-                        />
-                      </motion.div>
-                    ))
-                  ) : (
-                    <div className="col-span-full text-center py-12">
-                      <p className="text-white text-lg">No users found matching your criteria.</p>
-                    </div>
-                  )}
+                  {(filteredUsers.length > 0 ? filteredUsers : users).map((user, index) => (
+                    <motion.div
+                      key={user.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                    >
+                      <UserProfileCard
+                        user={user}
+                        onMessageClick={() => handleMessageClick(user)}
+                      />
+                    </motion.div>
+                  ))}
                 </div>
               ) : (
                 <div className="flex flex-col gap-4 mb-16">
-                  {filteredUsers.length > 0 ? (
-                    filteredUsers.map((user, index) => (
-                      <motion.div
-                        key={user.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: index * 0.05 }}
-                        className="bg-gradient-to-br from-black via-gray-900 to-purple-900/30 border border-white/10 rounded-xl p-4 hover:border-brand-purple/40 transition-all"
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className="relative">
-                            <img
-                              src={user.profilePicture}
-                              alt={user.name}
-                              className="w-16 h-16 rounded-full border-2 border-brand-purple/40 object-cover"
-                            />
-                            <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-black ${user.isOnline ? "bg-green-500" : "bg-gray-500"}`} />
+                  {(filteredUsers.length > 0 ? filteredUsers : users).map((user, index) => (
+                    <motion.div
+                      key={user.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.05 }}
+                      className="bg-gradient-to-br from-black via-gray-900 to-purple-900/30 border border-white/10 rounded-xl p-4 hover:border-brand-purple/40 transition-all"
+                    >
+                      <div className="flex items-start gap-4">
+                        <img
+                          src={user.profilePicture}
+                          alt={user.name}
+                          className="w-16 h-16 rounded-full border-2 border-brand-purple/40 object-cover"
+                        />
+                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-black ${user.isOnline ? "bg-green-500" : "bg-gray-500"}`} />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-white">{user.name}</span>
+                            <span className="text-xs text-white/60">{user.classYear}</span>
                           </div>
-
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h3 className="text-lg font-bold text-brand-purple">{user.name}</h3>
-                                <p className="text-sm text-white/80">{user.role} • {user.school}</p>
-                              </div>
-                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${user.status === 'Connected' ? 'bg-green-600/20 text-green-400 border border-green-400' : user.status === 'Pending' ? 'bg-yellow-600/20 text-yellow-300 border border-yellow-300' : 'bg-white/10 text-white/70 border border-white/20'}`}>
-                                {user.status}
-                              </span>
-                            </div>
-
-                            <p className="text-sm text-white/80 my-2 line-clamp-2">{user.bio}</p>
-
-                            <div className="flex flex-wrap gap-2 mb-3">
-                              {user.tags.map((tag, idx) => (
-                                <span key={idx} className="rounded-full px-2 py-0.5 text-xs font-semibold border border-brand-purple bg-brand-purple/10 text-brand-purple/90 shadow-sm">
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                              <div className="text-xs text-white/60">
-                                <span>{user.connections} connections</span>
-                                <span className="mx-1">•</span>
-                                <span>Class of {user.classYear}</span>
-                              </div>
-
-                              <div className="flex gap-2">
-                                {user.status === "Connected" ? (
-                                  <Button
-                                    size="sm"
-                                    onClick={() => handleMessageClick(user)}
-                                    className="bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 text-white"
-                                  >
-                                    <MessageSquare className="w-4 h-4 mr-2" />
-                                    Message
-                                  </Button>
-                                ) : user.status === "Pending" ? (
-                                  <Button
-                                    size="sm"
-                                    disabled
-                                    className="bg-yellow-600/20 text-yellow-300 border border-yellow-300 cursor-not-allowed"
-                                  >
-                                    <Clock className="w-4 h-4 mr-2" />
-                                    Pending
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    size="sm"
-                                    onClick={() => handleConnectClick(user.id)}
-                                    className="bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 text-white"
-                                  >
-                                    <UserPlus className="w-4 h-4 mr-2" />
-                                    Connect
-                                  </Button>
-                                )}
-
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => { }}
-                                  className="text-white/70 hover:text-white hover:bg-white/10"
-                                >
-                                  <Heart className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
+                          <p className="text-sm text-white/70 truncate">{user.bio}</p>
                         </div>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <div className="text-center py-12">
-                      <p className="text-white text-lg">No users found matching your criteria.</p>
-                    </div>
-                  )}
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               )}
             </section>

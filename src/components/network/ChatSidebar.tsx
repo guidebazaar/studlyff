@@ -17,6 +17,9 @@ import {
     Paperclip,
     Smile
 } from "lucide-react";
+import { db } from '@/lib/firebase';
+import { collection, query, where, orderBy, addDoc, serverTimestamp, onSnapshot, getDocs } from 'firebase/firestore';
+import { useAuth } from '@/lib/AuthContext';
 
 interface ChatUser {
     id: number;
@@ -40,169 +43,111 @@ interface ChatSidebarProps {
     onClose: () => void;
 }
 
-// Mock data for chat users
-const mockChatUsers: ChatUser[] = [
-    {
-        id: 1,
-        name: "Alex Johnson",
-        profilePicture: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "Thanks for connecting!",
-        lastMessageTime: "2m ago",
-        unreadCount: 2,
-        isOnline: true,
-    },
-    {
-        id: 2,
-        name: "Emily Davis",
-        profilePicture: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "When is the project due?",
-        lastMessageTime: "1h ago",
-        unreadCount: 0,
-        isOnline: true,
-    },
-    {
-        id: 3,
-        name: "Ryan Lee",
-        profilePicture: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "Let's meet tomorrow to discuss the details",
-        lastMessageTime: "3h ago",
-        unreadCount: 0,
-        isOnline: false,
-    },
-    {
-        id: 4,
-        name: "Lisa Patel",
-        profilePicture: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "I'll send you the files soon",
-        lastMessageTime: "Yesterday",
-        unreadCount: 0,
-        isOnline: false,
-    },
-    {
-        id: 5,
-        name: "Michael Chen",
-        profilePicture: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "Check out this new open source repo!",
-        lastMessageTime: "2d ago",
-        unreadCount: 1,
-        isOnline: true,
-    },
-    {
-        id: 6,
-        name: "Sarah Wilson",
-        profilePicture: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "Let's collaborate on the ML project.",
-        lastMessageTime: "3d ago",
-        unreadCount: 0,
-        isOnline: false,
-    },
-    {
-        id: 7,
-        name: "David Kim",
-        profilePicture: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "Sent you the marketing plan.",
-        lastMessageTime: "4d ago",
-        unreadCount: 0,
-        isOnline: true,
-    },
-    {
-        id: 8,
-        name: "Priya Sharma",
-        profilePicture: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "Loved your design portfolio!",
-        lastMessageTime: "5d ago",
-        unreadCount: 0,
-        isOnline: false,
-    },
-    {
-        id: 9,
-        name: "Jordan Smith",
-        profilePicture: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "Let's catch up soon!",
-        lastMessageTime: "6d ago",
-        unreadCount: 0,
-        isOnline: true,
-    },
-    {
-        id: 10,
-        name: "Sophia Rodriguez",
-        profilePicture: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "Thanks for the feedback!",
-        lastMessageTime: "1w ago",
-        unreadCount: 0,
-        isOnline: false,
-    },
-    {
-        id: 11,
-        name: "Aiden Park",
-        profilePicture: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=150&h=150&fit=crop&crop=face",
-        lastMessage: "See you at the event!",
-        lastMessageTime: "1w ago",
-        unreadCount: 0,
-        isOnline: true,
-    },
-];
-
 const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
-
+    const { user: currentUser } = useAuth();
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedUser, setSelectedUser] = useState<ChatUser | null>(null);
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [selectedUser, setSelectedUser] = useState<any | null>(null);
+    const [messages, setMessages] = useState<any[]>([]);
+    const [chatUsers, setChatUsers] = useState<any[]>([]);
     const [newMessage, setNewMessage] = useState("");
     const [visibleCount, setVisibleCount] = useState(4);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const filteredUsers = mockChatUsers.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const visibleUsers = filteredUsers.slice(0, visibleCount);
-
+    // Fetch chat users (all users the current user has messaged with)
     useEffect(() => {
-        if (selectedUser) {
-            // Simulate initial conversation
-            setMessages([
-                {
-                    id: 1,
-                    text: "Hi there! Thanks for connecting!",
-                    sender: "other",
-                    timestamp: new Date(Date.now() - 10000),
-                },
-                {
-                    id: 2,
-                    text: "Hello! Nice to meet you. I saw your profile and found your interests really interesting.",
-                    sender: "me",
-                    timestamp: new Date(Date.now() - 5000),
-                },
-            ]);
+        if (!currentUser) return;
+        setLoading(true);
+        setError(null);
+        // Query all messages where current user is a participant
+        const q = query(
+            collection(db, 'messages'),
+            where('participants', 'array-contains', currentUser.uid)
+        );
+        const unsubscribe = onSnapshot(q, async (snapshot) => {
+            // Group messages by the other participant
+            const userMap: Record<string, any> = {};
+            snapshot.docs.forEach(doc => {
+                const data = doc.data();
+                const otherId = data.participants.find((id: string) => id !== currentUser.uid);
+                if (!otherId) return;
+                if (!userMap[otherId]) {
+                    userMap[otherId] = {
+                        id: otherId,
+                        lastMessage: data.content,
+                        lastMessageTime: data.timestamp,
+                        unreadCount: 0,
+                        profilePicture: '', // You can fetch user profile if you store it elsewhere
+                        name: otherId, // Placeholder, ideally fetch user name
+                        isOnline: false, // Placeholder
+                    };
+                }
+                // Update last message if newer
+                if (!userMap[otherId].lastMessageTime || (data.timestamp && data.timestamp.toMillis() > userMap[otherId].lastMessageTime.toMillis())) {
+                    userMap[otherId].lastMessage = data.content;
+                    userMap[otherId].lastMessageTime = data.timestamp;
+                }
+                // Count unread messages
+                if (data.receiverId === currentUser.uid && !data.read) {
+                    userMap[otherId].unreadCount += 1;
+                }
+            });
+            setChatUsers(Object.values(userMap));
+            setLoading(false);
+        }, (err) => {
+            setError('Failed to load chats.');
+            setLoading(false);
+        });
+        return () => unsubscribe();
+    }, [currentUser]);
+
+    // Fetch messages for selected user
+    useEffect(() => {
+        if (!selectedUser || !currentUser) {
+            setMessages([]);
+            return;
         }
-    }, [selectedUser]);
+        setLoading(true);
+        setError(null);
+        const q = query(
+            collection(db, 'messages'),
+            where('participants', 'array-contains', currentUser.uid),
+            orderBy('timestamp', 'asc')
+        );
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const msgs = snapshot.docs
+                .map(doc => ({ id: doc.id, ...doc.data() }))
+                .filter((m: any) => Array.isArray(m.participants) && m.participants.includes(selectedUser.id) && m.participants.includes(currentUser.uid));
+            setMessages(msgs);
+            setLoading(false);
+        }, (err) => {
+            setError('Failed to load messages.');
+            setLoading(false);
+        });
+        return () => unsubscribe();
+    }, [selectedUser, currentUser]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-    const handleSendMessage = () => {
-        if (newMessage.trim() && selectedUser) {
-            const message: Message = {
-                id: messages.length + 1,
-                text: newMessage,
-                sender: "me",
-                timestamp: new Date(),
-            };
-
-            setMessages(prev => [...prev, message]);
-            setNewMessage("");
-
-            // Simulate response after a delay
-            setTimeout(() => {
-                const response: Message = {
-                    id: messages.length + 2,
-                    text: "That's great! I'd love to learn more about your projects.",
-                    sender: "other",
-                    timestamp: new Date(),
-                };
-                setMessages(prev => [...prev, response]);
-            }, 1000);
+    const handleSendMessage = async () => {
+        if (newMessage.trim() && selectedUser && currentUser) {
+            setError(null);
+            try {
+                await addDoc(collection(db, 'messages'), {
+                    senderId: currentUser.uid,
+                    receiverId: selectedUser.id,
+                    participants: [currentUser.uid, selectedUser.id],
+                    content: newMessage,
+                    timestamp: serverTimestamp(),
+                    read: false,
+                });
+                setNewMessage("");
+            } catch (err: any) {
+                setError('Failed to send message: ' + (err?.message || 'Unknown error'));
+            }
         }
     };
 
@@ -213,13 +158,19 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
         }
     };
 
-    const handleUserSelect = (user: ChatUser) => {
+    const handleUserSelect = (user: any) => {
         setSelectedUser(user);
     };
 
     const handleBackToList = () => {
         setSelectedUser(null);
     };
+
+    // Filter chat users by search
+    const filteredUsers = chatUsers.filter(user =>
+        typeof user.name === 'string' && user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const visibleUsers = filteredUsers.slice(0, visibleCount);
 
     return (
         <AnimatePresence>
@@ -247,28 +198,6 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                                 {selectedUser ? selectedUser.name : "Messages"}
                             </h2>
                         </div>
-                        {selectedUser && (
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => {
-                                    if (window.confirm(`Delete chat with ${selectedUser.name}?`)) {
-                                        // Remove user from chat list
-                                        setSelectedUser(null);
-                                        // Remove from mockChatUsers (if using real state, update accordingly)
-                                        // For demo, filter out from filteredUsers
-                                        const idx = mockChatUsers.findIndex(u => u.id === selectedUser.id);
-                                        if (idx !== -1) {
-                                            mockChatUsers.splice(idx, 1);
-                                        }
-                                    }
-                                }}
-                                className="text-red-500 hover:text-white hover:bg-red-600/20"
-                                title="Delete Chat"
-                            >
-                                <X className="w-5 h-5" />
-                                </Button>
-                        )}
                     </div>
 
                     {!selectedUser ? (
@@ -287,7 +216,7 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                                 </div>
                             </div>
 
-                            {/* Chat List - Virtualized Infinite Scroll */}
+                            {/* Chat List */}
                             <div
                                 className="flex-1 overflow-y-auto"
                                 style={{ maxHeight: 400 }}
@@ -298,6 +227,8 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                                     }
                                 }}
                             >
+                                {loading && <div className="text-white/60 text-center">Loading chats...</div>}
+                                {error && <div className="text-red-400 text-center">{error}</div>}
                                 {visibleUsers.length > 0 ? (
                                     visibleUsers.map((user) => (
                                         <div
@@ -320,7 +251,7 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center justify-between">
                                                         <span className="font-semibold text-white">{user.name}</span>
-                                                        <span className="text-xs text-white/60">{user.lastMessageTime}</span>
+                                                        <span className="text-xs text-white/60">{user.lastMessageTime ? (user.lastMessageTime.toDate ? user.lastMessageTime.toDate().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : user.lastMessageTime) : ''}</span>
                                                     </div>
                                                     <p className="text-sm text-white/70 truncate">{user.lastMessage}</p>
                                                 </div>
@@ -344,6 +275,8 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                         <>
                             {/* Chat Messages */}
                             <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                                {loading && <div className="text-white/60 text-center">Loading messages...</div>}
+                                {error && <div className="text-red-400 text-center">{error}</div>}
                                 <AnimatePresence>
                                     {messages.map((message) => (
                                         <motion.div
@@ -351,10 +284,9 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: -20 }}
-                                            className={`flex ${message.sender === "me" ? "justify-end" : "justify-start"
-                                                }`}
+                                            className={`flex ${message.senderId === currentUser?.uid ? "justify-end" : "justify-start"}`}
                                         >
-                                            {message.sender === "other" && (
+                                            {message.senderId !== currentUser?.uid && (
                                                 <Avatar className="w-8 h-8 mr-2 self-end mb-1">
                                                     <AvatarImage src={selectedUser.profilePicture} alt={selectedUser.name} />
                                                     <AvatarFallback className="bg-gradient-to-r from-brand-purple to-brand-pink text-white">
@@ -363,17 +295,14 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                                                 </Avatar>
                                             )}
                                             <div
-                                                className={`max-w-[75%] p-3 rounded-2xl ${message.sender === "me"
+                                                className={`max-w-[75%] p-3 rounded-2xl ${message.senderId === currentUser?.uid
                                                     ? "bg-gradient-to-r from-brand-purple to-brand-pink text-white"
                                                     : "bg-white/10 text-white border border-white/20"
                                                     }`}
                                             >
-                                                <p className="text-sm">{message.text}</p>
+                                                <p className="text-sm">{message.content}</p>
                                                 <p className="text-xs opacity-70 mt-1">
-                                                    {message.timestamp.toLocaleTimeString([], {
-                                                        hour: "2-digit",
-                                                        minute: "2-digit",
-                                                    })}
+                                                    {message.timestamp?.toDate ? message.timestamp.toDate().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ''}
                                                 </p>
                                             </div>
                                         </motion.div>
@@ -385,7 +314,6 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                             {/* Message Input */}
                             <div className="p-4 border-t border-white/10 bg-gradient-to-r from-gray-900 to-black">
                                 <div className="flex items-center gap-2">
-                                    {/* Removed the three icon buttons (Paperclip, Image, Smile) */}
                                     <Input
                                         value={newMessage}
                                         onChange={(e) => setNewMessage(e.target.value)}
@@ -395,7 +323,7 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                                     />
                                     <Button
                                         onClick={handleSendMessage}
-                                        disabled={!newMessage.trim()}
+                                        disabled={!newMessage.trim() || loading}
                                         className="bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 h-10 w-10 p-0"
                                     >
                                         <Send className="w-4 h-4" />

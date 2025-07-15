@@ -14,6 +14,7 @@ import RollingGallery from '../RollingGallery';
 import ContainerScroll from "@/components/ui/ContainerScroll";
 import { GradientText } from "@/components/ui/GradientText";
 import { CardCarousel } from "@/components/ui/CardCarousel";
+import AdGrid from "@/components/ui/AdGrid";
 
 const FEATURES = [
   {
@@ -214,12 +215,12 @@ const Index = () => {
       </div>
 
       {/* Hero Section with Video Background */}
-      <div className="relative w-full h-[60vh] min-h-[320px] max-h-[600px] flex items-start justify-center overflow-hidden sm:h-[500px] md:h-[700px]">
+      <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-black">
         {/* Black sheet to cover the background completely */}
         <div className="absolute inset-0 bg-black z-0" />
-        {/* Video background */}
-        <div className="absolute top-0 left-0 w-full h-full flex items-start justify-center z-10 pointer-events-none">
-          <div className="w-full max-w-2xl aspect-video mt-20 sm:mt-32 md:mt-48">
+        {/* Video background and overlay text together */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none mt-16">
+          <div className="w-full max-w-3xl aspect-video flex items-center justify-center">
             <video
               src="/anima/animation.mp4"
               className="w-full h-full object-contain bg-black"
@@ -227,34 +228,80 @@ const Index = () => {
               loop
               muted
               playsInline
-              style={{ boxShadow: 'none', border: 'none', borderRadius: 0, background: 'black' }}
+              style={{ boxShadow: 'none', border: 'none', borderRadius: 0, background: 'black', filter: 'brightness(0.7)' }}
             />
+          </div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 30,
+              pointerEvents: 'none',
+              width: '100%',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'Lucida Handwriting, cursive',
+                fontSize: '4.5rem',
+                color: '#fff',
+                textShadow: '0 4px 24px #000, 0 1.5px 6px #a259ff',
+                fontWeight: 500,
+                letterSpacing: 2,
+                marginBottom: '-0.5rem',
+              }}
+            >
+              Building
+            </span>
+            <span
+              style={{
+                fontFamily: 'Lucida Handwriting, cursive',
+                fontSize: '3.2rem',
+                color: '#fff',
+                textShadow: '0 4px 24px #000, 0 1.5px 6px #a259ff',
+                fontWeight: 400,
+                letterSpacing: 2,
+                marginBottom: '-0.5rem',
+              }}
+            >
+              the
+            </span>
+            <span
+              style={{
+                fontFamily: 'Lucida Handwriting, cursive',
+                fontSize: '5.5rem',
+                color: '#fff',
+                textShadow: '0 4px 24px #000, 0 1.5px 6px #a259ff',
+                fontWeight: 700,
+                letterSpacing: 2,
+                marginTop: '0.2rem',
+              }}
+            >
+              Student Network
+            </span>
           </div>
         </div>
       </div>
       {/* Black background moved to the farthest back for animation visibility */}
       <ContainerScroll titleComponent={<></>}>
-        <div className="flex flex-col items-center justify-center h-full px-2 sm:px-4">
-          <p className="text-base sm:text-lg md:text-2xl text-center max-w-2xl mx-auto mb-4">
-            Scroll to explore our interactive features, tools, and resources designed for students.
-          </p>
-          <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center w-full">
-            {/* Example feature cards or content can go here */}
-            <div className="bg-white/10 rounded-xl p-4 min-w-[160px] max-w-xs text-white shadow-lg w-full sm:w-auto">
-              <h3 className="font-semibold text-lg sm:text-xl mb-2">Smart Finance Tools</h3>
-              <p className="text-sm sm:text-base">Plan, track, and optimize your finances with calculators, planners, and more.</p>
-            </div>
-            <div className="bg-white/10 rounded-xl p-4 min-w-[160px] max-w-xs text-white shadow-lg w-full sm:w-auto">
-              <h3 className="font-semibold text-lg sm:text-xl mb-2">Events & Networking</h3>
-              <p className="text-sm sm:text-base">Join events, connect with peers, and grow your professional network.</p>
-            </div>
-            {/* Add more cards or content as needed */}
-          </div>
+        <div className="flex flex-col items-center justify-center h-full px-2 sm:px-4 mb-24">
+          {/* Ads Grid */}
+          <AdGrid />
+          {/* Example feature cards or content can go here */}
+          {/* Removed feature cards as per user request */}
+          {/* Add more cards or content as needed */}
         </div>
       </ContainerScroll>
       {/* Single Card Carousel with all features */}
-      <div className="my-8 sm:my-12 px-2 sm:px-0">
-        <GradientText className="text-2xl sm:text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-blue-400 bg-clip-text text-transparent">Latest News</GradientText>
+      <div className="my-8 sm:my-12 px-2 sm:px-0 mt-[120]">
+        <GradientText className="text-2xl sm:text-4xl md:text-6xl font-bold mt-32 mb-10 block text-center text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">Latest News</GradientText>
         <CardCarousel
           images={NEWS_CARDS.map(card => ({ src: card.image, alt: card.title, card }))}
           autoplayDelay={3200}
@@ -317,7 +364,7 @@ const Index = () => {
         {/* Enhanced animated glow spots with parallax */}
         <motion.div
           style={{ y: glowY1 }}
-          className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-3xl opacity-30"
+          className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-[100px] opacity-60"
           animate={{
             background: [
               "radial-gradient(circle, rgba(209, 58, 255, 0.2), transparent)",
@@ -333,7 +380,7 @@ const Index = () => {
         />
         <motion.div
           style={{ y: glowY2 }}
-          className="absolute bottom-1/3 right-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-3xl opacity-30"
+          className="absolute bottom-1/3 right-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-[100px] opacity-60"
           animate={{
             background: [
               "radial-gradient(circle, rgba(255, 77, 160, 0.2), transparent)",
@@ -405,43 +452,15 @@ const Index = () => {
         className="relative z-10 w-full overflow-x-hidden"
       >
         {/* Features Rolling Gallery */}
+        <GradientText className="text-2xl sm:text-4xl md:text-6xl font-bold mb-6 mt-12 animate-gradient text-center">Trending Content</GradientText>
         <motion.div
           variants={sectionVariants}
           transition={{ ease: 'easeOut' }}
           className="w-full overflow-x-hidden"
         >
 
-          {/* Separator after NewsTicker */}
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            whileInView={{ opacity: 1, scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="container mx-auto px-4 py-8"
-          >
-          </motion.div>
-
-          {/* Separator after EventCarousel */}
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            whileInView={{ opacity: 1, scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            className="container mx-auto px-4 py-8"
-          >
-          </motion.div>
-
           <TrendingContent />
         </motion.div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 100 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
-      >
-        <StudentDiscountPreview />
       </motion.div>
 
       <motion.div
@@ -457,7 +476,7 @@ const Index = () => {
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
       >
         <StatsSection />
       </motion.div>
@@ -482,3 +501,60 @@ const Index = () => {
 };
 
 export default Index;
+
+function CollegeGallery() {
+  const galleries = [
+    [
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80",
+    ],
+    [
+      "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
+    ],
+    [
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1465101178521-c1a9136a3b41?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1495103033382-fe343886b671?auto=format&fit=crop&w=600&q=80",
+    ],
+  ];
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % galleries.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+  return (
+    <div className="w-full mx-auto flex flex-col gap-2">
+      <div className="w-full aspect-[8/2]">
+        <img
+          src={galleries[index][0]}
+          alt="College 1"
+          className="w-full h-full object-cover rounded-2xl shadow-xl"
+          style={{ border: '4px solid #a259ff', boxShadow: '0 0 16px 4px #a259ff88' }}
+        />
+      </div>
+      <div className="flex gap-4 w-full">
+        <div className="flex-1 aspect-[1.5/1]">
+          <img
+            src={galleries[index][1]}
+            alt="College 2"
+            className="w-full h-full object-cover rounded-2xl shadow-xl"
+            style={{ border: '4px solid #a259ff', boxShadow: '0 0 16px 4px #a259ff88' }}
+          />
+        </div>
+        <div className="flex-1 aspect-[1.5/1]">
+          <img
+            src={galleries[index][2]}
+            alt="College 3"
+            className="w-full h-full object-cover rounded-2xl shadow-xl"
+            style={{ border: '4px solid #a259ff', boxShadow: '0 0 16px 4px #a259ff88' }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
