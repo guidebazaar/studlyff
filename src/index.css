@@ -490,6 +490,22 @@ h3 {
   }
 }
 
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #a259ff #222;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  background: #222;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #a259ff;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #ff4ecd;
+}
+
 /* Mobile-specific improvements */
 @media (max-width: 768px) {
   .container {

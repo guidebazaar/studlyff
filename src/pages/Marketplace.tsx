@@ -284,50 +284,6 @@ const Marketplace = () => {
                     ))}
                   </div>
                 </motion.div>
-
-                {/* Price Filter */}
-                <motion.div 
-                  className="rounded-xl bg-white/5 backdrop-blur-lg border border-white/10 p-5 hover:border-brand-purple/30 transition-all duration-300"
-                  whileHover={{ boxShadow: "0 0 20px rgba(142, 68, 173, 0.2)" }}
-                >
-                  <h3 className="font-medium mb-4 flex items-center gap-2">
-                    <Tag size={18} className="text-brand-purple" />
-                    Price Range
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <Input placeholder="Min" className="w-full bg-white/5 border-white/10 focus:border-brand-purple/50 transition-colors" type="number" />
-                    <span>to</span>
-                    <Input placeholder="Max" className="w-full bg-white/5 border-white/10 focus:border-brand-purple/50 transition-colors" type="number" />
-                  </div>
-                  <Button variant="secondary" size="sm" className="w-full mt-3 bg-white/10 hover:bg-white/20 text-white">
-                    Apply
-                  </Button>
-                </motion.div>
-                
-                {/* Recently Viewed */}
-                <motion.div 
-                  className="rounded-xl bg-white/5 backdrop-blur-lg border border-white/10 p-5 hover:border-brand-purple/30 transition-all duration-300 hidden lg:block"
-                  whileHover={{ boxShadow: "0 0 20px rgba(142, 68, 173, 0.2)" }}
-                >
-                  <h3 className="font-medium mb-4 flex items-center gap-2">
-                    <Clock size={18} className="text-brand-purple" />
-                    Recently Viewed
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
-                      <div className="w-8 h-8 rounded flex items-center justify-center bg-white/10 text-lg">
-                        📚
-                      </div>
-                      <div className="text-sm truncate">Economics Textbook</div>
-                    </div>
-                    <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
-                      <div className="w-8 h-8 rounded flex items-center justify-center bg-white/10 text-lg">
-                        🎫
-                      </div>
-                      <div className="text-sm truncate">Tech Conference Ticket</div>
-                    </div>
-                  </div>
-                </motion.div>
               </div>
             </motion.div>
 
@@ -395,7 +351,7 @@ const Marketplace = () => {
                           <div>
                             <h3 className="font-medium line-clamp-1">{listing.title}</h3>
                             <div className="flex flex-wrap items-center gap-2 mt-1">
-                              <Badge className="bg-brand-purple/20 text-brand-purple hover:bg-brand-purple/30">{listing.category}</Badge>
+                              <Badge className="bg-[#a259ff]/20 text-[#a259ff] hover:bg-[#a259ff]/30">{listing.category}</Badge>
                               <Badge variant="secondary" className="bg-white/10 text-white hover:bg-white/20">{listing.condition}</Badge>
                             </div>
                             <div className="flex items-center mt-2 text-sm text-white">
@@ -430,26 +386,22 @@ const Marketplace = () => {
                             {listing.listedOn} by {listing.seller}
                           </span>
                           <div className="flex gap-2">
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              className="border-white/10 hover:border-brand-purple/50 hover:bg-white/5"
+                            <button
+                              className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium h-9 rounded-full px-3 bg-white text-[#a259ff] border-0 shadow-[0_4px_20px_0_rgba(162,89,255,0.10)]"
                               onClick={(e) => {
                                 e.stopPropagation();
                               }}
                             >
                               Contact
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              className="bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 transition-opacity"
+                            </button>
+                            <button
+                              className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium h-9 rounded-full px-3 bg-[#a259ff] text-white border-0 shadow-[0_4px_20px_0_rgba(162,89,255,0.15)]"
                               onClick={(e) => {
                                 e.stopPropagation();
                               }}
                             >
-                              <ShoppingCart className="h-4 w-4 mr-1" />
                               Buy
-                            </Button>
+                            </button>
                           </div>
                         </div>
                       </div>

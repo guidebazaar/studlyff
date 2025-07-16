@@ -132,6 +132,12 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollTop = 0;
+        }
+    }, [messages, selectedUser]);
+
     const handleSendMessage = async () => {
         if (newMessage.trim() && selectedUser && currentUser) {
             setError(null);
@@ -274,11 +280,11 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                     ) : (
                         <>
                             {/* Chat Messages */}
-                            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                            <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col-reverse" ref={messagesEndRef}>
                                 {loading && <div className="text-white/60 text-center">Loading messages...</div>}
                                 {error && <div className="text-red-400 text-center">{error}</div>}
                                 <AnimatePresence>
-                                    {messages.map((message) => (
+                                    {[...messages].reverse().map((message) => (
                                         <motion.div
                                             key={message.id}
                                             initial={{ opacity: 0, y: 20 }}
@@ -308,7 +314,7 @@ const ChatSidebar = ({ isOpen, onClose }: ChatSidebarProps) => {
                                         </motion.div>
                                     ))}
                                 </AnimatePresence>
-                                <div ref={messagesEndRef} />
+                                {/* ref moved to container for scroll control */}
                             </div>
 
                             {/* Message Input */}

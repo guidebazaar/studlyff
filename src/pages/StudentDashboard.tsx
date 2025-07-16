@@ -269,24 +269,29 @@ export default function StudentProfileDashboard() {
         </button>
       </header>
       {/* Modern, Clean, Responsive Dashboard */}
-      <section className="w-full max-w-5xl mx-auto px-2 sm:px-8 pt-10">
-        <div className="rounded-3xl bg-gradient-to-br from-[#18181b] via-[#23272f] to-[#1a1333] shadow-2xl p-0 md:p-2">
+      <section className="w-full min-h-[90vh] px-0 sm:px-4 pt-10">
+        <div className="rounded-3xl bg-gradient-to-br from-[#18181b] via-[#23272f] to-[#1a1333] shadow-2xl p-0 md:p-6 mx-0 w-full">
           {/* Profile Card */}
-          <div className="flex flex-col md:flex-row items-center gap-8 bg-white/5 rounded-2xl shadow-lg p-8 mb-8 border border-[#a259ff22] backdrop-blur-md">
-            <img src={profile?.profilePicture || 'https://placehold.co/120x120/A855F7/FFFFFF?text=User'} alt="Profile" className="h-28 w-28 rounded-full border-4 border-[#a259ff] bg-[#23272f] object-cover shadow-lg" />
-            <div className="flex-1 flex flex-col gap-2 items-center md:items-start">
-              <span className="text-3xl font-extrabold text-white tracking-wide">{profile?.name || user.displayName || 'No Name'}</span>
+          <div className="flex flex-col lg:flex-row items-center gap-10 bg-white/5 rounded-2xl shadow-lg p-10 mb-12 border border-[#a259ff22] backdrop-blur-md w-full">
+            <img src={profile?.profilePicture || 'https://placehold.co/120x120/A855F7/FFFFFF?text=User'} alt="Profile" className="h-32 w-32 rounded-full border-4 border-[#a259ff] bg-[#23272f] object-cover shadow-lg" />
+            <div className="flex-1 flex flex-col gap-3 items-center lg:items-start w-full">
+              <span className="text-4xl font-extrabold text-white tracking-wide">{profile?.name || user.displayName || 'No Name'}</span>
               <span className="text-lg text-white/80">{profile?.email || user.email}</span>
-              <span className="text-base text-white/70">{profile?.firstName} {profile?.lastName}</span>
               <div className="flex flex-wrap gap-4 mt-2">
                 <span className="bg-[#a259ff22] text-[#a259ff] px-4 py-1 rounded-full text-sm font-semibold">{profile?.city}</span>
                 <span className="bg-[#a259ff22] text-[#a259ff] px-4 py-1 rounded-full text-sm font-semibold">DOB: {profile?.dateOfBirth}</span>
                 <span className="bg-[#a259ff22] text-[#a259ff] px-4 py-1 rounded-full text-sm font-semibold">Phone: {profile?.phoneNumber}</span>
               </div>
+              {profile?.bio && (
+                <div className="mt-4 w-full">
+                  <span className="block text-white/80 font-semibold mb-1">Bio:</span>
+                  <p className="text-white/70 bg-[#23272f] rounded-xl p-4 border border-[#a259ff22] w-full max-w-xl">{profile.bio}</p>
+                </div>
+              )}
             </div>
           </div>
-          {/* Responsive Info Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Responsive Info Grid - 3 columns on xl, 2 on md, 1 on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full">
             {/* Contact & Social */}
             <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 flex flex-col items-center hover:scale-[1.02] transition-transform border border-[#a259ff44]">
               <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Contact & Social</h3>
@@ -374,12 +379,12 @@ export default function StudentProfileDashboard() {
             {/* Projects */}
             <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
               <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Projects</h3>
-              {Array.isArray(profile?.projects) && profile.projects.length > 0 ? (
+              {Array.isArray(profile?.projectFiles) && profile.projectFiles.length > 0 ? (
                 <ul className="space-y-2">
-                  {profile.projects.map((proj, idx) => (
+                  {profile.projectFiles.map((file, idx) => (
                     <li key={idx} className="flex items-center gap-2">
                       <FileText className="w-5 h-5 text-[#a259ff]" />
-                      <span className="text-white/90">{proj}</span>
+                      <a href={file.url || file} target="_blank" rel="noopener noreferrer" className="text-white/90 underline">{file.name || file}</a>
                     </li>
                   ))}
                 </ul>
@@ -388,12 +393,12 @@ export default function StudentProfileDashboard() {
             {/* Certifications */}
             <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
               <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Certifications</h3>
-              {Array.isArray(profile?.certifications) && profile.certifications.length > 0 ? (
+              {Array.isArray(profile?.certificationFiles) && profile.certificationFiles.length > 0 ? (
                 <ul className="space-y-2">
-                  {profile.certifications.map((cert, idx) => (
+                  {profile.certificationFiles.map((file, idx) => (
                     <li key={idx} className="flex items-center gap-2">
                       <Award className="w-5 h-5 text-[#a259ff]" />
-                      <span className="text-white/90">{cert}</span>
+                      <a href={file.url || file} target="_blank" rel="noopener noreferrer" className="text-white/90 underline">{file.name || file}</a>
                     </li>
                   ))}
                 </ul>
@@ -402,12 +407,12 @@ export default function StudentProfileDashboard() {
             {/* Resume */}
             <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
               <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Resume</h3>
-              {Array.isArray(profile?.resume) && profile.resume.length > 0 ? (
+              {Array.isArray(profile?.resumeFiles) && profile.resumeFiles.length > 0 ? (
                 <ul className="space-y-2">
-                  {profile.resume.map((res, idx) => (
+                  {profile.resumeFiles.map((file, idx) => (
                     <li key={idx} className="flex items-center gap-2">
                       <FileText className="w-5 h-5 text-[#a259ff]" />
-                      <span className="text-white/90">{res}</span>
+                      <a href={file.url || file} target="_blank" rel="noopener noreferrer" className="text-white/90 underline">{file.name || file}</a>
                     </li>
                   ))}
                 </ul>

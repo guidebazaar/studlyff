@@ -392,21 +392,6 @@ const StudentDiscounts = () => {
                       </p>
                     </motion.div>
                   </div>
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.5 }}
-                        className="flex flex-wrap justify-center gap-4 mt-6"
-                    >
-                        <Badge className="bg-brand-purple/20 text-brand-purple border-brand-purple/30 px-4 py-2">
-                            <TrendingUp className="w-4 h-4 mr-2" />
-                            {studentDiscounts.length} Verified Deals
-                        </Badge>
-                        <Badge className="bg-brand-pink/20 text-brand-pink border-brand-pink/30 px-4 py-2">
-                            <Users className="w-4 h-4 mr-2" />
-                            {studentDiscounts.reduce((sum, discount) => sum + discount.upvotes, 0)}+ Students Helped
-                        </Badge>
-                    </motion.div>
                 </div>
 
                 {/* Separator after Header */}
