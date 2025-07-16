@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Send, X, User } from "lucide-react";
-import { db } from '@/lib/firebase';
-import { collection, query, where, orderBy, addDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 import { useAuth } from '@/lib/AuthContext';
 
 interface ChatModalProps {
@@ -44,42 +42,46 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
     scrollToBottom();
   }, [messages]);
 
-  // Remove default messages and only fetch from Firestore
+  // Fetch messages from backend REST API
   useEffect(() => {
+    let interval: NodeJS.Timeout;
+    const fetchMessages = () => {
+      if (isOpen && user && currentUser) {
+        setLoading(true);
+        setError(null);
+        fetch(`/api/messages/${currentUser.uid}/${user.id}`)
+          .then(res => res.json())
+          .then(data => {
+            setMessages(data);
+            setLoading(false);
+          })
+          .catch(() => {
+            setError('Failed to load messages.');
+            setLoading(false);
+          });
+      } else {
+        setMessages([]);
+      }
+    };
+    fetchMessages();
     if (isOpen && user && currentUser) {
-      setLoading(true);
-      setError(null);
-      const q = query(
-        collection(db, 'messages'),
-        where('participants', 'array-contains', currentUser.uid),
-        orderBy('timestamp', 'asc')
-      );
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const msgs = snapshot.docs
-          .map(doc => ({ id: doc.id, ...doc.data() }))
-          .filter((m: any) => Array.isArray(m.participants) && m.participants.includes(user.id) && m.participants.includes(currentUser.uid));
-        setMessages(msgs);
-        setLoading(false);
-      }, (err) => {
-        setError('Failed to load messages.');
-        setLoading(false);
-      });
-      return () => unsubscribe();
-    } else {
-      setMessages([]);
+      interval = setInterval(fetchMessages, 5000); // Poll every 5s
     }
+    return () => interval && clearInterval(interval);
   }, [isOpen, user, currentUser]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() && user && currentUser) {
       setError(null);
       try {
-        await addDoc(collection(db, 'messages'), {
-          senderId: currentUser.uid,
-          receiverId: user.id,
-          participants: [currentUser.uid, user.id],
-          content: newMessage,
-          timestamp: serverTimestamp(),
+        await fetch('/api/messages/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: currentUser.uid,
+            to: user.id,
+            text: newMessage,
+          })
         });
         setNewMessage("");
       } catch (err: any) {

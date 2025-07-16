@@ -228,7 +228,7 @@ const Index = () => {
               loop
               muted
               playsInline
-              style={{ boxShadow: 'none', border: 'none', borderRadius: 0, background: 'black', filter: 'brightness(0.7)' }}
+              style={{ boxShadow: 'none', border: 'none', borderRadius: 0, background: 'black', filter: 'brightness(1) blur(3px)' }}
             />
           </div>
           <div
@@ -247,10 +247,12 @@ const Index = () => {
               justifyContent: 'center',
             }}
           >
-            <span
+            <motion.span
+              initial={{ fontSize: '1.5rem' }}
+              animate={{ fontSize: '6rem' }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
               style={{
                 fontFamily: 'Lucida Handwriting, cursive',
-                fontSize: '4.5rem',
                 color: '#fff',
                 textShadow: '0 4px 24px #000, 0 1.5px 6px #a259ff',
                 fontWeight: 500,
@@ -259,11 +261,13 @@ const Index = () => {
               }}
             >
               Building
-            </span>
-            <span
+            </motion.span>
+            <motion.span
+              initial={{ fontSize: '1.2rem' }}
+              animate={{ fontSize: '4.5rem' }}
+              transition={{ duration: 1.2, ease: 'easeOut', delay: 0.2 }}
               style={{
                 fontFamily: 'Lucida Handwriting, cursive',
-                fontSize: '3.2rem',
                 color: '#fff',
                 textShadow: '0 4px 24px #000, 0 1.5px 6px #a259ff',
                 fontWeight: 400,
@@ -272,11 +276,13 @@ const Index = () => {
               }}
             >
               the
-            </span>
-            <span
+            </motion.span>
+            <motion.span
+              initial={{ fontSize: '2rem' }}
+              animate={{ fontSize: '7rem' }}
+              transition={{ duration: 1.2, ease: 'easeOut', delay: 0.4 }}
               style={{
                 fontFamily: 'Lucida Handwriting, cursive',
-                fontSize: '5.5rem',
                 color: '#fff',
                 textShadow: '0 4px 24px #000, 0 1.5px 6px #a259ff',
                 fontWeight: 700,
@@ -284,8 +290,8 @@ const Index = () => {
                 marginTop: '0.2rem',
               }}
             >
-              Student Network
-            </span>
+              Student Internet
+            </motion.span>
           </div>
         </div>
       </div>

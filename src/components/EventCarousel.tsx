@@ -11,14 +11,16 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Lightbulb, TrendingUp, Users, Clock, BookOpen, Target } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
-const EventCarousel = () => {
+const EventCarousel = ({ events: propEvents }) => {
   const [eventIndex, setEventIndex] = useState(0);
   const [tipIndex, setTipIndex] = useState(0);
   const [isEventsHovered, setIsEventsHovered] = useState(false);
   const [isTipsHovered, setIsTipsHovered] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
 
-  const events = [
+  const defaultEvents = [
     {
       id: 1,
       title: "Tech Hackathon 2024",
@@ -75,6 +77,7 @@ const EventCarousel = () => {
       category: "Design"
     }
   ];
+  const events = propEvents || defaultEvents;
 
   const tips = [
     {
@@ -99,7 +102,7 @@ const EventCarousel = () => {
       id: 3,
       title: "Build Emergency Fund",
       description: "Save at least 3-6 months of expenses in an easily accessible account. This is your financial safety net.",
-      icon: "🛡️",
+      icon: "💰",
       category: "Savings",
       readTime: "4 min read",
       impact: "High"
@@ -308,7 +311,7 @@ const EventCarousel = () => {
                   exit="exit"
                   className="absolute inset-0"
                 >
-                  <Card className="h-full bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border-white/10 hover:border-brand-purple/30 transition-all duration-500 overflow-hidden group">
+                  <Card className="h-full bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border-white/10 hover:border-brand-purple/30 transition-all duration-500 overflow-hidden group relative">
                     <div className="relative h-48 overflow-hidden">
                       <motion.img
                         src={events[eventIndex].image}
@@ -338,6 +341,16 @@ const EventCarousel = () => {
                           {events[eventIndex].prize}
                         </Badge>
                       </motion.div>
+                      {/* Info Button */}
+                      <button
+                        className="absolute bottom-4 right-4 bg-white/80 hover:bg-white text-brand-purple rounded-full p-2 shadow-lg transition-all z-20"
+                        onClick={() => setShowEventModal(true)}
+                        aria-label="Show event info"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 9.75h.008v.008h-.008V9.75zm0 3.75h.008v.008h-.008V13.5zm.75 6.75a9 9 0 100-18 9 9 0 000 18zm0-13.5v.008h.008V6.75h-.008zm0 3.75v.008h.008V10.5h-.008zm0 3.75v.008h.008V14.25h-.008z" />
+                        </svg>
+                      </button>
                     </div>
 
                     <CardContent className="p-6 space-y-4">
@@ -549,6 +562,34 @@ const EventCarousel = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Event Info Modal */}
+      <Dialog open={showEventModal} onOpenChange={setShowEventModal}>
+        <DialogContent className="max-w-lg w-full p-6 bg-black/95 rounded-2xl shadow-2xl text-white">
+          <DialogTitle className="text-2xl font-bold mb-2">{events[eventIndex].title}</DialogTitle>
+          <img src={events[eventIndex].image} alt={events[eventIndex].title} className="w-full h-48 object-cover rounded-xl mb-4" />
+          <div className="mb-2 text-lg text-white/80">{events[eventIndex].description}</div>
+          <div className="mb-2 flex items-center gap-2 text-white/70">
+            <Calendar className="w-5 h-5 text-brand-purple" />
+            <span>{events[eventIndex].date}</span>
+          </div>
+          <div className="mb-2 flex items-center gap-2 text-white/70">
+            <MapPin className="w-5 h-5 text-brand-pink" />
+            <span>{events[eventIndex].location}</span>
+          </div>
+          <div className="mb-2 flex items-center gap-2 text-white/70">
+            <Users className="w-5 h-5 text-brand-purple" />
+            <span>{events[eventIndex].participants}</span>
+          </div>
+          <div className="mb-2 flex items-center gap-2 text-white/70">
+            <Badge className="bg-brand-purple/90 text-white border-0">{events[eventIndex].category}</Badge>
+            <Badge className="bg-green-500/20 text-green-300 border-green-400/30">{events[eventIndex].prize}</Badge>
+          </div>
+          <Button className="w-full mt-4 bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 transition-all duration-300" onClick={() => setShowEventModal(false)}>
+            Close
+          </Button>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

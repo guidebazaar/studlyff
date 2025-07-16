@@ -23,26 +23,13 @@ const FinanceHero = ({ showAdvanced, setShowAdvanced }: FinanceHeroProps) => {
       className="relative mb-12 md:mb-16 overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-to-br from-gray-900 via-black to-gray-900 shadow-2xl border border-gray-700"
     >
       {/* Spline Animation Background */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none">
-        <Spline
-          scene="https://prod.spline.design/6Mmaj0Y7QBhnRSLP/scene.splinecode"
-          className="w-full h-full"
-        />
-        {/* Black box to cover Spline watermark (bottom right, full height of the box) */}
-        <div
-          style={{
-            position: 'absolute',
-            right: 0,
-            bottom: 0,
-            width: '160px', // wider for full coverage
-            height: '60px', // taller for full coverage
-            background: 'black',
-            zIndex: 2,
-            pointerEvents: 'none',
-            borderBottomRightRadius: 'inherit',
-            borderTopLeftRadius: '18px', // smooth corner if needed
-          }}
-        />
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none flex items-center justify-center">
+        <div style={{ transform: 'scale(1.45)', width: '100%', height: '100%' }}>
+          <Spline
+            scene="https://prod.spline.design/6Mmaj0Y7QBhnRSLP/scene.splinecode"
+            className="w-full h-full"
+          />
+        </div>
       </div>
 
       {/* Grid Pattern Overlay */}

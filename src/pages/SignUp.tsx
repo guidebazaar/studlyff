@@ -106,7 +106,7 @@ const SignUp = () => {
           {/* Left branding/info column */}
           <div className="hidden md:flex flex-col justify-center items-center w-1/2 p-10 bg-gradient-to-br from-[#a259ff22] to-transparent rounded-l-[1.5rem] border-r border-[#a259ff44]">
             <Link to="/home" className="mb-3">
-              <img src="/logo3.png" alt="Guide Bazaar Logo" className="h-12" />
+              <img src="/logo3.png" alt="Guide Bazaar Logo" className="h-12" style={{ borderRadius: '10px' }} />
             </Link>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent mb-3 text-center">
               Create your account
@@ -140,7 +140,7 @@ const SignUp = () => {
           <div className="w-full md:w-1/2 flex flex-col justify-center px-4 py-8 md:px-10 md:py-12">
             <div className="md:hidden text-center mb-6">
               <Link to="/home" className="inline-block mb-2">
-                <img src="/logo3.png" alt="Guide Bazaar Logo" className="h-10 mx-auto" />
+                <img src="/logo3.png" alt="Guide Bazaar Logo" className="h-10 mx-auto" style={{ borderRadius: '10px' }} />
               </Link>
               <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent mb-2">
                 Create your account

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,55 +11,23 @@ import { SplitText } from "@/components/ui/split-text";
 import { MessageSquare, Bell, Filter, Users, UserPlus, Heart, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { db } from '@/lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+// import { db } from '@/lib/firebase';
+// import { collection, getDocs } from 'firebase/firestore';
 import { useAuth } from '@/lib/AuthContext';
 
-const emptyUser = {
-  id: '',
-  name: '',
-  profilePicture: '',
-  role: '',
-  school: '',
-  status: '',
-  tags: [],
-  interests: [],
-  connections: 0,
-  classYear: 0,
-  bio: '',
-  isOnline: false,
+// Add a type for user to ensure id is present
+type NetworkUser = {
+  id: string;
+  name: string;
+  profilePicture: string;
+  college: string;
+  year: string;
+  branch: string;
+  skills: string[];
+  bio: string;
+  isOnline: boolean;
+  interests?: string[];
 };
-
-// Mock connection requests
-const mockConnectionRequests = [
-  {
-    id: 101,
-    name: "Jordan Smith",
-    profilePicture: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
-    role: "Startup Founder",
-    school: "Harvard University",
-    mutualConnections: 12,
-    timeAgo: "2 days ago"
-  },
-  {
-    id: 102,
-    name: "Sophia Rodriguez",
-    profilePicture: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
-    role: "Marketing Manager",
-    school: "Columbia University",
-    mutualConnections: 8,
-    timeAgo: "5 hours ago"
-  },
-  {
-    id: 103,
-    name: "Aiden Park",
-    profilePicture: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=150&h=150&fit=crop&crop=face",
-    role: "Software Developer",
-    school: "UC San Diego",
-    mutualConnections: 3,
-    timeAgo: "1 week ago"
-  }
-];
 
 const Network = () => {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -69,33 +37,59 @@ const Network = () => {
   const [selectedInterest, setSelectedInterest] = useState("All Interests");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-  const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
-  const [connectionRequests, setConnectionRequests] = useState(mockConnectionRequests);
+  const [connectionRequests, setConnectionRequests] = useState<any[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [connectionView, setConnectionView] = useState('public'); // 'public' or 'connections'
   const { user: currentUser } = useAuth();
-  const [users, setUsers] = useState<any[]>([]);
+  const userId = (currentUser as any)?.id || (currentUser as any)?.uid;
+  const [users, setUsers] = useState<NetworkUser[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [userError, setUserError] = useState<string | null>(null);
+  const [unreadMessages, setUnreadMessages] = useState(0); // TODO: Replace with real unread count from backend or context
+  const [connections, setConnections] = useState<string[]>([]); // user IDs
+  const [incomingRequests, setIncomingRequests] = useState<any[]>([]); // [{from, to, ...}]
+  const [pendingRequests, setPendingRequests] = useState<string[]>([]); // user IDs to whom I sent requests
 
   useEffect(() => {
     setLoadingUsers(true);
     setUserError(null);
-    getDocs(collection(db, 'users'))
-      .then(snapshot => {
-        const userList = snapshot.docs.map(doc => ({
-          ...emptyUser,
-          ...doc.data(),
-          id: doc.id,
+    fetch('/api/users')
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok: ' + res.status);
+        return res.json();
+      })
+      .then(data => {
+        console.log('Fetched users from backend:', data); // Debug log
+        const userList = data.map(user => ({
+          id: user._id,
+          name: user.firstName || '',
+          profilePicture: user.profilePicture || '',
+          college: user.college || '',
+          year: user.year || '',
+          branch: user.branch || '',
+          skills: user.skills || [],
+          bio: user.bio || '',
+          isOnline: user.isOnline || false,
         }));
         setUsers(userList);
         setLoadingUsers(false);
       })
       .catch(err => {
-        setUserError('Failed to load users.');
+        setUserError('Failed to load users: ' + err.message);
         setLoadingUsers(false);
       });
   }, []);
+
+  // Fetch connections and requests
+  useEffect(() => {
+    if (!userId) return;
+    fetch(`/api/connections/${userId}`)
+      .then(res => res.json())
+      .then(setConnections);
+    fetch(`/api/connections/requests/${userId}`)
+      .then(res => res.json())
+      .then(reqs => setIncomingRequests(reqs));
+  }, [userId]);
 
   const handleMessageClick = (user) => {
     setSelectedUser(user);
@@ -107,21 +101,30 @@ const Network = () => {
     setSelectedUser(null);
   };
 
-  const handleConnectClick = (userId: number) => {
-    // In a real app, this would send a connection request to the backend
-    console.log(`Connection request sent to user ${userId}`);
+  // Remove unused handleConnectClick, use inline logic with userId where needed
+
+  // Update the logic for accepting a connection request to update the connections state
+  const handleAcceptRequest = (fromUserId: string) => {
+    if (!userId) return;
+    fetch('/api/connections/accept', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: fromUserId, to: userId })
+    }).then(() => {
+      setConnections(prev => [...prev, fromUserId]);
+      setIncomingRequests(prev => prev.filter(req => req.from !== fromUserId));
+    });
   };
 
-  const handleAcceptRequest = (requestId: number) => {
-    // In a real app, this would accept the connection request in the backend
-    setConnectionRequests(prev => prev.filter(req => req.id !== requestId));
-    console.log(`Connection request ${requestId} accepted`);
-  };
-
-  const handleDeclineRequest = (requestId: number) => {
-    // In a real app, this would decline the connection request in the backend
-    setConnectionRequests(prev => prev.filter(req => req.id !== requestId));
-    console.log(`Connection request ${requestId} declined`);
+  const handleDeclineRequest = (fromUserId: string) => {
+    if (!userId) return;
+    fetch('/api/connections/reject', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: fromUserId, to: userId })
+    }).then(() => {
+      setIncomingRequests(prev => prev.filter(req => req.from !== fromUserId));
+    });
   };
 
   const toggleChatSidebar = () => {
@@ -133,17 +136,22 @@ const Network = () => {
     setSelectedInterest("All Interests");
     setSelectedSkills([]);
     setSelectedStatuses([]);
-    setSelectedLocations([]);
-    setSelectedSchools([]);
   };
 
-  // Filter users based on all filter criteria
+  // Filter users based on all filter criteria and connectionView
   const filteredUsers = useMemo(() => {
-    // If no filters/search are active, show all users
-    const noFilters = !searchTerm && selectedInterest === "All Interests" && selectedSkills.length === 0 && selectedStatuses.length === 0 && selectedLocations.length === 0 && selectedSchools.length === 0;
-    if (noFilters) return users;
-    const safe = (val) => typeof val === 'string' ? val : '';
-    return users.filter((user) => {
+    // Choose base list depending on connectionView
+    let baseUsers: NetworkUser[];
+    if (connectionView === 'connections') {
+      baseUsers = users.filter(user => connections.includes(user.id));
+    } else {
+      baseUsers = users.filter(user => user.id !== userId && !connections.includes(user.id));
+    }
+    // If no filters/search are active, show all base users
+    const noFilters = !searchTerm && selectedInterest === "All Interests" && selectedSkills.length === 0 && selectedStatuses.length === 0;
+    if (noFilters) return baseUsers;
+    const safe = (val: any) => typeof val === 'string' ? val : '';
+    return baseUsers.filter((user: NetworkUser) => {
       // Search by name (skip if no name)
       const matchesSearch = safe(user.name).toLowerCase().includes(searchTerm.toLowerCase());
       // Filter by interest
@@ -151,19 +159,18 @@ const Network = () => {
         (user.interests && user.interests.some(interest => interest === selectedInterest));
       // Filter by skills
       const matchesSkills = selectedSkills.length === 0 ||
-        (user.tags && user.tags.some(tag => selectedSkills.includes(tag)));
+        (user.skills && user.skills.some(skill => selectedSkills.includes(skill)));
       // Filter by connection status
       const matchesStatus = selectedStatuses.length === 0 ||
-        selectedStatuses.includes(user.status);
-      // Filter by location (mock implementation - in a real app, you'd have location data)
-      const matchesLocation = selectedLocations.length === 0;
-      // Filter by school (mock implementation - in a real app, you'd have school data)
-      const matchesSchool = selectedSchools.length === 0 ||
-        (user.school && selectedSchools.includes(user.school));
-      return matchesSearch && matchesInterest && matchesSkills && matchesStatus &&
-        matchesLocation && matchesSchool;
+        selectedStatuses.includes(user.year); // Assuming 'year' is the status
+      return matchesSearch && matchesInterest && matchesSkills && matchesStatus;
     });
-  }, [users, searchTerm, selectedInterest, selectedSkills, selectedStatuses, selectedLocations, selectedSchools]);
+  }, [users, searchTerm, selectedInterest, selectedSkills, selectedStatuses, connectionView, connections, userId]);
+
+  // Filter users based on connectionView
+  const displayedUsers = connectionView === 'connections'
+    ? users.filter(user => connections.includes(user.id))
+    : users.filter(user => user.id !== userId && !connections.includes(user.id));
 
   // Freeze background scroll when chat sidebar is open
   useEffect(() => {
@@ -203,6 +210,23 @@ const Network = () => {
       }
     };
   }, [isChatSidebarOpen]);
+
+  // Connection status helper
+  const getConnectionStatus = useCallback((userId: string) => {
+    if (connections.includes(userId)) return 'connected';
+    if (pendingRequests.includes(userId)) return 'pending';
+    // If incoming request, treat as 'none' for card button (handled elsewhere)
+    return 'none';
+  }, [connections, pendingRequests]);
+
+  const handleConnect = (targetUserId: string) => {
+    if (!userId) return;
+    fetch('/api/connections/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: userId, to: targetUserId })
+    }).then(() => setPendingRequests(prev => [...prev, targetUserId]));
+  };
 
   return (
     <div className={`min-h-screen bg-black text-white overflow-x-hidden${isChatSidebarOpen ? ' pointer-events-none' : ''}`}>
@@ -256,9 +280,11 @@ const Network = () => {
               className="rounded-full w-14 h-14 bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 shadow-lg p-0 relative flex items-center justify-center"
             >
               <MessageSquare className="w-6 h-6" />
+              {unreadMessages > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                2
+                  {unreadMessages}
               </span>
+              )}
             </Button>
           </motion.div>
 
@@ -269,7 +295,7 @@ const Network = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white/5 rounded-2xl shadow-lg p-4 border border-white/10 text-center">
                   <Users className="w-6 h-6 mx-auto mb-2 text-brand-purple" />
-                  <div className="text-2xl font-bold text-white">247</div>
+                  <div className="text-2xl font-bold text-white">{connections.length}</div>
                   <div className="text-xs text-white/70">Connections</div>
                 </div>
                 <div className="bg-white/5 rounded-2xl shadow-lg p-4 border border-white/10 text-center">
@@ -281,7 +307,15 @@ const Network = () => {
 
               {/* Connection Requests */}
               <ConnectionRequests
-                requests={connectionRequests}
+                requests={incomingRequests.map(r => ({
+                  id: r.from, // string user ID
+                  name: users.find(u => u.id === r.from)?.name || '',
+                  profilePicture: users.find(u => u.id === r.from)?.profilePicture || '',
+                  role: '', // fill as needed
+                  school: '', // fill as needed
+                  mutualConnections: 0, // fill as needed
+                  timeAgo: '', // fill as needed
+                }))}
                 onAccept={handleAcceptRequest}
                 onDecline={handleDeclineRequest}
               />
@@ -299,14 +333,10 @@ const Network = () => {
                   onInterestChange={setSelectedInterest}
                   onSkillChange={setSelectedSkills}
                   onStatusChange={setSelectedStatuses}
-                  onLocationChange={setSelectedLocations}
-                  onSchoolChange={setSelectedSchools}
                   searchValue={searchTerm}
                   selectedInterest={selectedInterest}
                   selectedSkills={selectedSkills}
                   selectedStatuses={selectedStatuses}
-                  selectedLocations={selectedLocations}
-                  selectedSchools={selectedSchools}
                   onClearAll={clearAllFilters}
                 />
               </div>
@@ -325,23 +355,14 @@ const Network = () => {
                 </div>
                 <div className="flex gap-2 items-center">
                   <div className="flex rounded-full border border-brand-purple overflow-hidden">
-                    <button
-                      className={`px-3 py-1 text-white transition font-semibold ${viewMode === 'grid' ? 'bg-brand-purple' : 'bg-white/10'}`}
-                      onClick={() => setViewMode('grid')}
-                    >
-                      Grid
-                    </button>
-                    <button
-                      className={`px-3 py-1 text-white transition font-semibold ${viewMode === 'list' ? 'bg-brand-purple' : 'bg-white/10'}`}
-                      onClick={() => setViewMode('list')}
-                    >
-                      List
-                    </button>
                   </div>
-                  <select className="rounded-full px-3 py-1 border border-brand-purple bg-black text-white transition focus:ring-2 focus:ring-brand-purple ml-2">
-                    <option>Sort by Relevance</option>
-                    <option>Sort by Connections</option>
-                    <option>Sort by Name</option>
+                  <select
+                    className="rounded-full px-3 py-1 border border-brand-purple bg-black text-white transition focus:ring-2 focus:ring-brand-purple ml-2"
+                    value={connectionView}
+                    onChange={e => setConnectionView(e.target.value)}
+                  >
+                    <option value="public">Public</option>
+                    <option value="connections">Your Connections</option>
                   </select>
                 </div>
               </div>
@@ -349,7 +370,7 @@ const Network = () => {
               {userError && <div className="text-red-400 text-center">{userError}</div>}
               {viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-16">
-                  {(filteredUsers.length > 0 ? filteredUsers : users).map((user, index) => (
+                  {filteredUsers.map((user: NetworkUser, index) => (
                     <motion.div
                       key={user.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -359,13 +380,15 @@ const Network = () => {
                       <UserProfileCard
                         user={user}
                         onMessageClick={() => handleMessageClick(user)}
+                        getConnectionStatus={getConnectionStatus}
+                        onConnect={handleConnect}
                       />
                     </motion.div>
                   ))}
                 </div>
               ) : (
                 <div className="flex flex-col gap-4 mb-16">
-                  {(filteredUsers.length > 0 ? filteredUsers : users).map((user, index) => (
+                  {(filteredUsers.length > 0 ? filteredUsers : displayedUsers).map((user: NetworkUser, index) => (
                     <motion.div
                       key={user.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -383,7 +406,7 @@ const Network = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
                             <span className="font-semibold text-white">{user.name}</span>
-                            <span className="text-xs text-white/60">{user.classYear}</span>
+                            <span className="text-xs text-white/60">{user.year}</span>
                           </div>
                           <p className="text-sm text-white/70 truncate">{user.bio}</p>
                         </div>

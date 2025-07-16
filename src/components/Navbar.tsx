@@ -102,6 +102,7 @@ const Navbar = () => {
                       width: 'auto',
                       objectFit: 'contain',
                       display: 'block',
+                      borderRadius: '10px',
                     }}
                   />
                 </Link>

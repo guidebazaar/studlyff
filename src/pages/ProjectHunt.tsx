@@ -9,6 +9,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/u
 import { SplitText } from "@/components/ui/split-text";
 import { motion } from "framer-motion";
 import ChatModal from '@/components/network/ChatModal';
+import { AnimatePresence } from "framer-motion";
 
 const TAGLINES = [
   "AI", "Blockchain", "Web Development", "UI/UX", "Sustainability"
@@ -157,6 +158,9 @@ const collegeOptions = [
 const ProjectHunt: React.FC = () => {
   const [taglineIndex, setTaglineIndex] = useState(0);
   const [showPostModal, setShowPostModal] = useState(false);
+  const [postedProjects, setPostedProjects] = useState<any[]>([]);
+  // Today's date for filtering
+  const today = new Date();
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [myProjectsFilter, setMyProjectsFilter] = useState("All");
@@ -172,6 +176,13 @@ const ProjectHunt: React.FC = () => {
   const [collab, setCollab] = useState("any");
   const [college, setCollege] = useState("");
 
+  // Simulate current user (replace with real auth in production)
+  const currentUser = { id: 'user1', name: 'You' };
+  // Track contribute requests: { [projectTitle]: [{id, name, status}] }
+  const [contributeRequests, setContributeRequests] = useState<{ [title: string]: Array<{id: string, name: string, status: 'pending'|'accepted'|'rejected'}> }>({});
+  // Track open chats: { [projectTitle]: userId[] }
+  const [openChats, setOpenChats] = useState<{ [title: string]: string[] }>({});
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       setTaglineIndex((i) => (i + 1) % TAGLINES.length);
@@ -179,14 +190,23 @@ const ProjectHunt: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Merge posted projects with default projects
+  const allProjects = [...postedProjects, ...PROJECTS];
+  // Filter out projects whose last date to contribute has passed
+  const activeProjects = allProjects.filter(proj => {
+    if (!proj.lastDate) return true;
+    const lastDate = new Date(proj.lastDate);
+    lastDate.setHours(23,59,59,999);
+    return today <= lastDate;
+  });
   // Filtering logic
-  const filteredProjects = PROJECTS.filter((proj) => {
+  const filteredProjects = activeProjects.filter((proj) => {
     const matchCategory = category === "all" || proj.category === category;
-    const matchRole = role === "any" || proj.roles.map(r => r.toLowerCase().replace(/ /g, "")).includes(role);
-    const matchTech = !techStack || proj.skills.join(" ").toLowerCase().includes(techStack.toLowerCase());
-    const matchStatus = status === "all" || proj.status.toLowerCase() === status;
+    const matchRole = role === "any" || (proj.roles && proj.roles.map(r => r.toLowerCase().replace(/ /g, "")).includes(role));
+    const matchTech = !techStack || (proj.skills && proj.skills.join(" ").toLowerCase().includes(techStack.toLowerCase()));
+    const matchStatus = status === "all" || (proj.status && proj.status.toLowerCase() === status);
     const matchCollab = collab === "any" || proj.collaboration === collab;
-    const matchCollege = !college || proj.college.toLowerCase().includes(college.toLowerCase());
+    const matchCollege = !college || (proj.college && proj.college.toLowerCase().includes(college.toLowerCase()));
     return matchCategory && matchRole && matchTech && matchStatus && matchCollab && matchCollege;
   });
 
@@ -322,7 +342,6 @@ const ProjectHunt: React.FC = () => {
             <Card key={idx} className="bg-gradient-to-br from-gray-900/80 via-black/80 to-gray-900/80 border border-purple-700/30 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group">
               <CardHeader className="pb-2 flex flex-row items-center justify-between">
                 <CardTitle className="text-lg font-bold text-white group-hover:text-brand-purple transition-colors">{proj.title}</CardTitle>
-                <span className="text-xs px-2 py-1 rounded bg-brand-purple/20 text-brand-purple font-bold uppercase">{proj.status}</span>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80 mb-2 text-sm">{proj.description}</p>
@@ -339,8 +358,22 @@ const ProjectHunt: React.FC = () => {
                 <span className="text-sm text-white/60">Team: {proj.teamSize}+</span>
               </CardContent>
               <CardFooter className="flex gap-2 justify-end">
-                <Button size="sm" variant="outline" onClick={() => { setSelectedProject(proj); setShowDetailModal(true); }}>View More</Button>
-                <Button size="sm" onClick={() => { setSelectedProject(proj); setShowDetailModal(true); }}>Contribute</Button>
+                {/* Contribute button logic */}
+                {contributeRequests[proj.title]?.some(r => r.id === currentUser.id) ? (
+                  <Button size="sm" disabled>
+                    {contributeRequests[proj.title].find(r => r.id === currentUser.id)?.status === 'pending' ? 'Requested' : 'Accepted'}
+                  </Button>
+                ) : (
+                  <Button size="sm" onClick={() => {
+                    setContributeRequests(prev => ({
+                      ...prev,
+                      [proj.title]: [
+                        ...(prev[proj.title] || []),
+                        { id: currentUser.id, name: currentUser.name, status: 'pending' }
+                      ]
+                    }));
+                  }}>Contribute</Button>
+                )}
               </CardFooter>
             </Card>
           ))}
@@ -364,10 +397,50 @@ const ProjectHunt: React.FC = () => {
                 <span className="font-semibold text-white">{proj.title}</span>
                 <span className={`text-xs px-2 py-1 rounded ${proj.status === 'In Progress' ? 'bg-yellow-400/20 text-yellow-400' : proj.status === 'Completed' ? 'bg-green-400/20 text-green-400' : 'bg-brand-purple/20 text-brand-purple'} font-bold`}>{proj.status}</span>
               </CardHeader>
-              <CardContent className="flex flex-row items-center justify-between">
+              <CardContent className="flex flex-col gap-2">
                 <span className="text-xs text-white/60">{proj.type}</span>
-                <Button size="sm" variant="outline" onClick={() => { setActiveChatProject(proj); setShowChatModal(true); }}>Chat</Button>
+                {/* If current user is owner, show requests */}
+                {/* For demo, assume all MY_PROJECTS are owned by currentUser */}
+                {contributeRequests[proj.title]?.length > 0 && (
+                  <div className="mt-2">
+                    <div className="font-semibold text-white mb-1">Contribute Requests:</div>
+                    {contributeRequests[proj.title].map((req, i) => (
+                      <div key={i} className="flex items-center gap-2 mb-1">
+                        <span className="text-white/80">{req.name}</span>
+                        {req.status === 'pending' && (
+                          <>
+                            <Button size="sm" onClick={() => {
+                              setContributeRequests(prev => ({
+                                ...prev,
+                                [proj.title]: prev[proj.title].map(r => r.id === req.id ? { ...r, status: 'accepted' } : r)
+                              }));
+                              setOpenChats(prev => ({
+                                ...prev,
+                                [proj.title]: [...(prev[proj.title] || []), req.id]
+                              }));
+                            }}>Accept</Button>
+                            <Button size="sm" variant="outline" onClick={() => {
+                              setContributeRequests(prev => ({
+                                ...prev,
+                                [proj.title]: prev[proj.title].map(r => r.id === req.id ? { ...r, status: 'rejected' } : r)
+                              }));
+                            }}>Reject</Button>
+                          </>
+                        )}
+                        {req.status === 'accepted' && (
+                          <Button size="sm" variant="secondary" onClick={() => setShowChatModal(true)}>Chat</Button>
+                        )}
+                        {req.status === 'rejected' && (
+                          <span className="text-red-400 text-xs">Rejected</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
+              <CardFooter className="flex flex-row items-center justify-between">
+                <Button size="sm" variant="outline" onClick={() => { setActiveChatProject(proj); setShowChatModal(true); }}>Chat</Button>
+              </CardFooter>
             </Card>
           ))}
         </div>
@@ -388,38 +461,94 @@ const ProjectHunt: React.FC = () => {
       </section>
 
       {/* Post Project Modal (polished) */}
-      <Dialog open={showPostModal} onOpenChange={setShowPostModal}>
-        <div className="bg-[#23272f] p-8 rounded-2xl max-w-lg w-full mx-auto">
-          <h3 className="text-2xl font-bold mb-4 text-center">Post a New Project</h3>
-          <form className="flex flex-col gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Project Title</label>
-              <Input placeholder="Project Title" className="bg-[#18181b] border border-input text-white" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Short Description</label>
-              <Input placeholder="Short Description" className="bg-[#18181b] border border-input text-white" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Tech Stack (comma separated)</label>
-              <Input placeholder="e.g. React, Node, Solidity" className="bg-[#18181b] border border-input text-white" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Required Roles (comma separated)</label>
-              <Input placeholder="e.g. Frontend, Backend, Designer" className="bg-[#18181b] border border-input text-white" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Expected Duration</label>
-              <Input placeholder="e.g. 3 months" className="bg-[#18181b] border border-input text-white" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Optional: Media/Links</label>
-              <Input placeholder="GitHub, Figma, etc." className="bg-[#18181b] border border-input text-white" />
-            </div>
-            <Button type="submit" className="mt-2 w-full">Submit Project</Button>
-          </form>
-        </div>
-      </Dialog>
+      <AnimatePresence>
+        {showPostModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowPostModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-black/80 border border-white/10 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Post a New Project</h2>
+                <Button variant="ghost" size="sm" onClick={() => setShowPostModal(false)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                </Button>
+              </div>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={e => {
+                  e.preventDefault();
+                  const form = e.target as HTMLFormElement;
+                  const formData = new FormData(form);
+                  const title = formData.get('title') as string;
+                  const description = formData.get('description') as string;
+                  const techStack = formData.get('techStack') as string;
+                  const roles = formData.get('roles') as string;
+                  const duration = formData.get('duration') as string;
+                  const links = formData.get('links') as string;
+                  const lastDate = formData.get('lastDate') as string;
+                  // Add new project to postedProjects
+                  setPostedProjects(prev => [{
+                    title,
+                    description,
+                    skills: techStack.split(',').map(s => s.trim()).filter(Boolean),
+                    roles: roles.split(',').map(s => s.trim()).filter(Boolean),
+                    teamSize: 1,
+                    status: 'Open',
+                    category: 'webdev', // Default or add a select if needed
+                    collaboration: 'remote', // Default or add a select if needed
+                    college: '',
+                    duration,
+                    links,
+                    lastDate,
+                  }, ...prev]);
+                  setShowPostModal(false);
+                  form.reset();
+                }}
+              >
+                <div>
+                  <label className="block text-sm font-medium mb-1">Project Title</label>
+                  <Input name="title" placeholder="Project Title" className="bg-[#18181b] border border-input text-white" required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Short Description</label>
+                  <Input name="description" placeholder="Short Description" className="bg-[#18181b] border border-input text-white" required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Tech Stack (comma separated)</label>
+                  <Input name="techStack" placeholder="e.g. React, Node, Solidity" className="bg-[#18181b] border border-input text-white" required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Required Roles (comma separated)</label>
+                  <Input name="roles" placeholder="e.g. Frontend, Backend, Designer" className="bg-[#18181b] border border-input text-white" required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Expected Duration</label>
+                  <Input name="duration" placeholder="e.g. 3 months" className="bg-[#18181b] border border-input text-white" required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Last Date to Contribute</label>
+                  <Input name="lastDate" type="date" className="bg-[#18181b] border border-input text-white" required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Optional: Media/Links</label>
+                  <Input name="links" placeholder="GitHub, Figma, etc." className="bg-[#18181b] border border-input text-white" />
+                </div>
+                <Button type="submit" className="w-full bg-gradient-to-r from-brand-purple to-brand-pink mt-2">Submit Project</Button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Project Detail Modal (placeholder) */}
       <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>

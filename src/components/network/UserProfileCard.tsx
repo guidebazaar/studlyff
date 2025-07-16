@@ -4,27 +4,26 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { MessageSquare, Heart, User } from "lucide-react";
+import { MessageSquare, Heart, User, Send, Check } from "lucide-react";
 
 interface UserProfileCardProps {
   user: {
-    id: number;
+    id: string;
     name: string;
     profilePicture: string;
-    role: string;
-    school: string;
-    status: string;
-    tags: string[];
-    interests: string[];
-    connections: number;
-    classYear: number;
-    bio: string;
-    isOnline: boolean;
+    college?: string;
+    year?: string;
+    branch?: string;
+    skills?: string[];
+    bio?: string;
+    isOnline?: boolean;
   };
   onMessageClick: () => void;
+  getConnectionStatus: (userId: string) => 'none' | 'pending' | 'connected';
+  onConnect: (userId: string) => void;
 }
 
-const UserProfileCard = ({ user, onMessageClick }: UserProfileCardProps) => {
+const UserProfileCard = ({ user, onMessageClick, getConnectionStatus, onConnect }: UserProfileCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLikeClick = () => {
@@ -36,73 +35,62 @@ const UserProfileCard = ({ user, onMessageClick }: UserProfileCardProps) => {
       whileHover={{ y: -5, scale: 1.02 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="h-full border-2 border-white/10 bg-gradient-to-br from-black via-gray-900 to-purple-950 rounded-2xl shadow-xl hover:border-brand-purple/60 transition-all duration-300">
+      <Card className="h-full w-full max-w-xs min-w-[260px] min-h-[340px] max-h-[340px] flex flex-col border-2 border-white/10 bg-gradient-to-br from-black via-gray-900 to-purple-950 rounded-2xl shadow-xl hover:border-brand-purple/60 transition-all duration-300">
         <CardContent className="p-6 flex flex-col h-full">
-          {/* Profile Picture and Online Status */}
-          <div className="flex items-center gap-4 mb-4">
-            <div className="relative">
-              <Avatar className="w-16 h-16 ring-2 ring-brand-purple/40">
-                <AvatarImage src={user.profilePicture} alt={user.name} />
-                <AvatarFallback className="bg-gradient-to-r from-brand-purple to-brand-pink text-white">
-                  <User className="w-8 h-8" />
-                </AvatarFallback>
-              </Avatar>
-              {/* Online Status Indicator */}
-              <div
-                className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black ${user.isOnline ? "bg-green-500" : "bg-gray-500"
-                  }`}
-              />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-bold text-white truncate">{user.name}</h3>
-              <div className="text-sm text-white/80 truncate">{user.role}</div>
-              <div className="text-xs text-white/50 truncate">{user.school}</div>
-            </div>
-            <div className="flex flex-col items-end gap-1">
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${user.status === 'Connected' ? 'bg-green-600/20 text-green-400 border border-green-400' : user.status === 'Pending' ? 'bg-yellow-600/20 text-yellow-300 border border-yellow-300' : 'bg-white/10 text-white/70 border border-white/20'}`}>{user.status}</span>
-            </div>
+          {/* Top: Profile Photo and Name */}
+          <div className="flex items-center gap-4 mb-2">
+            <Avatar className="w-16 h-16 ring-2 ring-brand-purple/40">
+              <AvatarImage src={user.profilePicture} alt={user.name} />
+              <AvatarFallback className="bg-gradient-to-r from-brand-purple to-brand-pink text-white">
+                <User className="w-8 h-8" />
+              </AvatarFallback>
+            </Avatar>
+            <h3 className="text-lg font-bold text-white whitespace-nowrap">{user.name}</h3>
           </div>
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-2">
-            {user.tags.map((tag, idx) => (
-              <span key={idx} className="rounded-full px-3 py-1 text-xs font-semibold border border-brand-purple bg-brand-purple/10 text-brand-purple/90 shadow-sm">
-                {tag}
-              </span>
-            ))}
-          </div>
-          {/* Connections & Class Year */}
-          <div className="flex items-center gap-4 mb-2 text-xs text-white/60">
-            <span>{user.connections} connections</span>
-            <span className="mx-1">•</span>
-            <span>Class of {user.classYear}</span>
-          </div>
+          {/* College */}
+          <div className="text-sm text-white/80 mb-1 break-words whitespace-normal">{user.college}</div>
+          {/* Branch and Year */}
+          <div className="text-xs text-white/50 mb-2">{user.branch} {user.branch && user.year ? '•' : ''} {user.year}</div>
           {/* Bio */}
-          <div className="mb-3">
-            <p className="text-sm text-white/80 line-clamp-2">{user.bio}</p>
-          </div>
-          {/* Action Buttons */}
-          <div className="flex gap-2 mt-auto">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleLikeClick}
-              className={`flex-1 transition-all duration-300 ${isLiked
-                  ? "text-pink-500 hover:text-pink-400 bg-pink-500/10"
-                  : "text-white/70 hover:text-white hover:bg-white/10"
-                }`}
-            >
-              <Heart
-                className={`w-4 h-4 mr-2 ${isLiked ? "fill-current" : ""}`}
-              />
-              Like
-            </Button>
-            <Button
-              onClick={onMessageClick}
-              className="flex-1 bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 text-white font-medium"
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Message
-            </Button>
+          {user.bio && (
+            <div className="mb-2">
+              <p className="text-sm text-white/80 line-clamp-2">{user.bio}</p>
+            </div>
+          )}
+          {/* Skills */}
+          {user.skills && user.skills.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-2">
+              {user.skills.map((skill, idx) => (
+                <span key={idx} className="rounded-full px-3 py-1 text-xs font-semibold border border-brand-purple bg-brand-purple/10 text-brand-purple/90 shadow-sm">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
+          {/* Spacer to push button to bottom */}
+          <div className="flex-1" />
+          {/* Connect Button pinned to bottom */}
+          <div className="flex-shrink-0 flex justify-center mt-4">
+            {getConnectionStatus && getConnectionStatus(user.id) === 'none' && (
+              <Button
+                className="w-full bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 text-white font-medium rounded-full"
+                onClick={() => onConnect(user.id)}
+              >
+                Connect
+              </Button>
+            )}
+            {getConnectionStatus && getConnectionStatus(user.id) === 'pending' && (
+              <div className="w-full flex items-center justify-center gap-2 bg-orange-500/90 text-white font-medium rounded-full py-2">
+                <Send className="w-4 h-4 text-white" />
+                Request Sent
+              </div>
+            )}
+            {getConnectionStatus && getConnectionStatus(user.id) === 'connected' && (
+              <div className="w-full flex items-center justify-center gap-2 bg-green-600/90 text-white font-medium rounded-full py-2">
+                <Check className="w-4 h-4 text-white" />
+                Connected
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

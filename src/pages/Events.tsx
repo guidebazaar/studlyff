@@ -17,6 +17,7 @@ import { Calendar as CalendarIcon, Clock, MapPin, Users, FilterIcon, Sparkles, P
 import { Calendar } from "@/components/ui/calendar";
 import { SplitText } from "@/components/ui/split-text";
 import Spline from '@splinetool/react-spline';
+import EventCarousel from "@/components/EventCarousel";
 
 const Events = () => {
   const [city, setCity] = useState<string>("all");
@@ -24,6 +25,7 @@ const Events = () => {
   const [mounted, setMounted] = useState(false);
   const [activeEvent, setActiveEvent] = useState<number | null>(null);
   const [showHostForm, setShowHostForm] = useState(false);
+  const [hostedEvents, setHostedEvents] = useState([]);
 
   useEffect(() => {
     setMounted(true);
@@ -81,15 +83,32 @@ const Events = () => {
     }
   ];
 
-  const filteredEvents = upcomingEvents.filter(event => {
-    return (city === "all" || event.location === city || (city === "online" && event.location === "Online")) &&
-      (eventType === "all" || event.type === eventType);
+  const allEvents = [...upcomingEvents, ...hostedEvents];
+  // Filter out events whose last registration date has passed (today > lastRegistrationDate)
+  const today = new Date();
+  const filteredEvents = allEvents.filter(event => {
+    // If no lastRegistrationDate, keep the event (for default events)
+    if (!event.lastRegistrationDate) return true;
+    // Compare dates (ignore time)
+    const regDate = new Date(event.lastRegistrationDate);
+    regDate.setHours(23,59,59,999); // include the whole day
+    return today <= regDate && (city === "all" || event.location === city || (city === "online" && event.location === "Online")) && (eventType === "all" || event.type === eventType);
   });
 
   const handleHostEvent = (formData: any) => {
-    console.log("New event submitted:", formData);
+    // Assign a new id and parse date/time fields
+    const newEvent = {
+      ...formData,
+      id: Date.now(),
+      attendees: 0,
+      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop", // Placeholder or allow upload
+      daysLeft: Math.max(0, Math.ceil((new Date(formData.date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))),
+      type: formData.type,
+      registrationLink: formData.registrationLink,
+      lastRegistrationDate: formData.lastRegistrationDate,
+    };
+    setHostedEvents(prev => [...prev, newEvent]);
     setShowHostForm(false);
-    // Here you would typically send the data to your backend
   };
 
   return (
@@ -169,7 +188,7 @@ const Events = () => {
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.95, opacity: 0 }}
-                  className="bg-background border border-white/10 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto"
+                  className="bg-black/80 border border-white/10 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex justify-between items-center mb-6">
@@ -201,6 +220,11 @@ const Events = () => {
                     </div>
 
                     <div>
+                      <label className="block text-sm font-medium mb-2">Last Date of Registration</label>
+                      <Input name="lastRegistrationDate" type="date" required />
+                    </div>
+
+                    <div>
                       <label className="block text-sm font-medium mb-2">Location</label>
                       <Input name="location" placeholder="City or 'Online'" required />
                     </div>
@@ -211,7 +235,7 @@ const Events = () => {
                         <SelectTrigger>
                           <SelectValue placeholder="Select event type" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-black text-white border border-white/10">
                           <SelectItem value="tech">Tech</SelectItem>
                           <SelectItem value="startup">Startup</SelectItem>
                           <SelectItem value="webinar">Webinar</SelectItem>
@@ -219,6 +243,11 @@ const Events = () => {
                           <SelectItem value="finance">Finance</SelectItem>
                         </SelectContent>
                       </Select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Registration Link</label>
+                      <Input name="registrationLink" placeholder="Paste registration link" type="url" required />
                     </div>
 
                     <div>
@@ -361,13 +390,15 @@ const Events = () => {
                             </div>
 
                             <div className="flex flex-col items-end gap-2">
-                              <Button
-                                size="sm"
-                                className="relative overflow-hidden group bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 transition-all"
+                              <a
+                                href={event.registrationLink || "#"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden group bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 transition-all h-9 px-3"
                               >
                                 <span className="relative z-10">Join Event</span>
                                 <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity" />
-                              </Button>
+                              </a>
                               <Button
                                 size="sm"
                                 variant="outline"
@@ -410,13 +441,13 @@ const Events = () => {
                       mode="single"
                       selected={null}
                       modifiers={{
-                        event: upcomingEvents.map(e => new Date(e.date.split(',')[1] ? e.date.split(',')[1] + ',' + e.date.split(',')[0] : e.date)),
+                        event: allEvents.map(e => new Date(e.date.split(',')[1] ? e.date.split(',')[1] + ',' + e.date.split(',')[0] : e.date)),
                       }}
                       modifiersClassNames={{
                         event: "bg-brand-purple/20 text-brand-purple font-bold border border-brand-purple/40",
                       }}
                       onDayClick={date => {
-                        const event = upcomingEvents.find(e => {
+                        const event = allEvents.find(e => {
                           const eventDate = new Date(e.date.split(',')[1] ? e.date.split(',')[1] + ',' + e.date.split(',')[0] : e.date);
                           return eventDate.toDateString() === date.toDateString();
                         });
@@ -433,7 +464,7 @@ const Events = () => {
                     {activeEvent && (
                       <div className="mt-8 w-full max-w-lg bg-background/80 border border-brand-purple/30 rounded-xl p-6 shadow-lg">
                         {(() => {
-                          const event = upcomingEvents.find(e => e.id === activeEvent);
+                          const event = allEvents.find(e => e.id === activeEvent);
                           if (!event) return null;
                           return (
                             <>
@@ -445,7 +476,14 @@ const Events = () => {
                                 <span className="flex items-center gap-1"><Users size={16} className="text-brand-purple" />{event.attendees} attending</span>
                               </div>
                               <p className="mb-2 text-foreground/80">{event.description}</p>
-                              <Button size="sm" className="bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 mt-2">Join Event</Button>
+                              <a
+                                href={event.registrationLink || "#"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 mt-2 h-9 px-3"
+                              >
+                                Join Event
+                              </a>
                             </>
                           );
                         })()}

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { User, Clock, CheckCircle, X } from "lucide-react";
 
 interface ConnectionRequest {
-    id: number;
+    id: string;
     name: string;
     profilePicture: string;
     role: string;
@@ -16,8 +16,8 @@ interface ConnectionRequest {
 
 interface ConnectionRequestsProps {
     requests: ConnectionRequest[];
-    onAccept: (id: number) => void;
-    onDecline: (id: number) => void;
+    onAccept: (id: string) => void;
+    onDecline: (id: string) => void;
 }
 
 const ConnectionRequests = ({ requests, onAccept, onDecline }: ConnectionRequestsProps) => {

@@ -7,60 +7,70 @@ const milestones = [
         year: "2021",
         title: "Launched Guide Bazaar Alpha",
         description: "Started with a vision to connect students nationwide with comprehensive learning resources.",
+        image: "/studlyf.png"
     },
     {
         number: "02",
         year: "2021",
         title: "First Community Hub",
         description: "Reached 1,000+ active students across 50+ colleges and universities.",
+        image: "/studlyf.png"
     },
     {
         number: "03",
         year: "2022",
         title: "Platform Beta Launch",
         description: "Launched a comprehensive platform for student resources and career guidance.",
+        image: "/studlyf.png"
     },
     {
         number: "04",
         year: "2022",
         title: "Startup Incubation Program",
         description: "Introduced startup mentorship and funding programs for student entrepreneurs.",
+        image: "/studlyf.png"
     },
     {
         number: "05",
         year: "2023",
         title: "Financial Literacy Suite",
         description: "Added comprehensive finance education tools and investment guidance.",
+        image: "/studlyf.png"
     },
     {
         number: "06",
         year: "2023",
         title: "Internship Network Launch",
         description: "Connected students with 500+ internship opportunities from top companies.",
+        image: "/studlyf.png"
     },
     {
         number: "07",
         year: "2023",
         title: "Scholarship Portal",
         description: "Helped students access ₹50+ crores in scholarships and grants.",
+        image: "/studlyf.png"
     },
     {
         number: "08",
         year: "2024",
         title: "AI Career Guidance",
         description: "Implemented AI-powered career guidance and personalized learning paths.",
+        image: "/studlyf.png"
     },
     {
         number: "09",
         year: "2024",
         title: "Global Community Expansion",
         description: "Extended services to international students and global universities.",
+        image: "/studlyf.png"
     },
     {
         number: "10",
         year: "2025",
         title: "Future Vision Roadmap",
         description: "Building the world's largest student ecosystem and learning community.",
+        image: "/studlyf.png"
     },
 ];
 
@@ -232,49 +242,50 @@ const Timeline = () => {
                                         z: 50,
                                     }}
                                     transition={{ duration: 0.3 }}
-                                    className={`w-full md:w-5/12 p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-purple-400/30 transition-all duration-300 cursor-pointer group ${isLeft ? 'text-right' : 'text-left'
-                                        }`}
+                                    className={`w-full md:w-5/12 p-0 rounded-xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-purple-400/30 transition-all duration-300 cursor-pointer group flex ${isLeft ? 'flex-row-reverse' : 'flex-row'} overflow-hidden`}
                                     style={{
                                         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
                                     }}
                                 >
-
-
-                                    <div className={`flex items-center gap-3 mb-3 ${isLeft ? 'justify-end' : 'justify-start'}`}>
-                                        <motion.span
-                                            className="text-3xl font-serif text-white/90 group-hover:text-purple-300 transition-colors"
-                                            whileHover={{ scale: 1.2 }}
-                                        >
-                                            {milestone.number}
-                                        </motion.span>
-                                        <motion.span
-                                            className="text-xs uppercase tracking-widest text-pink-400 font-semibold bg-pink-400/10 px-2 py-1 rounded-full"
-                                            whileHover={{ scale: 1.1 }}
-                                        >
-                                            {milestone.year}
-                                        </motion.span>
+                                    {/* Image Half */}
+                                    <div className="w-1/2 flex items-center justify-center bg-black/30 p-4">
+                                        <img src={milestone.image} alt={milestone.title} className="rounded-lg shadow-lg w-full h-40 object-contain" />
                                     </div>
-
-                                    <motion.h3
-                                        className="text-xl font-bold text-white mb-2 group-hover:text-purple-200 transition-colors"
-                                        initial={{ opacity: 0 }}
-                                        whileInView={{ opacity: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.4 + index * 0.1 }}
-                                    >
-                                        {milestone.title}
-                                    </motion.h3>
-
-                                    <motion.p
-                                        className="text-white/70 text-sm leading-relaxed group-hover:text-white/90 transition-colors"
-                                        initial={{ opacity: 0 }}
-                                        whileInView={{ opacity: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.5 + index * 0.1 }}
-                                    >
-                                        {milestone.description}
-                                    </motion.p>
-
+                                    {/* Description Half */}
+                                    <div className="w-1/2 p-4 flex flex-col justify-center">
+                                        <div className={`flex items-center gap-3 mb-3 ${isLeft ? 'justify-end' : 'justify-start'}`}> 
+                                            <motion.span
+                                                className="text-3xl font-serif text-white/90 group-hover:text-purple-300 transition-colors"
+                                                whileHover={{ scale: 1.2 }}
+                                            >
+                                                {milestone.number}
+                                            </motion.span>
+                                            <motion.span
+                                                className="text-xs uppercase tracking-widest text-pink-400 font-semibold bg-pink-400/10 px-2 py-1 rounded-full"
+                                                whileHover={{ scale: 1.1 }}
+                                            >
+                                                {milestone.year}
+                                            </motion.span>
+                                        </div>
+                                        <motion.h3
+                                            className="text-xl font-bold text-white mb-2 group-hover:text-purple-200 transition-colors"
+                                            initial={{ opacity: 0 }}
+                                            whileInView={{ opacity: 1 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: 0.4 + index * 0.1 }}
+                                        >
+                                            {milestone.title}
+                                        </motion.h3>
+                                        <motion.p
+                                            className="text-white/70 text-sm leading-relaxed group-hover:text-white/90 transition-colors"
+                                            initial={{ opacity: 0 }}
+                                            whileInView={{ opacity: 1 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: 0.5 + index * 0.1 }}
+                                        >
+                                            {milestone.description}
+                                        </motion.p>
+                                    </div>
                                     {/* Hover glow effect */}
                                     <motion.div
                                         className="absolute inset-0 rounded-xl bg-gradient-to-br from-purple-400/0 to-pink-400/0 group-hover:from-purple-400/5 group-hover:to-pink-400/5 transition-all duration-300 pointer-events-none"

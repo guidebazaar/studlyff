@@ -107,7 +107,7 @@ const Marketplace = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#18181b] to-[#23272f] text-white overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-grid-white/[0.02] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
@@ -274,7 +274,7 @@ const Marketplace = () => {
                         className={`w-full text-left px-4 py-2 rounded-lg text-sm transition-all duration-300 ${
                           category === selectedCategory 
                             ? "bg-gradient-to-r from-brand-purple/90 to-brand-pink/90 text-white" 
-                            : "hover:bg-white/10 text-white hover:text-white"
+                            : "bg-black/60 text-white/80"
                         }`}
                         whileHover={{ x: 3 }}
                         onClick={() => setSelectedCategory(category)}

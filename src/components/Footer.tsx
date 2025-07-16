@@ -15,33 +15,31 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand & Newsletter */}
           <div className="lg:col-span-1">
-            <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Guide Bazaar
-            </h3>
+            <div className="mb-4">
+              <img
+                src="/logo3.png"
+                alt="Guide Bazaar Logo"
+                style={{ height: '40px', width: 'auto', objectFit: 'contain', display: 'block', borderRadius: '10px' }}
+              />
+            </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Empowering Every Student's Journey – Learn. Build. Connect. Track your progress, find opportunities, and grow your skills with our comprehensive platform.
             </p>
 
             {/* Newsletter Signup */}
             <div className="mb-6">
-              <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                <Mail className="w-5 h-5 text-purple-400" />
-                Stay Updated
-              </h4>
-              <div className="flex gap-2">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500/20"
-                />
+              <a
+                href="https://chat.whatsapp.com/your-group-invite-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button
-                  size="sm"
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6"
+                  size="lg"
+                  className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-8 w-full text-base font-semibold rounded-full shadow-lg"
                 >
-                  Subscribe
+                  Join us in WhatsApp group
                 </Button>
-              </div>
-              <p className="text-xs text-gray-400 mt-2">Get the latest updates on courses, internships, and opportunities.</p>
+              </a>
             </div>
 
             {/* Social Links */}
