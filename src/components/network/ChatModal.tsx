@@ -7,6 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Send, X, User } from "lucide-react";
 import { useAuth } from '@/lib/AuthContext';
+import { db } from '@/lib/firebase';
+import { collection, query, where, orderBy, addDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 
 interface ChatModalProps {
   isOpen: boolean;
@@ -33,55 +36,87 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const [isOtherTyping, setIsOtherTyping] = useState(false);
+  const typingTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  // Fetch messages from backend REST API
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    const fetchMessages = () => {
-      if (isOpen && user && currentUser) {
+    if (!isOpen || !user || !currentUser) {
+      setMessages([]);
+      return;
+    }
         setLoading(true);
         setError(null);
-        fetch(`/api/messages/${currentUser.uid}/${user.id}`)
-          .then(res => res.json())
-          .then(data => {
-            setMessages(data);
+    const q = query(
+      collection(db, 'messages'),
+      where('participants', 'array-contains', currentUser.uid),
+      orderBy('timestamp', 'asc')
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const msgs = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter((m: any) => Array.isArray(m.participants) && m.participants.includes(user.id) && m.participants.includes(currentUser.uid));
+      setMessages(msgs);
             setLoading(false);
-          })
-          .catch(() => {
+    }, (err) => {
             setError('Failed to load messages.');
             setLoading(false);
           });
-      } else {
-        setMessages([]);
-      }
-    };
-    fetchMessages();
-    if (isOpen && user && currentUser) {
-      interval = setInterval(fetchMessages, 5000); // Poll every 5s
-    }
-    return () => interval && clearInterval(interval);
+    return () => unsubscribe();
   }, [isOpen, user, currentUser]);
+
+  // Listen for typing events in Firestore (add a 'typing' subcollection or field per chat)
+  useEffect(() => {
+    if (!isOpen || !user || !currentUser) return;
+    const typingDocId = [currentUser.uid, user.id].sort().join('_');
+    const typingRef = collection(db, 'typing');
+    const unsubscribe = onSnapshot(typingRef, (snapshot) => {
+      const typingDocs = snapshot.docs.map(doc => doc.data());
+      const otherTyping = typingDocs.find(doc => doc.userId === user.id && doc.targetId === currentUser.uid && doc.isTyping);
+      setIsOtherTyping(!!otherTyping);
+    });
+    return () => unsubscribe();
+  }, [isOpen, user, currentUser]);
+
+  // Send typing event when user types
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewMessage(e.target.value);
+    if (!user || !currentUser) return;
+    const typingDocId = [currentUser.uid, user.id].sort().join('_');
+    const typingRef = collection(db, 'typing');
+    // Set typing true
+    addDoc(typingRef, {
+      userId: currentUser.uid,
+      targetId: user.id,
+      isTyping: true,
+      timestamp: Date.now(),
+    });
+    // Set typing false after 2s of inactivity
+    if (typingTimeout.current) clearTimeout(typingTimeout.current);
+    typingTimeout.current = setTimeout(() => {
+      addDoc(typingRef, {
+        userId: currentUser.uid,
+        targetId: user.id,
+        isTyping: false,
+        timestamp: Date.now(),
+      });
+    }, 2000);
+  };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() && user && currentUser) {
       setError(null);
       try {
-        await fetch('/api/messages/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            from: currentUser.uid,
-            to: user.id,
-            text: newMessage,
-          })
+        await addDoc(collection(db, 'messages'), {
+          senderId: currentUser.uid,
+          receiverId: user.id,
+          participants: [currentUser.uid, user.id],
+          content: newMessage,
+          timestamp: serverTimestamp(),
+          read: false,
         });
         setNewMessage("");
       } catch (err: any) {
@@ -100,6 +135,7 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
   if (!user) return null;
 
   return (
+    <TooltipProvider>
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-black/95 backdrop-blur-xl border-white/20 shadow-2xl max-w-lg w-full mx-3 sm:mx-auto h-[80vh] max-h-[600px] flex flex-col p-0">
         {/* Header */}
@@ -125,6 +161,8 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
               </p>
             </div>
           </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
           <Button
             variant="ghost"
             size="icon"
@@ -133,10 +171,13 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
           >
             <X className="w-5 h-5" />
           </Button>
+              </TooltipTrigger>
+              <TooltipContent>Close chat</TooltipContent>
+            </Tooltip>
         </DialogHeader>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-scroll p-4 space-y-4">
           {loading && <div className="text-white/60 text-center">Loading messages...</div>}
           {error && <div className="text-red-400 text-center">{error}</div>}
           <AnimatePresence>
@@ -150,8 +191,12 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
                   message.senderId === currentUser?.uid ? "justify-end" : "justify-start"
                 }`}
               >
+                  <div className="flex flex-col max-w-[70%]">
+                    <span className={`text-xs font-semibold mb-1 ${message.senderId === currentUser?.uid ? 'text-brand-pink text-right' : 'text-brand-purple text-left'}`}>
+                      {message.senderId === currentUser?.uid ? 'You' : user.name}
+                    </span>
                 <div
-                  className={`max-w-[70%] p-3 rounded-2xl ${
+                      className={`p-3 rounded-2xl ${
                     message.senderId === currentUser?.uid
                       ? "bg-gradient-to-r from-brand-purple to-brand-pink text-white"
                       : "bg-white/10 text-white border border-white/20"
@@ -161,11 +206,23 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
                   <p className="text-xs opacity-70 mt-1">
                     {message.timestamp?.toDate ? message.timestamp.toDate().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}
                   </p>
+                    </div>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
           <div ref={messagesEndRef} />
+          {/* Typing indicator */}
+          {isOtherTyping && (
+            <div className="flex items-center gap-2 px-4 pb-2">
+              <span className="text-xs text-brand-purple">{user.name} is typing</span>
+              <span className="flex gap-1">
+                <span className="w-2 h-2 bg-brand-purple rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                <span className="w-2 h-2 bg-brand-purple rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                <span className="w-2 h-2 bg-brand-purple rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Message Input */}
@@ -173,11 +230,13 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
           <div className="flex gap-2">
             <Input
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
+              onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder="Type a message..."
               className="flex-1 bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-brand-purple/50"
             />
+              <Tooltip>
+                <TooltipTrigger asChild>
             <Button
               onClick={handleSendMessage}
               disabled={!newMessage.trim() || loading}
@@ -185,10 +244,14 @@ const ChatModal = ({ isOpen, onClose, user }: ChatModalProps) => {
             >
               <Send className="w-4 h-4" />
             </Button>
-          </div>
+                </TooltipTrigger>
+                <TooltipContent>Send message</TooltipContent>
+              </Tooltip>
+            </div>
         </div>
       </DialogContent>
     </Dialog>
+    </TooltipProvider>
   );
 };
 

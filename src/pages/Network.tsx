@@ -11,8 +11,8 @@ import { SplitText } from "@/components/ui/split-text";
 import { MessageSquare, Bell, Filter, Users, UserPlus, Heart, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-// import { db } from '@/lib/firebase';
-// import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { useAuth } from '@/lib/AuthContext';
 
 // Add a type for user to ensure id is present
@@ -89,6 +89,20 @@ const Network = () => {
     fetch(`/api/connections/requests/${userId}`)
       .then(res => res.json())
       .then(reqs => setIncomingRequests(reqs));
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return;
+    // Listen for unread messages for the current user
+    const q = query(
+      collection(db, 'messages'),
+      where('receiverId', '==', userId),
+      where('read', '==', false)
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setUnreadMessages(snapshot.size);
+    });
+    return () => unsubscribe();
   }, [userId]);
 
   const handleMessageClick = (user) => {
@@ -248,8 +262,12 @@ const Network = () => {
 
       <Navbar />
 
-
-
+      {/* Chat Modal for messaging */}
+      <ChatModal
+        isOpen={isChatOpen}
+        onClose={handleCloseChatModal}
+        user={selectedUser}
+      />
 
       {/* Floating Chat Sidebar below Navbar */}
       <div className="fixed top-[120px] left-0 z-50 w-full flex justify-center" style={{ height: '0', pointerEvents: 'none' }}>
@@ -421,13 +439,6 @@ const Network = () => {
       </main>
 
       <Footer />
-
-      {/* Chat Modal (for mobile) */}
-      <ChatModal
-        isOpen={isChatOpen}
-        onClose={handleCloseChatModal}
-        user={selectedUser}
-      />
 
       {/* Chat Sidebar (for desktop) */}
       <ChatSidebar

@@ -86,9 +86,18 @@ const UserProfileCard = ({ user, onMessageClick, getConnectionStatus, onConnect 
               </div>
             )}
             {getConnectionStatus && getConnectionStatus(user.id) === 'connected' && (
-              <div className="w-full flex items-center justify-center gap-2 bg-green-600/90 text-white font-medium rounded-full py-2">
-                <Check className="w-4 h-4 text-white" />
-                Connected
+              <div className="w-full flex flex-col gap-2 items-center justify-center">
+                <div className="flex items-center justify-center gap-2 bg-green-600/90 text-white font-medium rounded-full py-2 w-full">
+                  <Check className="w-4 h-4 text-white" />
+                  Connected
+                </div>
+                <Button
+                  className="w-full mt-2 bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 text-white font-medium rounded-full flex items-center justify-center gap-2"
+                  onClick={onMessageClick}
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Message
+                </Button>
               </div>
             )}
           </div>
