@@ -56,7 +56,8 @@ const PROJECTS = [
     title: " Citizen-Led GovTech for Smarter Governance",
     description: "A crowdsourced civic platform that captures public sentiment, issues, and needs directly from social media and routes them to relevant government departments using AI-based trend analysis and public dashboards.",
     skills: ["React", "Node.js", "Figma"],
-    roles: ["Fullstack", "UI/UX Designer"]
+    roles: ["Fullstack", "UI/UX Designer"],
+    linkedin: "https://www.linkedin.com/in/karthik-sunki-aa8b2533b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
     title: "The Visual Professional Network for Gen Z",
