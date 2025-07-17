@@ -18,7 +18,7 @@ const Footer = () => {
             <div className="mb-4">
               <img
                 src="/logo3.png"
-                alt="Guide Bazaar Logo"
+                alt="StudLYF Logo"
                 style={{ height: '40px', width: 'auto', objectFit: 'contain', display: 'block', borderRadius: '10px' }}
               />
             </div>
@@ -161,7 +161,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center" style={{ borderColor: "rgba(255,255,255,0.18)" }}>
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} Guide Bazaar. All rights reserved. Made with <Heart className="w-4 h-4 inline text-red-400" /> for students.
+            © {new Date().getFullYear()} StudLYF. All rights reserved. Made with <Heart className="w-4 h-4 inline text-red-400" /> for students.
           </p>
           <div className="flex space-x-6">
             <a href="#privacy" className="text-gray-400 hover:text-purple-400 text-sm transition-colors flex items-center gap-1">

@@ -42,6 +42,12 @@ const StartupDetailsModal = ({ isOpen, onClose, startup }) => {
                 </div>
                 <div className="flex gap-4 mt-6">
                     <button
+                        className="rounded-full px-5 py-2 border font-semibold border-purple-500 bg-white text-purple-700 hover:bg-purple-700 hover:text-white transition shadow"
+                        onClick={() => window.open('https://forms.gle/YOUR_GOOGLE_FORM_LINK', '_blank')}
+                    >
+                        Apply Now
+                    </button>
+                    <button
                         className="rounded-full px-5 py-2 border font-semibold border-purple-500 bg-purple-600 text-white hover:bg-purple-700 transition shadow"
                         onClick={onClose}
                     >

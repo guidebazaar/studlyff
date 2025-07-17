@@ -1,6 +1,6 @@
 {
-    "name": "Guide Bazaar - Empowering Every Student's Journey",
-    "short_name": "Guide Bazaar",
+    "name": "StudLYF - Empowering Every Student's Journey",
+    "short_name": "StudLYF",
     "description": "Learn, Build, Connect. Your smart student companion for finance, events, networking and more.",
     "start_url": "/",
     "display": "standalone",
@@ -9,9 +9,9 @@
     "orientation": "portrait-primary",
     "icons": [
         {
-            "src": "/favicon.svg",
+            "src": "/studlyf.png",
             "sizes": "any",
-            "type": "image/svg+xml",
+            "type": "image/png",
             "purpose": "any maskable"
         },
         {

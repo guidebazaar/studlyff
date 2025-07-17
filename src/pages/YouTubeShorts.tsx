@@ -12,81 +12,57 @@ import TrendingContent from '@/components/TrendingContent';
 const YouTubeShorts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [openIndex, setOpenIndex] = useState(null);
 
   const categories = ['All', 'Tech', 'Finance', 'Entrepreneurship', 'Study Tips', 'Career'];
 
-  const allShorts = [
-    {
-      id: 1,
-      title: "How to Land Your First Tech Internship",
-      thumbnail: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-      views: "125K",
-      creator: "Tech Career Tips",
-      category: "Tech"
-    },
-    {
-      id: 2,
-      title: "5 Financial Hacks Every Student Should Know",
-      thumbnail: "https://images.unsplash.com/photo-1579621970795-87facc2f976d",
-      views: "89K",
-      creator: "Student Finance",
-      category: "Finance"
-    },
-    {
-      id: 3,
-      title: "Day in the Life of a Student Entrepreneur",
-      thumbnail: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
-      views: "210K",
-      creator: "StartupLife",
-      category: "Entrepreneurship"
-    },
-    {
-      id: 4,
-      title: "Quick Tips for Better Productivity",
-      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
-      views: "67K",
-      creator: "ProductivityPro",
-      category: "Study Tips"
-    },
-    {
-      id: 5,
-      title: "Best Study Techniques for Exams",
-      thumbnail: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173",
-      views: "156K",
-      creator: "StudySmart",
-      category: "Study Tips"
-    },
-    {
-      id: 6,
-      title: "Building Your First Startup",
-      thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-      views: "92K",
-      creator: "Startup Guru",
-      category: "Entrepreneurship"
-    },
-    {
-      id: 7,
-      title: "Interview Tips That Actually Work",
-      thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
-      views: "178K",
-      creator: "Career Coach",
-      category: "Career"
-    },
-    {
-      id: 8,
-      title: "Coding Bootcamp vs University",
-      thumbnail: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0",
-      views: "234K",
-      creator: "Tech Education",
-      category: "Tech"
-    }
+  // YouTube Shorts links provided by the user
+  const youtubeShortLinks = [
+    "https://youtube.com/shorts/l_AEy1e1u6w?si=RmIrYYCN_ufL24nt",
+    "https://youtube.com/shorts/c3r2EyhtAFI?si=MnuOpdd06OuliEN6",
+    "https://youtube.com/shorts/Mz_B2h3CCXo?si=7DuNJi2cgKAMd38o",
+    "https://youtube.com/shorts/rNXpauB6t_A?si=XUhBFkGmgpaNoA3B",
+    "https://youtube.com/shorts/zYkF1X2bBRk?si=tNIV2CluTxePQ5Ri",
+    "https://youtube.com/shorts/nVhBrCeUC8s?si=kBoyBe9n10b9Eo8o",
+    "https://youtube.com/shorts/aOUPycUS5lw?si=iDSA0WBvKXl7Uch8",
+    "https://youtube.com/shorts/49sGbt1_QPI?si=R-uUKsqB8KfgPTOQ",
+    "https://youtube.com/shorts/gm3ITLOJkFc?si=3E9s8RYLx2li-wAp",
+    "https://youtube.com/shorts/R11oxDWg-u0?si=loVP1QJdQCp0GApe",
+    "https://youtube.com/shorts/V2p80e98l9E?si=lXs6ZV_h3vZSu4KK",
+    "https://youtube.com/shorts/c2ED0LZ4pCk?si=nGXn6PVYau979Nh-",
+    "https://youtube.com/shorts/W8kG3vFjBOY?si=hdTrMdryGNS5cJKJ",
+    "https://youtube.com/shorts/R4psUPXzLSs?si=lCXlLSfRVsx_M3vT",
+    "https://youtube.com/shorts/xQHJOjr2sho?si=oIDaSOlJskQDD0l7",
+    "https://youtube.com/shorts/TkV_iq-UbO0?si=LagYtLJPMxykgmqJ",
+    "https://youtube.com/shorts/hpmYP_gQNu8?si=mfycEODumUBPire-",
+    "https://youtube.com/shorts/LMDA5Ip4PYY?si=QB7-YcI1Sj07tc6o",
+    "https://youtube.com/shorts/obER3ncpH2I?si=mfgzX0wiUvnqpoWG",
+    "https://youtube.com/shorts/CeCitNDHNV0?si=BzaQuVS9qDFDT967",
+    "https://youtube.com/shorts/TCdgKpRPwOM?si=xm2saKeCKSugPJgk",
+    "https://youtube.com/shorts/B6z8QpeS2-Q?si=v-sCMUmsvoumGm0O",
+    "https://youtube.com/shorts/5B4OiFm48Tw?si=JZuDf3e58jLEgXHZ",
+    "https://youtube.com/shorts/zey9DSS1LOU?si=sHGvK6XeQPaODTK0",
+    "https://youtube.com/shorts/FbtYxPUrhq8?si=FtakJG-HDX2MeoaU"
   ];
 
+  // Helper to extract the video ID from a shorts URL
+  function getShortsId(url) {
+    const match = url.match(/shorts\/([\w-]+)/);
+    return match ? match[1] : null;
+  }
+
+  const allShorts = youtubeShortLinks.map((url, idx) => {
+    const id = getShortsId(url);
+    return {
+      id: id || idx,
+      url,
+      thumbnail: id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '',
+    };
+  });
+
   const filteredShorts = allShorts.filter(short => {
-    const matchesSearch = short.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      short.creator.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || short.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    // Optionally, add search/category filtering here if needed
+    return true;
   });
 
   return (
@@ -95,63 +71,20 @@ const YouTubeShorts = () => {
 
       <div className="pt-20 pb-10">
         <div className="container mx-auto px-4">
-          {/* Removed TrendingContent (Popular Blogs) and YouTube Shorts heading section */}
-
-          {/* Search and Filter - Updated to match Finance page style */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="space-y-6 md:space-y-8 w-full overflow-x-hidden mb-8"
-          >
-            {/* Search Bar - Prominent */}
-            <div className="relative max-w-2xl mx-auto px-4 w-full">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl md:rounded-2xl blur-xl"></div>
-              <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm rounded-xl md:rounded-2xl p-1 shadow-lg border border-purple-500/30 w-full">
-                <div className="relative w-full">
-                  <Search className="absolute left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
-                  <Input
-                    placeholder="Search videos..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-12 md:pl-14 pr-4 md:pr-6 py-3 md:py-4 text-base md:text-lg bg-transparent border-0 focus:ring-0 placeholder:text-gray-400 w-full text-white focus:border-purple-500"
-                  />
-                </div>
+          {/* Heading and tagline */}
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">Trending YouTube Shorts</h1>
+            <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+              Bite-sized videos to inspire your mindset, reveal surprising facts, and keep you updated on the latest in technology, learning, and more.
+            </p>
               </div>
-            </div>
-
-            {/* Categories Filter */}
-            <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-gray-700/50 mx-4 w-[calc(100%-2rem)] max-w-none">
-              <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                <Filter className="h-4 w-4 md:h-5 md:w-5 text-purple-400 flex-shrink-0" />
-                <span className="font-semibold text-white text-sm md:text-base">Categories</span>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedCategory(category)}
-                    className={selectedCategory === category ?
-                      "bg-gradient-to-r from-brand-purple to-brand-pink text-white" :
-                      "border-gray-600 text-gray-300 hover:border-purple-400 transition-all duration-300 rounded-lg md:rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm min-h-[44px] w-full bg-gray-800/50 hover:bg-gray-700/50"
-                    }
-                  >
-                    {category}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </motion.div>
 
           {/* Videos Grid */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-2"
           >
             {filteredShorts.map((short, index) => (
               <motion.div
@@ -161,43 +94,88 @@ const YouTubeShorts = () => {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
               >
-                <Card className="glass-card border-none overflow-hidden group cursor-pointer">
-                  <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(index)}
+                  className="block w-full text-left"
+                  style={{ background: 'none', border: 'none', padding: 0 }}
+                >
+                  <Card className="glass-card border-none overflow-hidden group cursor-pointer p-0">
+                    <div className="relative w-full rounded-xl overflow-hidden shadow-lg border border-white/10 bg-white" style={{ aspectRatio: '9/16', minHeight: 80, maxWidth: 180, margin: '0 auto' }}>
                     <img
                       src={short.thumbnail}
-                      alt={short.title}
-                      className="w-full h-60 sm:h-48 object-cover transition-transform group-hover:scale-105 md:h-48 lg:h-48"
-                    />
-                    <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs py-1 px-2 rounded">
-                      {short.views} views
+                        alt="YouTube Short Thumbnail"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
+                        style={{ aspectRatio: '9/16' }}
+                      />
+                      {/* Overlay for YouTube Shorts style */}
+                      <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-end pointer-events-none">
+                        <div className="flex justify-center pb-2">
+                          <span className="bg-black/70 text-white text-xs px-2 py-1 rounded-full font-semibold flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                            Watch
+                          </span>
+                        </div>
                     </div>
-                    <div className="absolute top-2 left-2 bg-red-600 text-white text-xs py-1 px-2 rounded">
-                      {short.category}
                     </div>
-                  </div>
-                  <CardContent className="p-5 sm:p-4">
-                    <h3 className="font-semibold text-lg sm:text-base text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-brand-purple group-hover:to-brand-pink transition-all duration-300 line-clamp-2 mb-2">
-                      {short.title}
-                    </h3>
-                    <p className="text-base sm:text-sm text-white">{short.creator}</p>
-                  </CardContent>
                 </Card>
+                </button>
               </motion.div>
             ))}
           </motion.div>
 
-          {filteredShorts.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-12"
-            >
-              <p className="text-white text-lg">No videos found matching your criteria.</p>
-            </motion.div>
+          {/* Mini modal for Shorts */}
+          {openIndex !== null && (
+            <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80">
+              {/* Close button at top edge of screen on desktop, above modal on mobile */}
+              <button
+                className="fixed top-4 right-4 text-white bg-black/70 rounded-full p-3 z-50 hover:bg-black/90"
+                onClick={() => setOpenIndex(null)}
+                aria-label="Close"
+                style={{ position: 'fixed' }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <div className="relative bg-black rounded-xl shadow-2xl w-[60vw] max-w-[260px] sm:max-w-xs md:max-w-sm lg:max-w-md" style={{ aspectRatio: '9/16' }}>
+                <iframe
+                  src={
+                    openIndex !== null && filteredShorts[openIndex]?.id
+                      ? `https://www.youtube.com/embed/${filteredShorts[openIndex].id}?autoplay=1&modestbranding=1&rel=0&playsinline=1`
+                      : undefined
+                  }
+                  title="YouTube Short"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  className="w-full h-full rounded-xl"
+                  style={{ aspectRatio: '9/16', background: 'black' }}
+                />
+              </div>
+              {/* Prev button outside modal */}
+              {openIndex > 0 && (
+                <button
+                  className="fixed left-4 top-1/2 -translate-y-1/2 bg-black/70 text-white rounded-full p-3 z-50 hover:bg-black/90"
+                  onClick={() => setOpenIndex(openIndex - 1)}
+                  aria-label="Previous"
+                  style={{ position: 'fixed' }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                </button>
+              )}
+              {/* Next button outside modal */}
+              {openIndex < filteredShorts.length - 1 && (
+                <button
+                  className="fixed right-4 top-1/2 -translate-y-1/2 bg-black/70 text-white rounded-full p-3 z-50 hover:bg-black/90"
+                  onClick={() => setOpenIndex(openIndex + 1)}
+                  aria-label="Next"
+                  style={{ position: 'fixed' }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </button>
+              )}
+            </div>
           )}
         </div>
       </div>
-
       <Footer />
     </div>
   );

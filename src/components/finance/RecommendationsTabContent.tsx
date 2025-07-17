@@ -34,11 +34,11 @@ const RecommendationsTabContent = ({ selectedCategory }: RecommendationsTabConte
     {
       title: "Student-Friendly SIPs",
       items: [
-        "UTI Nifty Index Fund - Low cost",
-        "Parag Parikh Flexi Cap Fund - Diversified",
-        "SBI Small Cap Fund - Higher growth",
-        "Axis Bluechip Fund - Stable returns",
-        "Mirae Asset Emerging Bluechip - Mid-cap focus"
+        { label: "SEBI Mutual Funds List", url: "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doListMutualFund=yes" },
+        { label: "AMFI India Mutual Fund Info", url: "https://www.amfiindia.com/" },
+        { label: "Nippon India Mutual Fund", url: "https://mf.nipponindiaim.com/" },
+        { label: "SBI Mutual Fund", url: "https://www.sbimf.com/" },
+        { label: "HDFC Mutual Fund", url: "https://www.hdfcfund.com/" }
       ],
       icon: <PiggyBank />,
       category: "investing"
@@ -46,11 +46,11 @@ const RecommendationsTabContent = ({ selectedCategory }: RecommendationsTabConte
     {
       title: "Best Insurance Plans",
       items: [
-        "HDFC Life Click 2 Protect - Term Plan",
-        "Max Life Critical Illness - Health Coverage",
-        "Bajaj Allianz Student Travel - For Exchange",
-        "SBI Smart Scholar - Education Plan",
-        "LIC Tech Term - Digital Term Plan"
+        { label: "IRDAI Insurance Portal", url: "https://www.irdai.gov.in/" },
+        { label: "LIC of India", url: "https://licindia.in/" },
+        { label: "New India Assurance", url: "https://www.newindia.co.in/portal/" },
+        { label: "Max Life Insurance", url: "https://www.maxlifeinsurance.com/" },
+        { label: "HDFC Life Insurance", url: "https://www.hdfclife.com/" }
       ],
       icon: <TrendingUp />,
       category: "insurance"
@@ -58,11 +58,11 @@ const RecommendationsTabContent = ({ selectedCategory }: RecommendationsTabConte
     {
       title: "Top Investing Apps",
       items: [
-        "Groww - Simple interface for beginners",
-        "Zerodha - Low brokerage trading",
-        "Upstox - Easy mutual fund investing",
-        "Coin by Zerodha - Zero commission funds",
-        "ET Money - Financial tracking"
+        { label: "Groww (Play Store)", url: "https://play.google.com/store/apps/details?id=com.nextbillion.groww" },
+        { label: "Zerodha Kite (Web)", url: "https://kite.zerodha.com/" },
+        { label: "Upstox (Play Store)", url: "https://play.google.com/store/apps/details?id=in.upstox.pro" },
+        { label: "ET Money (Play Store)", url: "https://play.google.com/store/apps/details?id=com.etmoney.india" },
+        { label: "Paytm Money (Play Store)", url: "https://play.google.com/store/apps/details?id=com.paytmmoney.app" }
       ],
       icon: <ChartBar />,
       category: "investing"
@@ -98,6 +98,7 @@ const RecommendationsTabContent = ({ selectedCategory }: RecommendationsTabConte
               title={item.title} 
               items={item.items}
               icon={item.icon}
+              withLinks={true}
             />
           </motion.div>
         ))}

@@ -66,10 +66,10 @@ const Landing = () => {
   return (
     <motion.div className="min-h-screen text-white overflow-x-hidden bg-black flex flex-col items-center justify-center relative">
       {/* Animated background and glows (copied from Index) */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
+      <div className="fixed inset-0 -z-10 w-full h-full overflow-hidden" style={{ minHeight: '100vh', minWidth: '100vw' }}>
         <motion.div
           style={{ y: backgroundY }}
-          className="absolute inset-0 bg-grid-white/[0.02] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"
+          className="absolute inset-0 bg-grid-white/[0.02] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] w-full h-full"
         />
         <motion.div
           style={{ y: glowY1 }}
@@ -104,20 +104,24 @@ const Landing = () => {
           }}
         />
       </div>
-      {/* Spline 3D Section */}
-      <div className="relative w-full flex flex-col justify-center items-center min-h-[500px] md:min-h-[700px] bg-transparent">
-        <Spline scene="https://prod.spline.design/05L756QvwD1di3M7/scene.splinecode" className="w-full h-full" />
+      {/* Spline 3D Section - Absolutely fill viewport on all screens */}
+      <div className="fixed inset-0 w-full h-full flex flex-col justify-center items-center bg-transparent z-10">
+        <Spline scene="https://prod.spline.design/05L756QvwD1di3M7/scene.splinecode" className="absolute inset-0 w-full h-full" />
         <AnimatePresence>
           {!animating && (
             <motion.img
               ref={logoRef}
-              src="/studlyf.png"
+              src="/logo3.png"
               alt="Studlyf Logo"
-              className="absolute z-20 w-80 md:w-[40rem] lg:w-[56rem] xl:w-[72rem] pointer-events-none select-none"
+              className="absolute z-20 w-72 md:w-[28rem] lg:w-[36rem] xl:w-[48rem] pointer-events-none select-none"
               style={{
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
+                height: 'auto',
+                borderRadius: '10px',
+                objectFit: 'contain',
+                display: 'block',
               }}
               initial={false}
               animate={{ opacity: 1 }}
@@ -126,7 +130,7 @@ const Landing = () => {
           )}
           {animating && logoRect && (
             <motion.img
-              src="/studlyf.png"
+              src="/logo3.png"
               alt="Studlyf Logo"
               className="fixed z-50 pointer-events-none select-none"
               style={{
@@ -136,6 +140,9 @@ const Landing = () => {
                 height: 'auto',
                 margin: 0,
                 padding: 0,
+                borderRadius: '10px',
+                objectFit: 'contain',
+                display: 'block',
               }}
               initial={{
                 top: logoRect.top,
@@ -171,4 +178,4 @@ const Landing = () => {
   );
 };
 
-export default Landing; 
+export default Landing;

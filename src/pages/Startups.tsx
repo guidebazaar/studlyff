@@ -13,63 +13,63 @@ import StartupDetailsModal from '../components/startups/StartupDetailsModal';
 const initialStartups = [
   {
     id: 1,
-    name: 'EduTech Solutions',
-    domain: 'EdTech',
+    name: 'GrowAthlete',
+    domain: 'Sports Tech',
     stage: 'MVP',
-    foundedYear: 2022,
-    teamSize: 10,
-    location: 'Bangalore, India',
-    description: 'Revolutionizing education with AI-powered learning analytics and personalized curriculum development.',
-    founder: { name: 'Aisha Patel', role: 'CEO & Co-founder', avatar: 'https://randomuser.me/api/portraits/women/1.jpg' },
-    openRoles: ['ML Engineer', 'Content Marketing'],
-    views: 120,
-    applications: 8,
-    trending: true
-  },
-  {
-    id: 2,
-    name: 'FinLearn',
-    domain: 'FinTech',
-    stage: 'Idea Stage',
-    foundedYear: 2023,
-    teamSize: 5,
-    location: 'Mumbai, India',
-    description: 'Making financial literacy accessible through gamified learning and simulations.',
-    founder: { name: 'Vikram Mehta', role: 'CEO', avatar: 'https://randomuser.me/api/portraits/men/2.jpg' },
-    openRoles: ['Product Designer', 'Frontend Developer'],
-    views: 80,
+    foundedYear: 2025,
+    teamSize: 2-10,
+    location: 'Hyderabad, India',
+    description: 'GrowAthlete is a platform that helps athletes grow their skills and get discovered by top sports organizations.An Information Arena of Young sports  search talent in India. Sports Growth and development India.',
+    founder: { name: 'Ande Hemanth', role: 'CEO', avatar: '/andehemanth.png' },
+    openRoles: ['Product Designer', 'Frontend Developer','Backend Developer','ML Engineer','Content Marketing'],
+    views: 356,
     applications: 3,
     trending: false
   },
   {
-    id: 3,
-    name: 'GreenCommute',
-    domain: 'Sustainability',
-    stage: 'Funded',
-    foundedYear: 2021,
+    id: 2,
+    name: 'Nirvaha',
+    domain: 'Healthcare',
+    stage: 'MVP',
+    foundedYear: 2024,
     teamSize: 20,
-    location: 'Delhi, India',
-    description: 'Reduces carbon footprint by connecting students for shared rides and eco-friendly transport.',
-    founder: { name: 'Arjun Singh', role: 'CEO & Founder', avatar: 'https://randomuser.me/api/portraits/men/3.jpg' },
-    openRoles: ['Mobile Developer', 'Growth Marketing'],
+    location: 'Hyderabad, India',
+    description: 'Nirvaha is an AI-powered emotional healing and personal wellness ecosystem designed to help individuals reconnect with their inner selves through ancient wisdom, creative expression, and community-led healing.',
+    founder: { name: 'Sai Eshwar', role: 'CEO & Founder', avatar: '/stage1.png' },
+    openRoles: ['Mobile Developer', 'Growth Marketing','Business Intern'],
     views: 200,
     applications: 15,
     trending: true
   },
   {
-    id: 4,
-    name: 'CampusEats',
-    domain: 'Food Tech',
-    stage: 'MVP',
+    id: 3,
+    name: 'Risk Guard Enterprise Solutions',
+    domain: 'FinTech',
+    stage: 'Funded',
     foundedYear: 2022,
     teamSize: 8,
     location: 'Pune, India',
-    description: 'Connects local restaurants with students for affordable meal plans and on-campus delivery.',
-    founder: { name: 'Rohan Desai', role: 'CEO & Co-founder', avatar: 'https://randomuser.me/api/portraits/men/4.jpg' },
+    description: 'We are Risk Guard Enterprise Solutions, an upcoming risk management consultancy based in Hyderabad. Our business focuses on providing specialized risk management services to small business owners, entrepreneurs, and local businesses in the area.',
+    founder: { name: 'Prasad Anumula', role: 'CEO', avatar: '/prasad anumula.png' },
     openRoles: ['Operations Manager', 'UI/UX Designer'],
-    views: 60,
+    views: 296,
     applications: 2,
-    trending: false
+    trending: true
+  },
+  {
+    id: 4,
+    name: 'ZerotoOne Studios',
+    domain: 'Startup Agency',
+    stage: 'MVP',
+    foundedYear: 2025,
+    teamSize: 8,
+    location: 'Hyderabad, India',
+    description: 'We help ambitious founders turn ideas into reality with AI-powered insights and expert execution.',
+    founder: { name: 'D.Yeswanth ', role: 'CEO', avatar: '/yeswanth.png' },
+    openRoles: ['Operations Manager', 'UI/UX Designer','Front end developer','backend developer'],
+    views: 315,
+    applications: 2,
+    trending: true
   }
 ];
 
@@ -192,7 +192,10 @@ const Startups = () => {
                 view={view}
                 setView={setView}
                 onViewDetails={startup => setDetailsModal({ open: true, startup })}
-                onApply={() => { }}
+                onApply={() => {
+                  // TODO: Replace the link below with your actual Google Form link
+                  window.open('https://forms.gle/YOUR_GOOGLE_FORM_LINK', '_blank');
+                }}
               />
             </div>
           </main>

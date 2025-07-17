@@ -7,21 +7,21 @@ import { Flame, BookOpen, Video, ArrowRight, Clock, TrendingUp, Eye, Star } from
 
 const RecommendationsSection = () => {
   const trendingTopics = [
-    { title: "Best SIPs for 2024", views: "2.5k", badge: "Hot", trend: "+25%" },
-    { title: "Credit Cards for Students", views: "1.8k", badge: "Popular", trend: "+18%" },
-    { title: "Emergency Fund Planning", views: "1.2k", badge: "Essential", trend: "+12%" }
+    { title: "Best SIPs for 2024", views: "2.5k", badge: "Hot", trend: "+25%", url: "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doListMutualFund=yes" },
+    { title: "Credit Cards for Students", views: "1.8k", badge: "Popular", trend: "+18%", url: "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12380&Mode=0" },
+    { title: "Emergency Fund Planning", views: "1.2k", badge: "Essential", trend: "+12%", url: "https://www.nerdwallet.com/article/finance/emergency-fund" }
   ];
 
   const featuredArticles = [
-    { title: "5 Money Mistakes Every Student Makes", readTime: "5 min", rating: 4.8 },
-    { title: "How to Start Investing with ₹1000", readTime: "7 min", rating: 4.9 },
-    { title: "Understanding Health Insurance", readTime: "4 min", rating: 4.7 }
+    { title: "5 Money Mistakes Every Student Makes", readTime: "5 min", rating: 4.8, url: "https://www.edutopia.org/article/teaching-financial-literacy" },
+    { title: "How to Start Investing with 1000", readTime: "7 min", rating: 4.9, url: "https://www.investopedia.com/articles/basics/06/invest1000.asp" },
+    { title: "Understanding Health Insurance", readTime: "4 min", rating: 4.7, url: "https://www.india.gov.in/spotlight/health-insurance" }
   ];
 
   const explainerVideos = [
-    { title: "SIP vs FD: What's Better?", duration: "2:30", views: "15k" },
-    { title: "Stock Market for Beginners", duration: "3:15", views: "22k" },
-    { title: "Budget Like a Pro", duration: "1:45", views: "8k" }
+    { title: "SIP vs FD: What's Better?", duration: "2:30", views: "15k", url: "https://www.youtube.com/watch?v=Q0u2FjF6b9I" },
+    { title: "Stock Market for Beginners", duration: "3:15", views: "22k", url: "https://www.youtube.com/watch?v=9V1l5yD2kGM" },
+    { title: "Budget Like a Pro", duration: "1:45", views: "8k", url: "https://www.youtube.com/watch?v=3_0J4QFqQjQ" }
   ];
 
   return (
@@ -88,9 +88,14 @@ const RecommendationsSection = () => {
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className="font-semibold text-white group-hover/item:text-orange-300 transition-colors">
+                      <a
+                        href={topic.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-white group-hover/item:text-orange-300 transition-colors underline hover:text-orange-400"
+                      >
                         {topic.title}
-                      </p>
+                      </a>
                       <div className="flex items-center gap-3 mt-2">
                         <div className="flex items-center gap-1 text-gray-400 text-sm">
                           <Eye className="h-3 w-3" />
@@ -111,10 +116,16 @@ const RecommendationsSection = () => {
                   </div>
                 </motion.div>
               ))}
-              <Button variant="ghost" className="w-full mt-4 text-gray-200 hover:text-white hover:bg-orange-500/20 border border-gray-600 hover:border-orange-500/30 rounded-xl transition-all duration-300">
+              <a
+                href="https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doListMutualFund=yes"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full mt-4 text-center text-gray-200 hover:text-white hover:bg-orange-500/20 border border-gray-600 hover:border-orange-500/30 rounded-xl transition-all duration-300 py-2 font-medium bg-transparent"
+                style={{ textDecoration: 'none' }}
+              >
                 View All Trending
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+                <ArrowRight className="ml-2 h-4 w-4 inline" />
+              </a>
             </CardContent>
           </Card>
         </motion.div>
@@ -154,9 +165,14 @@ const RecommendationsSection = () => {
                   whileHover={{ x: 5, scale: 1.02 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <p className="font-semibold text-white group-hover/item:text-blue-300 transition-colors mb-3">
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-white group-hover/item:text-blue-300 transition-colors mb-3 underline hover:text-blue-400"
+                  >
                     {article.title}
-                  </p>
+                  </a>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Clock className="h-3 w-3" />
@@ -169,10 +185,16 @@ const RecommendationsSection = () => {
                   </div>
                 </motion.div>
               ))}
-              <Button variant="ghost" className="w-full mt-4 text-gray-200 hover:text-white hover:bg-blue-500/20 border border-gray-600 hover:border-blue-500/30 rounded-xl transition-all duration-300">
+              <a
+                href="https://www.edutopia.org/article/teaching-financial-literacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full mt-4 text-center text-gray-200 hover:text-white hover:bg-blue-500/20 border border-gray-600 hover:border-blue-500/30 rounded-xl transition-all duration-300 py-2 font-medium bg-transparent"
+                style={{ textDecoration: 'none' }}
+              >
                 Read More Articles
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+                <ArrowRight className="ml-2 h-4 w-4 inline" />
+              </a>
             </CardContent>
           </Card>
         </motion.div>
@@ -212,9 +234,14 @@ const RecommendationsSection = () => {
                   whileHover={{ x: 5, scale: 1.02 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <p className="font-semibold text-white group-hover/item:text-pink-300 transition-colors mb-3">
+                  <a
+                    href={video.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-white group-hover/item:text-pink-300 transition-colors mb-3 underline hover:text-pink-400"
+                  >
                     {video.title}
-                  </p>
+                  </a>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Video className="h-3 w-3" />
@@ -227,10 +254,16 @@ const RecommendationsSection = () => {
                   </div>
                 </motion.div>
               ))}
-              <Button variant="ghost" className="w-full mt-4 text-gray-200 hover:text-white hover:bg-pink-500/20 border border-gray-600 hover:border-pink-500/30 rounded-xl transition-all duration-300">
+              <a
+                href="https://www.youtube.com/@khanacademy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full mt-4 text-center text-gray-200 hover:text-white hover:bg-pink-500/20 border border-gray-600 hover:border-pink-500/30 rounded-xl transition-all duration-300 py-2 font-medium bg-transparent"
+                style={{ textDecoration: 'none' }}
+              >
                 Watch More Videos
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+                <ArrowRight className="ml-2 h-4 w-4 inline" />
+              </a>
             </CardContent>
           </Card>
         </motion.div>

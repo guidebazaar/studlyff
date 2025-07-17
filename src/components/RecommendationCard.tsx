@@ -7,11 +7,12 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 
 interface RecommendationCardProps {
   title: string;
-  items: string[];
+  items: Array<{ label: string; url?: string } | string>;
   icon: ReactNode;
+  withLinks?: boolean;
 }
 
-const RecommendationCard = ({ title, items, icon }: RecommendationCardProps) => {
+const RecommendationCard = ({ title, items, icon, withLinks }: RecommendationCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -39,24 +40,39 @@ const RecommendationCard = ({ title, items, icon }: RecommendationCardProps) => 
         </CardHeader>
         <CardContent className="pt-4 pb-6 relative z-10">
           <ul className="space-y-3 mb-5">
-            {items.map((item, index) => (
-              <motion.li 
-                key={index} 
-                className="flex items-start"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                whileHover={{ x: 5, transition: { duration: 0.2 } }}
-              >
-                <motion.span 
-                  className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-gradient-to-r from-brand-purple to-brand-pink text-white text-xs mr-2 mt-0.5 shadow-md"
-                  whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
+            {items.map((item, index) => {
+              const label = typeof item === 'string' ? item : item.label;
+              const url = typeof item === 'string' ? undefined : item.url;
+              return (
+                <motion.li 
+                  key={index} 
+                  className="flex items-start"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  whileHover={{ x: 5, transition: { duration: 0.2 } }}
                 >
-                  {index + 1}
-                </motion.span>
-                <span className="text-sm">{item}</span>
-              </motion.li>
-            ))}
+                  <motion.span 
+                    className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-gradient-to-r from-brand-purple to-brand-pink text-white text-xs mr-2 mt-0.5 shadow-md"
+                    whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
+                  >
+                    {index + 1}
+                  </motion.span>
+                  {url && (typeof url === 'string') && (typeof label === 'string') && (typeof withLinks !== 'undefined' && withLinks) ? (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm underline text-brand-purple hover:text-brand-pink"
+                    >
+                      {label}
+                    </a>
+                  ) : (
+                    <span className="text-sm">{label}</span>
+                  )}
+                </motion.li>
+              );
+            })}
           </ul>
           <div className="flex items-center justify-between mt-2">
             <motion.div whileHover={{ x: 5 }}>

@@ -4,69 +4,62 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 const milestones = [
     {
         number: "01",
-        year: "2021",
-        title: "Launched Guide Bazaar Alpha",
+        year: "2024",
+        title: "Launched Guide Bazaar",
         description: "Started with a vision to connect students nationwide with comprehensive learning resources.",
-        image: "/studlyf.png"
+        image: "/stage1.png"
     },
     {
         number: "02",
-        year: "2021",
+        year: "2024",
         title: "First Community Hub",
-        description: "Reached 1,000+ active students across 50+ colleges and universities.",
-        image: "/studlyf.png"
+        description: "Reached 1,000+ active students across 20+ colleges and universities.",
+        image: "/stage2.png"
     },
     {
         number: "03",
-        year: "2022",
-        title: "Platform Beta Launch",
-        description: "Launched a comprehensive platform for student resources and career guidance.",
-        image: "/studlyf.png"
+        year: "2024",
+        title: "Launched COHORT 1.0",
+        description: "A Online bootcamp for technology and startups.",
+        image: "/stage3.png"
     },
     {
         number: "04",
-        year: "2022",
+        year: "2025",
         title: "Startup Incubation Program",
-        description: "Introduced startup mentorship and funding programs for student entrepreneurs.",
-        image: "/studlyf.png"
+        description: "Empowered 80+ students , supported 2 startup ideas and offered 4 internships via online bootcamp",
+        image: "/stage4.png"
     },
     {
         number: "05",
-        year: "2023",
+        year: "2025",
         title: "Financial Literacy Suite",
-        description: "Added comprehensive finance education tools and investment guidance.",
-        image: "/studlyf.png"
+        description: "5+ online session on side hustles , linkedin , personal branding and other life changing sessions",
+        image: "/stage5.png"
     },
     {
         number: "06",
-        year: "2023",
+        year: "2025",
         title: "Internship Network Launch",
-        description: "Connected students with 500+ internship opportunities from top companies.",
-        image: "/studlyf.png"
+        description: "First time ever 19 year old , started on a mission to reach tier2/3 schools to empower students on AI",
+        image: "/stage6.png"
     },
     {
         number: "07",
-        year: "2023",
+        year: "2025",
         title: "Scholarship Portal",
-        description: "Helped students access ₹50+ crores in scholarships and grants.",
-        image: "/studlyf.png"
+        description: "Reached out 10+ schools and colleges in 3 weeks empowering 1000+ students",
+        image: "/stage7.png"
     },
     {
         number: "08",
-        year: "2024",
+        year: "2025",
         title: "AI Career Guidance",
-        description: "Implemented AI-powered career guidance and personalized learning paths.",
-        image: "/studlyf.png"
+        description: "Hosting one of the largest student to startup connect event with a footfall of 300 + students and 20+ startups",
+        image: "/stage8.png"
     },
     {
         number: "09",
-        year: "2024",
-        title: "Global Community Expansion",
-        description: "Extended services to international students and global universities.",
-        image: "/studlyf.png"
-    },
-    {
-        number: "10",
         year: "2025",
         title: "Future Vision Roadmap",
         description: "Building the world's largest student ecosystem and learning community.",

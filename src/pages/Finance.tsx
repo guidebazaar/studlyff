@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Spline from '@splinetool/react-spline';
 import { motion } from "framer-motion";

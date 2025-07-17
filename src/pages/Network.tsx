@@ -29,6 +29,8 @@ type NetworkUser = {
   interests?: string[];
 };
 
+const API_BASE_URL = "https://stud-lyf-backend.vercel.app";
+
 const Network = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -53,7 +55,7 @@ const Network = () => {
   useEffect(() => {
     setLoadingUsers(true);
     setUserError(null);
-    fetch('/api/users')
+    fetch(`${API_BASE_URL}/api/users`)
       .then(res => {
         if (!res.ok) throw new Error('Network response was not ok: ' + res.status);
         return res.json();
@@ -83,10 +85,10 @@ const Network = () => {
   // Fetch connections and requests
   useEffect(() => {
     if (!userId) return;
-    fetch(`/api/connections/${userId}`)
+    fetch(`${API_BASE_URL}/api/connections/${userId}`)
       .then(res => res.json())
       .then(setConnections);
-    fetch(`/api/connections/requests/${userId}`)
+    fetch(`${API_BASE_URL}/api/connections/requests/${userId}`)
       .then(res => res.json())
       .then(reqs => setIncomingRequests(reqs));
   }, [userId]);
@@ -235,7 +237,7 @@ const Network = () => {
 
   const handleConnect = (targetUserId: string) => {
     if (!userId) return;
-    fetch('/api/connections/request', {
+    fetch(`${API_BASE_URL}/api/connections/request`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ from: userId, to: targetUserId })
