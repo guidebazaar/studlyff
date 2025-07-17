@@ -25,95 +25,92 @@ const Finance = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black overflow-x-hidden relative">
-      {/* Spline Animation moved to FinanceHero */}
-      <Navbar />
-      <div className="relative z-10 w-full">
-        <div className="w-full px-4 pt-20 pb-16">
-          <motion.div
-            className="max-w-7xl mx-auto space-y-12 sm:space-y-16 md:space-y-20 w-full"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isLoaded ? 1 : 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Hero Section */}
-            <FinanceHero
-              showAdvanced={showAdvanced}
-              setShowAdvanced={setShowAdvanced}
-            />
-
-            {/* Smart Tools & Calculators - Now second section */}
+    <>
+      <div className="min-h-screen bg-black overflow-x-hidden relative">
+        {/* Spline Animation moved to FinanceHero */}
+        <Navbar />
+        <div className="relative z-10 w-full">
+          <div className="w-full px-4 pt-20 pb-16">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="w-full"
+              className="max-w-7xl mx-auto space-y-12 sm:space-y-16 md:space-y-20 w-full"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isLoaded ? 1 : 0 }}
+              transition={{ duration: 0.8 }}
             >
-              <SmartTools />
-            </motion.div>
-
-            {/* Smart Filters + Search */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="w-full"
-            >
-              <SmartFilters
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                sortBy={sortBy}
-                setSortBy={setSortBy}
+              {/* Hero Section */}
+              <FinanceHero
+                showAdvanced={showAdvanced}
+                setShowAdvanced={setShowAdvanced}
               />
+              {/* Smart Tools & Calculators - Now second section */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="w-full"
+              >
+                <SmartTools />
+              </motion.div>
+              {/* Smart Filters + Search */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="w-full"
+              >
+                <SmartFilters
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  sortBy={sortBy}
+                  setSortBy={setSortBy}
+                />
+              </motion.div>
+              {/* Core Learning Cards */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="w-full"
+              >
+                <LearningCards selectedCategory={selectedCategory} />
+              </motion.div>
+              {/* Recommendations & Resources */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="w-full"
+              >
+                <RecommendationsSection />
+              </motion.div>
+              {/* Call-to-Action Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+                className="w-full"
+              >
+                <CallToActionSection />
+              </motion.div>
             </motion.div>
-
-            {/* Guided Path / Interactive Quiz */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="w-full"
-            >
-              <GuidedPath />
-            </motion.div>
-
-            {/* Core Learning Cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="w-full"
-            >
-              <LearningCards selectedCategory={selectedCategory} />
-            </motion.div>
-
-            {/* Recommendations & Resources */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="w-full"
-            >
-              <RecommendationsSection />
-            </motion.div>
-
-            {/* Call-to-Action Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="w-full"
-            >
-              <CallToActionSection />
-            </motion.div>
-          </motion.div>
+          </div>
         </div>
       </div>
 
+      {/* Guided Path / Interactive Quiz - now above Footer */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="w-full max-w-7xl mx-auto px-4 pb-12"
+      >
+        <GuidedPath />
+      </motion.div>
+
       <Footer />
-    </div>
+    </>
   );
 };
 

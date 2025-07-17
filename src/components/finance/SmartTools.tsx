@@ -147,7 +147,7 @@ const SmartTools = () => {
             whileHover={{ y: -8, scale: 1.03 }}
             className="group cursor-pointer"
           >
-            <Card className={`h-full overflow-hidden border ${tool.borderColor} shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm relative`}>
+            <Card className={`h-full overflow-hidden border ${tool.borderColor} shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm relative rounded-2xl`}>
               {/* Popular Badge */}
               {tool.popular && (
                 <div className="absolute top-4 right-4 z-10">
@@ -209,57 +209,6 @@ const SmartTools = () => {
         ))}
       </div>
       
-      {/* Quick Stats */}
-      <motion.div 
-        className="text-center mt-12 grid grid-cols-1 md:grid-cols-3 gap-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1 }}
-      >
-        <motion.div 
-          className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-sm rounded-2xl p-6 border border-blue-500/30"
-          whileHover={{ scale: 1.05, y: -5 }}
-          transition={{ duration: 0.3 }}
-        >
-          <DollarSign className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-white">₹10L+</p>
-          <p className="text-gray-300 text-sm">Money Saved by Students</p>
-        </motion.div>
-        <motion.div 
-          className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/30"
-          whileHover={{ scale: 1.05, y: -5 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Target className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-white">5K+</p>
-          <p className="text-gray-300 text-sm">Goals Achieved</p>
-        </motion.div>
-        <motion.div 
-          className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm rounded-2xl p-6 border border-green-500/30"
-          whileHover={{ scale: 1.05, y: -5 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Calculator className="h-8 w-8 text-green-400 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-white">50K+</p>
-          <p className="text-gray-300 text-sm">Calculations Done</p>
-        </motion.div>
-      </motion.div>
-      
-      {/* Pro Tip */}
-      <motion.div 
-        className="text-center mt-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1.2 }}
-      >
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full border border-purple-500/30">
-          <span className="text-2xl">💡</span>
-          <p className="text-gray-300 text-sm">
-            Pro tip: All tools work offline and save your data locally for privacy
-          </p>
-        </div>
-      </motion.div>
-
       {/* Tools Modal */}
       <ToolsModal 
         isOpen={isModalOpen}

@@ -394,16 +394,6 @@ const StudentDiscounts = () => {
                   </div>
                 </div>
 
-                {/* Separator after Header */}
-                <motion.div
-                    initial={{ opacity: 0, scaleX: 0 }}
-                    animate={{ opacity: 1, scaleX: 1 }}
-                    transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
-                    className="mb-12"
-                >
-                    <GradientSeparator thickness="thick" opacity="high" />
-                </motion.div>
-
                 {/* Enhanced Search and Filters */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -411,160 +401,7 @@ const StudentDiscounts = () => {
                     transition={{ duration: 0.8, delay: 0.7 }}
                     className="mb-8 space-y-6"
                 >
-                    {/* Search Bar with enhanced styling */}
-                    <div className="relative max-w-2xl mx-auto">
-                        <motion.div
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-brand-purple w-5 h-5"
-                            animate={{
-                                scale: [1, 1.1, 1],
-                                rotate: [0, 5, 0]
-                            }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                            }}
-                        >
-                            <Search />
-                        </motion.div>
-                        <Input
-                            type="text"
-                            placeholder="Search for brands, tools, or services..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/50 focus:border-brand-purple/50 focus:ring-brand-purple/20 rounded-xl h-12 transition-all duration-300 hover:bg-white/10"
-                        />
-                    </div>
-
                     {/* Enhanced Filter Tabs */}
-                    <Tabs defaultValue="categories" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3 bg-white/5 border-white/10 rounded-xl p-1">
-                            <TabsTrigger
-                                value="categories"
-                                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand-purple data-[state=active]:to-brand-pink data-[state=active]:text-white rounded-lg transition-all duration-300"
-                            >
-                                Categories
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="verification"
-                                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand-purple data-[state=active]:to-brand-pink data-[state=active]:text-white rounded-lg transition-all duration-300"
-                            >
-                                Verification
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="sort"
-                                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand-purple data-[state=active]:to-brand-pink data-[state=active]:text-white rounded-lg transition-all duration-300"
-                            >
-                                Sort By
-                            </TabsTrigger>
-                        </TabsList>
-
-                        <TabsContent value="categories" className="mt-6">
-                            <motion.div
-                                className="flex flex-wrap gap-3 justify-center"
-                                variants={containerVariants}
-                                initial="hidden"
-                                animate="visible"
-                            >
-                                {categories.map((category) => (
-                                    <motion.div
-                                        key={category}
-                                        variants={filterButtonVariants}
-                                        initial="inactive"
-                                        animate={selectedCategory === category ? "active" : "inactive"}
-                                        whileHover="hover"
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        <Button
-                                            variant={selectedCategory === category ? "default" : "outline"}
-                                            size="sm"
-                                            onClick={() => setSelectedCategory(category)}
-                                            className={selectedCategory === category
-                                                ? "bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 border-0 shadow-lg"
-                                                : "border-white/20 text-white/70 hover:bg-white/10 hover:border-brand-purple/30 hover:text-white transition-all duration-300"
-                                            }
-                                        >
-                                            {category}
-                                        </Button>
-                                    </motion.div>
-                                ))}
-                            </motion.div>
-                        </TabsContent>
-
-                        <TabsContent value="verification" className="mt-6">
-                            <motion.div
-                                className="flex flex-wrap gap-3 justify-center"
-                                variants={containerVariants}
-                                initial="hidden"
-                                animate="visible"
-                            >
-                                {verificationTypes.map((type) => (
-                                    <motion.div
-                                        key={type}
-                                        variants={filterButtonVariants}
-                                        initial="inactive"
-                                        animate={selectedVerification === type ? "active" : "inactive"}
-                                        whileHover="hover"
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        <Button
-                                            variant={selectedVerification === type ? "default" : "outline"}
-                                            size="sm"
-                                            onClick={() => setSelectedVerification(type)}
-                                            className={selectedVerification === type
-                                                ? "bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 border-0 shadow-lg"
-                                                : "border-white/20 text-white/70 hover:bg-white/10 hover:border-brand-purple/30 hover:text-white transition-all duration-300"
-                                            }
-                                        >
-                                            {type}
-                                        </Button>
-                                    </motion.div>
-                                ))}
-                            </motion.div>
-                        </TabsContent>
-
-                        <TabsContent value="sort" className="mt-6">
-                            <motion.div
-                                className="flex flex-wrap gap-3 justify-center"
-                                variants={containerVariants}
-                                initial="hidden"
-                                animate="visible"
-                            >
-                                {sortOptions.map((option) => (
-                                    <motion.div
-                                        key={option}
-                                        variants={filterButtonVariants}
-                                        initial="inactive"
-                                        animate={sortBy === option ? "active" : "inactive"}
-                                        whileHover="hover"
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        <Button
-                                            variant={sortBy === option ? "default" : "outline"}
-                                            size="sm"
-                                            onClick={() => setSortBy(option)}
-                                            className={sortBy === option
-                                                ? "bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 border-0 shadow-lg"
-                                                : "border-white/20 text-white/70 hover:bg-white/10 hover:border-brand-purple/30 hover:text-white transition-all duration-300"
-                                            }
-                                        >
-                                            {option}
-                                        </Button>
-                                    </motion.div>
-                                ))}
-                            </motion.div>
-                        </TabsContent>
-                    </Tabs>
-                </motion.div>
-
-                {/* Separator before Results */}
-                <motion.div
-                    initial={{ opacity: 0, scaleX: 0 }}
-                    animate={{ opacity: 1, scaleX: 1 }}
-                    transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
-                    className="mb-8"
-                >
-                    <GradientSeparator thickness="medium" opacity="medium" />
                 </motion.div>
 
                 {/* Enhanced Results Count */}
@@ -604,7 +441,7 @@ const StudentDiscounts = () => {
                                     delay: index * 0.1
                                 }}
                             >
-                                <Card className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border-white/10 hover:border-brand-purple/30 transition-all duration-500 h-full group cursor-pointer relative overflow-hidden">
+                                <Card className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border-white/10 hover:border-brand-purple/30 transition-all duration-500 h-full group cursor-pointer relative overflow-hidden rounded-2xl">
                                     {/* Animated background gradient */}
                                     <motion.div
                                         className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"

@@ -115,7 +115,7 @@ const LearningCards = ({ selectedCategory }: LearningCardsProps) => {
               whileTap={{ scale: 0.98 }}
               className="h-full group cursor-pointer"
             >
-              <Card className={`h-full overflow-hidden border ${card.borderColor} shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm relative`}>
+              <Card className={`h-full overflow-hidden border ${card.borderColor} shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm relative rounded-2xl`}>
                 {/* Gradient Overlay */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${card.bgGradient} opacity-50 group-hover:opacity-70 transition-opacity duration-500`}></div>
                 {/* Glowing Effect */}

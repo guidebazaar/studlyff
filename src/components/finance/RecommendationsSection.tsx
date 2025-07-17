@@ -7,21 +7,21 @@ import { Flame, BookOpen, Video, ArrowRight, Clock, TrendingUp, Eye, Star } from
 
 const RecommendationsSection = () => {
   const trendingTopics = [
-    { title: "Best SIPs for 2024", views: "2.5k", badge: "Hot", trend: "+25%", url: "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doListMutualFund=yes" },
-    { title: "Credit Cards for Students", views: "1.8k", badge: "Popular", trend: "+18%", url: "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12380&Mode=0" },
+    { title: "Best SIPs for 2025", views: "2.5k", badge: "Hot", trend: "+25%", url: "https://www.bankoncube.com/post/12-best-sips-for-the-long-term-10-20-year-investment-time-frame-starting-2021?0cc03a8e_page=3" },
+    { title: "Credit Cards for Students", views: "1.8k", badge: "Popular", trend: "+18%", url: "https://www.paisabazaar.com/credit-card/student-credit-card-in-india/" },
     { title: "Emergency Fund Planning", views: "1.2k", badge: "Essential", trend: "+12%", url: "https://www.nerdwallet.com/article/finance/emergency-fund" }
   ];
 
   const featuredArticles = [
-    { title: "5 Money Mistakes Every Student Makes", readTime: "5 min", rating: 4.8, url: "https://www.edutopia.org/article/teaching-financial-literacy" },
+    { title: "5 Money Mistakes Every Student Makes", readTime: "5 min", rating: 4.8, url: "https://www.udemy.com/course/learn-how-to-read-financial-statements/?utm_source=bing&utm_medium=udemyads&utm_campaign=BG-Search_DSA_Beta_Prof_la.EN_cc.India&campaigntype=Search&portfolio=Bing-India&language=EN&product=Course&test=&audience=DSA&topic=&priority=Beta&utm_content=deal4584&utm_term=_._ag_1312819272858224_._ad__._kw_Finance+en_._de_c_._dm__._pl__._ti_dat-2333850869606932%3Aloc-90_._li_116070_._pd__._&matchtype=b&msclkid=b8752bbc7d651fa80dfb43c54de54840&couponCode=PMNVD2025" },
     { title: "How to Start Investing with 1000", readTime: "7 min", rating: 4.9, url: "https://www.investopedia.com/articles/basics/06/invest1000.asp" },
     { title: "Understanding Health Insurance", readTime: "4 min", rating: 4.7, url: "https://www.india.gov.in/spotlight/health-insurance" }
   ];
 
   const explainerVideos = [
-    { title: "SIP vs FD: What's Better?", duration: "2:30", views: "15k", url: "https://www.youtube.com/watch?v=Q0u2FjF6b9I" },
-    { title: "Stock Market for Beginners", duration: "3:15", views: "22k", url: "https://www.youtube.com/watch?v=9V1l5yD2kGM" },
-    { title: "Budget Like a Pro", duration: "1:45", views: "8k", url: "https://www.youtube.com/watch?v=3_0J4QFqQjQ" }
+    { title: "SIP vs FD: What's Better?", duration: "2:30", views: "15k", url: "https://www.youtube.com/shorts/NpSUJkKHhWE" },
+    { title: "Stock Market for Beginners", duration: "3:15", views: "22k", url: "https://www.youtube.com/watch?v=3UF0ymVdYLA" },
+    { title: "Budget Like a Pro", duration: "1:45", views: "8k", url: "https://www.youtube.com/watch?v=-bqeNE1DOzA" }
   ];
 
   return (
@@ -59,7 +59,7 @@ const RecommendationsSection = () => {
           whileHover={{ y: -5 }}
           className="group cursor-pointer"
         >
-          <Card className="border border-orange-500/30 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm h-full relative overflow-hidden">
+          <Card className="border border-orange-500/30 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm h-full relative overflow-hidden rounded-2xl">
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-red-500/20 opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
             
@@ -138,7 +138,7 @@ const RecommendationsSection = () => {
           whileHover={{ y: -5 }}
           className="group cursor-pointer"
         >
-          <Card className="border border-blue-500/30 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm h-full relative overflow-hidden">
+          <Card className="border border-blue-500/30 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm h-full relative overflow-hidden rounded-2xl">
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
             
@@ -207,7 +207,7 @@ const RecommendationsSection = () => {
           whileHover={{ y: -5 }}
           className="group cursor-pointer"
         >
-          <Card className="border border-pink-500/30 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm h-full relative overflow-hidden">
+          <Card className="border border-pink-500/30 shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-gray-900 via-black to-gray-900 backdrop-blur-sm h-full relative overflow-hidden rounded-2xl">
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-red-500/20 opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
             
@@ -223,7 +223,7 @@ const RecommendationsSection = () => {
                 >
                   <Video className="h-5 w-5 text-white" />
                 </motion.div>
-                60s Explainer Videos
+                Short Term & Long Term Investment
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 relative z-10">

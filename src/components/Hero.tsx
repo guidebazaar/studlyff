@@ -4,12 +4,28 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, TrendingUp } from "lucide-react";
 import { SplitText } from "@/components/ui/split-text";
+import Lenis from 'lenis';
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
+  const [colorFill, setColorFill] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    // Lenis smooth scroll for this section only (if not already global)
+    const lenis = new Lenis({
+      duration: 1.2,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+    return () => {
+      lenis.destroy();
+    };
   }, []);
 
   const containerVariants = {
@@ -107,13 +123,14 @@ const Hero = () => {
         <motion.div variants={itemVariants}>
           <SplitText
             text="Guide Bazaar"
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2"
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 ${colorFill ? 'split-text-gradient' : ''}`}
             delay={50}
             animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
             animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
             easing="easeOutCubic"
             threshold={0.3}
             rootMargin="-100px"
+            onLetterAnimationComplete={() => setTimeout(() => setColorFill(true), 200)}
           />
         </motion.div>
 
@@ -170,6 +187,23 @@ const Hero = () => {
           ))}
         </motion.div>
       </motion.div>
+      <style>{`
+        .split-text-gradient span {
+          background: linear-gradient(90deg, #a259ff, #ff7eb3, #fff 80%);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          animation: fillColor 1.2s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        .split-text-gradient span {
+          opacity: 1;
+        }
+        @keyframes fillColor {
+          0% { filter: grayscale(1) brightness(0.7); }
+          100% { filter: grayscale(0) brightness(1); }
+        }
+      `}</style>
     </div>
   );
 };

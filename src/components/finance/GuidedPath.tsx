@@ -3,15 +3,17 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Rocket, ArrowRight } from "lucide-react";
+import { useToast } from '@/hooks/use-toast';
 
 const GuidedPath = () => {
+  const { toast } = useToast();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
     >
-      <Card className="bg-gradient-to-r from-brand-purple/5 to-brand-pink/5 border-brand-purple/20 overflow-hidden">
+      <Card className="bg-gradient-to-r from-brand-purple/5 to-brand-pink/5 border-brand-purple/20 overflow-hidden rounded-2xl">
         <CardContent className="p-8 md:p-12">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="flex-1 text-center md:text-left">
@@ -29,7 +31,11 @@ const GuidedPath = () => {
                 Answer 3 quick questions and we'll build a personalized finance plan just for you.
               </p>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" className="bg-gradient-to-r from-brand-purple to-brand-pink text-white shadow-lg">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-brand-purple to-brand-pink text-white shadow-lg"
+                  onClick={() => toast({ title: 'Coming Soon', description: 'This feature will be available soon!' })}
+                >
                   <Rocket className="mr-2 h-5 w-5" />
                   Build My Plan
                   <ArrowRight className="ml-2 h-5 w-5" />

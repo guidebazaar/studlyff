@@ -26,22 +26,21 @@ const Footer = () => {
               Empowering Every Student's Journey – Learn. Build. Connect. Track your progress, find opportunities, and grow your skills with our comprehensive platform.
             </p>
 
-            {/* Newsletter Signup */}
-            <div className="mb-6">
+            {/* WhatsApp Group Button */}
+            <div className="w-full flex justify-center mb-6">
               <a
                 href="https://chat.whatsapp.com/DmhWQGDBA7ZDr5xoWTu4Xa?mode=r_t"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-8 w-full text-base font-semibold rounded-full shadow-lg"
+                <button
+                  className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg text-base transition-all duration-200"
+                  style={{ minWidth: 240 }}
                 >
                   Join us in the WhatsApp group
-                </Button>
+                </button>
               </a>
             </div>
-
             {/* Social Links */}
             <div className="flex space-x-4">
               <a href="https://www.instagram.com/guide.bazaar?igsh=d3RuemhmaGszcXk2" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-purple-400 transition-colors p-2 rounded-lg hover:bg-gray-800/50">

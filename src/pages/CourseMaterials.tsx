@@ -172,7 +172,7 @@ const CourseMaterials = () => {
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {filteredMaterials.map((material) => (
-              <Card key={material.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300">
+              <Card key={material.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300 rounded-2xl">
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${getTypeColor(material.type)}`}>

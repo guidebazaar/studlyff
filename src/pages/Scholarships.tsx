@@ -12,62 +12,78 @@ import { SplitText } from "@/components/ui/split-text";
 const scholarships = [
   {
     id: 1,
-    title: "Fulbright Scholarship Program",
-    type: "International",
-    country: "USA",
-    amount: "$30,000",
-    deadline: "2025-01-15",
-    eligibility: "Graduate students, Young professionals",
-    description: "Prestigious scholarship for international educational exchange between the US and other countries."
+    title: 'TVS Cheema Scholarship Foundation',
+    description: 'Scholarships for meritorious students from economically weaker sections, provided by TVS Cheema Scholarship Foundation.',
+    link: 'https://www.tvscsf.com/'
   },
   {
     id: 2,
-    title: "DAAD Scholarships",
-    type: "International", 
-    country: "Germany",
-    amount: "€850/month",
-    deadline: "2024-12-31",
-    eligibility: "Master's and PhD students",
-    description: "German Academic Exchange Service scholarships for international students."
+    title: 'ICF Foundation Scholarship',
+    description: 'ICF Foundation offers scholarships to support students in their academic pursuits. Application is open for eligible candidates.',
+    link: 'https://foundationoficf.org/news/icf-foundation-scholarship-application-open/?gad_source=1&gad_campaignid=9268899598&gbraid=0AAAAACnqSymVqNQDngJ-lfJ0crfJC8RBN&gclid=CjwKCAjwvuLDBhAOEiwAPtF0Vm-6clMzobA661OnYMihFGTDTIFYLgq2RqM68Uqc1ZUc1WwELLIquRoCB5IQAvD_BwE'
   },
   {
     id: 3,
-    title: "Commonwealth Scholarships",
-    type: "International",
-    country: "UK",
-    amount: "Full funding",
-    deadline: "2025-02-28",
-    eligibility: "Citizens of Commonwealth countries",
-    description: "Full scholarships for postgraduate study in the UK for Commonwealth citizens."
+    title: 'Sitaram Jindal Foundation Scholarships',
+    description: 'Scholarships for students in Bangalore and across India, supporting various levels of education.',
+    link: 'https://www.sitaramjindalfoundation.org/scholarships-for-students-in-bangalore.php'
   },
   {
     id: 4,
-    title: "INSPIRE Fellowship",
-    type: "National",
-    country: "India",
-    amount: "₹80,000/year",
-    deadline: "2024-11-30",
-    eligibility: "Science students in India",
-    description: "Department of Science and Technology fellowship for pursuing research in basic sciences."
-  }
+    title: 'Prime Minister’s Scholarship Scheme (PMSS)',
+    description: 'A government initiative to provide financial assistance to dependent wards of ex-servicemen/ex-coast guard personnel.',
+    link: 'https://www.myscheme.gov.in/schemes/pmss'
+  },
+  {
+    id: 5,
+    title: 'Indira Gandhi Single Girl Child Scholarship',
+    description: 'Scholarship for single girl children pursuing higher education, aimed at promoting education among girls.',
+    link: 'https://www.buddy4study.com/article/indira-gandhi-single-girl-child-scholarship'
+  },
+  {
+    id: 6,
+    title: 'Infosys STEM Stars Scholarship',
+    description: 'Infosys Foundation offers scholarships to support girls pursuing STEM education in India.',
+    link: 'https://www.buddy4study.com/page/infosys-stem-stars-scholarship'
+  },
+];
+
+// Additional scholarships from user
+const additionalScholarships = [
+  {
+    title: 'TVS Cheema Scholarship Foundation',
+    description: 'Scholarships for meritorious students from economically weaker sections, provided by TVS Cheema Scholarship Foundation.',
+    link: 'https://www.tvscsf.com/'
+  },
+  {
+    title: 'ICF Foundation Scholarship',
+    description: 'ICF Foundation offers scholarships to support students in their academic pursuits. Application is open for eligible candidates.',
+    link: 'https://foundationoficf.org/news/icf-foundation-scholarship-application-open/?gad_source=1&gad_campaignid=9268899598&gbraid=0AAAAACnqSymVqNQDngJ-lfJ0crfJC8RBN&gclid=CjwKCAjwvuLDBhAOEiwAPtF0Vm-6clMzobA661OnYMihFGTDTIFYLgq2RqM68Uqc1ZUc1WwELLIquRoCB5IQAvD_BwE'
+  },
+  {
+    title: 'Sitaram Jindal Foundation Scholarships',
+    description: 'Scholarships for students in Bangalore and across India, supporting various levels of education.',
+    link: 'https://www.sitaramjindalfoundation.org/scholarships-for-students-in-bangalore.php'
+  },
+  {
+    title: 'Prime Minister’s Scholarship Scheme (PMSS)',
+    description: 'A government initiative to provide financial assistance to dependent wards of ex-servicemen/ex-coast guard personnel.',
+    link: 'https://www.myscheme.gov.in/schemes/pmss'
+  },
+  {
+    title: 'Indira Gandhi Single Girl Child Scholarship',
+    description: 'Scholarship for single girl children pursuing higher education, aimed at promoting education among girls.',
+    link: 'https://www.buddy4study.com/article/indira-gandhi-single-girl-child-scholarship'
+  },
+  {
+    title: 'Infosys STEM Stars Scholarship',
+    description: 'Infosys Foundation offers scholarships to support girls pursuing STEM education in India.',
+    link: 'https://www.buddy4study.com/page/infosys-stem-stars-scholarship'
+  },
 ];
 
 const Scholarships = () => {
-  const [selectedCountry, setSelectedCountry] = useState("all");
-  const [selectedType, setSelectedType] = useState("all");
-
-  const filteredScholarships = scholarships.filter(scholarship => {
-    return (selectedCountry === "all" || scholarship.country === selectedCountry) &&
-           (selectedType === "all" || scholarship.type === selectedType);
-  });
-
-  const handleCountryChange = (value: string) => {
-    setSelectedCountry(value);
-  };
-
-  const handleTypeChange = (value: string) => {
-    setSelectedType(value);
-  };
+  // Removed filter state and logic since not needed
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -95,38 +111,6 @@ const Scholarships = () => {
             </p>
           </motion.div>
 
-          {/* Filters */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex flex-wrap gap-4 mb-8 justify-center"
-          >
-            <Select value={selectedCountry} onValueChange={handleCountryChange}>
-              <SelectTrigger className="w-48 bg-white/10 border-white/20 text-white">
-                <SelectValue placeholder="Select Country" />
-              </SelectTrigger>
-              <SelectContent className="bg-black/90 border-white/20 text-white">
-                <SelectItem value="all">All Countries</SelectItem>
-                <SelectItem value="USA">USA</SelectItem>
-                <SelectItem value="Germany">Germany</SelectItem>
-                <SelectItem value="UK">UK</SelectItem>
-                <SelectItem value="India">India</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={selectedType} onValueChange={handleTypeChange}>
-              <SelectTrigger className="w-48 bg-white/10 border-white/20 text-white">
-                <SelectValue placeholder="Select Type" />
-              </SelectTrigger>
-              <SelectContent className="bg-black/90 border-white/20 text-white">
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="National">National</SelectItem>
-                <SelectItem value="International">International</SelectItem>
-              </SelectContent>
-            </Select>
-          </motion.div>
-
           {/* Scholarships Grid */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -134,45 +118,16 @@ const Scholarships = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="grid md:grid-cols-2 gap-6"
           >
-            {filteredScholarships.map((scholarship) => (
-              <Card key={scholarship.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300">
+            {scholarships.map((scholarship) => (
+              <Card key={scholarship.id || scholarship.title} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300 rounded-2xl">
                 <CardHeader>
-                  <div className="flex justify-between items-start mb-2">
-                    <CardTitle className="text-xl font-bold text-white">{scholarship.title}</CardTitle>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      scholarship.type === 'International' 
-                        ? 'bg-brand-purple/20 text-brand-purple' 
-                        : 'bg-green-500/20 text-green-400'
-                    }`}>
-                      {scholarship.type}
-                    </span>
-                  </div>
-                  <CardDescription className="text-white">
-                    {scholarship.description}
-                  </CardDescription>
+                  <CardTitle className="text-xl font-bold text-white">{scholarship.title}</CardTitle>
+                  <CardDescription className="text-white">{scholarship.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 text-white">
-                      <Globe className="h-4 w-4" />
-                      <span>{scholarship.country}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-white">
-                      <DollarSign className="h-4 w-4" />
-                      <span>{scholarship.amount}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-white">
-                      <Calendar className="h-4 w-4" />
-                      <span>Deadline: {scholarship.deadline}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-white">
-                      <Users className="h-4 w-4" />
-                      <span>{scholarship.eligibility}</span>
-                    </div>
-                  </div>
-                  <Button className="mt-4 bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 w-full">
-                    Apply Now
-                  </Button>
+                  {scholarship.link && (
+                    <a href={scholarship.link} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-brand-purple font-semibold hover:underline">Learn More</a>
+                  )}
                 </CardContent>
               </Card>
             ))}

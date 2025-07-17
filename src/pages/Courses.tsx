@@ -42,7 +42,7 @@ const Courses = () => {
             className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto"
           >
             {/* Paid Courses Card */}
-            <Card className="bg-gradient-to-br from-brand-purple/10 to-brand-pink/10 border-brand-purple/20 hover:border-brand-purple/40 transition-all duration-300">
+            <Card className="bg-gradient-to-br from-brand-purple/10 to-brand-pink/10 border-brand-purple/20 hover:border-brand-purple/40 transition-all duration-300 rounded-2xl">
               <CardHeader className="text-center">
                 <div className="mx-auto mb-4 p-3 bg-gradient-to-r from-brand-purple to-brand-pink rounded-full w-fit">
                   <Crown className="h-8 w-8 text-white" />
@@ -68,7 +68,7 @@ const Courses = () => {
             </Card>
 
             {/* Free Courses Card */}
-            <Card className="bg-gradient-to-br from-green-500/10 to-blue-500/10 border-green-500/20 hover:border-green-500/40 transition-all duration-300">
+            <Card className="bg-gradient-to-br from-green-500/10 to-blue-500/10 border-green-500/20 hover:border-green-500/40 transition-all duration-300 rounded-2xl">
               <CardHeader className="text-center">
                 <div className="mx-auto mb-4 p-3 bg-gradient-to-r from-green-500 to-blue-500 rounded-full w-fit">
                   <BookOpen className="h-8 w-8 text-white" />

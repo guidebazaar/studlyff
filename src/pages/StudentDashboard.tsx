@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Linkedin, Github, Globe, FileUp, FileText, Upload, FileCheck2, FileSearch, X, User, Mail, GraduationCap, Calendar, School, Sparkles, Folder, Award, UserCog, Target } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { SplitText } from '@/components/ui/split-text';
 import { useAuth } from '@/lib/AuthContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import Lenis from 'lenis';
 
 const API_URL = 'http://localhost:5000/api/profile';
 
@@ -106,6 +109,23 @@ export default function StudentProfileDashboard() {
       })
       .catch(() => setLoading(false));
   }, [user]);
+
+  // Lenis smooth scroll initialization
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   // Open edit modal with prefilled data
   const handleEdit = () => {
@@ -246,46 +266,68 @@ export default function StudentProfileDashboard() {
   if (!user) return <div className="text-white p-8">Please log in.</div>;
 
   return (
-    <div className="bg-black min-h-screen w-full font-sans">
-      <style>{`
-        ::selection { background: #a259ff; color: #fff; }
-        .neon-purple { color: #a259ff; }
-        .neon-border { border: 2px solid #a259ff44; }
-        .card-section { background: #18181b; border: 2px solid #a259ff44; border-radius: 1rem; box-shadow: 0 4px 32px 0 #a259ff11, 0 1.5px 8px 0 #0003; }
-        .metric-card { min-height: 180px; padding: 2rem; }
-        .metric-card:hover { box-shadow: 0 4px 32px 0 #a259ff55, 0 1.5px 8px 0 #0003; border-color: #a259ff; }
-        .profile-btn:hover { filter: brightness(0.92); }
-        .modal-blur-bg { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,0.45); backdrop-filter: blur(6px); }
-      `}</style>
-      {/* Dashboard Heading (outside of any card) */}
-      <header className="w-full px-4 sm:px-10 pt-8 pb-4 flex justify-between items-center border-b border-[#a259ff33] bg-black">
-        <h1 className="text-3xl font-extrabold text-white tracking-wide">DASHBOARD</h1>
+    <div className="relative min-h-screen w-full font-sans overflow-x-hidden bg-black">
+      {/* Animated Gradient Background */}
+      <div className="fixed inset-0 -z-10 pointer-events-none" />
+      {/* Dashboard Heading */}
+      <header className="w-full px-4 sm:px-10 pt-8 pb-4 flex justify-between items-center border-b border-[#a259ff] bg-black/90 backdrop-blur-xl rounded-b-3xl shadow-xl">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <SplitText
+            text="DASHBOARD"
+            className="text-5xl font-extrabold bg-gradient-to-r from-brand-purple via-brand-pink to-white bg-clip-text text-transparent tracking-wide drop-shadow-lg uppercase"
+            delay={80}
+            animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+            animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+            easing="easeOutCubic"
+            threshold={0.3}
+            rootMargin="-100px"
+            textAlign="center"
+          />
+        </motion.div>
         <button
-          className="text-white text-2xl font-bold hover:text-[#a259ff] transition"
+          className="text-white text-2xl font-bold hover:text-[#a259ff] transition drop-shadow-lg"
           onClick={() => window.history.back()}
           title="Go Back"
         >
           <X className="w-8 h-8" />
         </button>
       </header>
-      {/* Modern, Clean, Responsive Dashboard */}
+      {/* Main Dashboard Section */}
       <section className="w-full min-h-[90vh] px-0 sm:px-4 pt-10">
-        <div className="rounded-3xl bg-gradient-to-br from-[#18181b] via-[#23272f] to-[#1a1333] shadow-2xl p-0 md:p-6 mx-0 w-full">
+        <div className="rounded-3xl bg-black backdrop-blur-xl shadow-[0_0_32px_4px_#a259ff55] border border-white p-0 md:p-8 mx-0 w-full">
           {/* Profile Card */}
-          <div className="flex flex-col lg:flex-row items-center gap-10 bg-white/5 rounded-2xl shadow-lg p-10 mb-12 border border-[#a259ff22] backdrop-blur-md w-full">
-            <img src={profile?.profilePicture || 'https://placehold.co/120x120/A855F7/FFFFFF?text=User'} alt="Profile" className="h-32 w-32 rounded-full border-4 border-[#a259ff] bg-[#23272f] object-cover shadow-lg" />
+          <div className="flex flex-col lg:flex-row items-center gap-10 bg-gradient-to-br from-black via-[#23272f] to-[#2d1a4a] rounded-2xl shadow-2xl p-10 mb-12 border border-[#a259ff] hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-[#a259ff] hover:outline-[#ff7eb3] hover:shadow-[0_0_24px_4px_#a259ff99,0_0_48px_8px_#ff7eb399] backdrop-blur-2xl w-full">
+            <div className="relative">
+              <img src={profile?.profilePicture || 'https://placehold.co/120x120/A855F7/FFFFFF?text=User'} alt="Profile" className="h-36 w-36 rounded-full border-4 border-[#a259ff] bg-[#23272f] object-cover shadow-2xl" />
+              <span className="absolute bottom-2 right-2 bg-[#ff7eb3] text-white rounded-full px-3 py-1 text-xs font-bold shadow-lg animate-pulse">{profile?.year || ''}</span>
+            </div>
             <div className="flex-1 flex flex-col gap-3 items-center lg:items-start w-full">
-              <span className="text-4xl font-extrabold text-white tracking-wide">{profile?.name || user.displayName || 'No Name'}</span>
-              <span className="text-lg text-white/80">{profile?.email || user.email}</span>
-              <div className="flex flex-wrap gap-4 mt-2">
-                <span className="bg-[#a259ff22] text-[#a259ff] px-4 py-1 rounded-full text-sm font-semibold">{profile?.city}</span>
-                <span className="bg-[#a259ff22] text-[#a259ff] px-4 py-1 rounded-full text-sm font-semibold">DOB: {profile?.dateOfBirth}</span>
-                <span className="bg-[#a259ff22] text-[#a259ff] px-4 py-1 rounded-full text-sm font-semibold">Phone: {profile?.phoneNumber}</span>
+              <SplitText
+                text={profile?.name || user.displayName || 'No Name'}
+                className="text-2xl font-extrabold bg-gradient-to-r from-brand-purple via-brand-pink to-white bg-clip-text text-transparent drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] tracking-wide"
+                delay={80}
+                animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
+                animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
+                easing="easeOutCubic"
+                threshold={0.3}
+                rootMargin="-100px"
+                textAlign="center"
+              />
+              <span className="text-lg text-white font-extrabold drop-shadow-[0_0_4px_#fff,0_0_8px_#a259ff]">{profile?.email || user.email}</span>
+              <div className="flex flex-col sm:flex-row flex-wrap gap-4 mt-2 items-center w-full justify-start">
+                <span className="bg-[#a259ff]/20 text-[#a259ff] px-4 py-1 rounded-full text-sm font-extrabold shadow">{profile?.city}</span>
+                <span className="bg-[#ff7eb3]/20 text-[#ff7eb3] px-4 py-1 rounded-full text-sm font-extrabold shadow">DOB: {profile?.dateOfBirth}</span>
+                <span className="bg-[#a259ff]/20 text-[#a259ff] px-4 py-1 rounded-full text-sm font-extrabold shadow">Phone: {profile?.phoneNumber}</span>
               </div>
               {profile?.bio && (
-                <div className="mt-4 w-full">
-                  <span className="block text-white/80 font-semibold mb-1">Bio:</span>
-                  <p className="text-white/70 bg-[#23272f] rounded-xl p-4 border border-[#a259ff22] w-full max-w-xl">{profile.bio}</p>
+                <div className="mt-4 w-full max-w-xs lg:max-w-sm">
+                  <p className="text-white font-semibold bg-[#23272f]/80 rounded-xl px-4 py-2 border border-[#a259ff]/40 shadow-inner text-sm text-center">
+                    {profile.bio || 'This is a temporary bio. Update your profile to add your own bio!'}
+                  </p>
                 </div>
               )}
             </div>
@@ -293,16 +335,14 @@ export default function StudentProfileDashboard() {
           {/* Responsive Info Grid - 3 columns on xl, 2 on md, 1 on mobile */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full">
             {/* Contact & Social */}
-            <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 flex flex-col items-center hover:scale-[1.02] transition-transform border border-[#a259ff44]">
-              <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Contact & Social</h3>
+            <div className="rounded-2xl bg-[#18181b] shadow-md p-7 flex flex-col items-center border border-white hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-white hover:outline-[#ff7eb3] hover:shadow-[0_0_16px_2px_#a259ff99,0_0_32px_4px_#ff7eb399]">
+              <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] mb-3 flex items-center gap-2">Contact & Social</h3>
               <div className="w-full flex justify-center my-3">
-                <div className="h-[1.5px] w-2/3 bg-gradient-to-r from-[#a259ff33] via-[#fff2] to-[#a259ff33] rounded-full" />
+                <div className="h-[1.5px] w-2/3 bg-gradient-to-r from-[#a259ff] via-[#ff7eb3] to-white rounded-full" />
               </div>
-              <div className="flex items-end gap-10 mt-2 px-4 py-4 rounded-xl bg-white/20 backdrop-blur-md shadow-lg border border-[#a259ff22]">
+              <div className="flex items-end gap-10 mt-2 px-4 py-4 rounded-xl bg-black/30 backdrop-blur-md shadow-lg border border-[#a259ff]/30">
                 {/* LinkedIn */}
                 <div className="flex flex-col items-center group">
-                  <span className="relative flex items-center justify-center">
-                    <span className={`absolute w-14 h-14 rounded-full bg-gradient-to-br from-[#a259ff33] to-[#fff1] blur-sm z-0 ${profile?.linkedinUrl ? '' : 'opacity-30'}`}></span>
                     <a
                       href={profile?.linkedinUrl || undefined}
                       target="_blank"
@@ -315,13 +355,10 @@ export default function StudentProfileDashboard() {
                     >
                       <Linkedin className="w-9 h-9" />
                     </a>
-                  </span>
                   <span className={`mt-2 text-xs font-semibold tracking-wide uppercase ${profile?.linkedinUrl ? 'text-[#a259ff]' : 'text-white/40'}`}>LinkedIn</span>
                 </div>
                 {/* GitHub */}
                 <div className="flex flex-col items-center group">
-                  <span className="relative flex items-center justify-center">
-                    <span className={`absolute w-14 h-14 rounded-full bg-gradient-to-br from-[#a259ff33] to-[#fff1] blur-sm z-0 ${profile?.githubUrl ? '' : 'opacity-30'}`}></span>
                     <a
                       href={profile?.githubUrl || undefined}
                       target="_blank"
@@ -334,56 +371,52 @@ export default function StudentProfileDashboard() {
                     >
                       <Github className="w-9 h-9" />
                     </a>
-                  </span>
                   <span className={`mt-2 text-xs font-semibold tracking-wide uppercase ${profile?.githubUrl ? 'text-[#a259ff]' : 'text-white/40'}`}>GitHub</span>
                 </div>
                 {/* Website */}
                 <div className="flex flex-col items-center group">
-                  <span className="relative flex items-center justify-center">
-                    <span className={`absolute w-14 h-14 rounded-full bg-gradient-to-br from-[#a259ff33] to-[#fff1] blur-sm z-0 ${profile?.portfolioUrl ? '' : 'opacity-30'}`}></span>
                     <a
                       href={profile?.portfolioUrl || undefined}
                       target="_blank"
                       rel="noopener noreferrer"
                       title="Website"
                       aria-label="Website"
-                      className={`relative z-10 transition-transform duration-200 ${profile?.portfolioUrl ? 'hover:scale-125 hover:drop-shadow-[0_0_8px_#a259ff] hover:text-[#a259ff] cursor-pointer' : 'text-white/30 cursor-not-allowed'}`}
+                    className={`relative z-10 transition-transform duration-200 ${profile?.portfolioUrl ? 'hover:scale-125 hover:drop-shadow-[0_0_8px_#ff7eb3] hover:text-[#ff7eb3] cursor-pointer' : 'text-white/30 cursor-not-allowed'}`}
                       tabIndex={profile?.portfolioUrl ? 0 : -1}
                       onClick={e => { if (!profile?.portfolioUrl) e.preventDefault(); }}
                     >
                       <Globe className="w-9 h-9" />
                     </a>
-                  </span>
-                  <span className={`mt-2 text-xs font-semibold tracking-wide uppercase ${profile?.portfolioUrl ? 'text-[#a259ff]' : 'text-white/40'}`}>Website</span>
+                  <span className={`mt-2 text-xs font-semibold tracking-wide uppercase ${profile?.portfolioUrl ? 'text-[#ff7eb3]' : 'text-white/40'}`}>Website</span>
                 </div>
               </div>
             </div>
             {/* Education */}
-            <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
-              <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Education</h3>
+            <div className="rounded-2xl bg-[#18181b] shadow-md p-7 border border-white hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-white hover:outline-[#ff7eb3] hover:shadow-[0_0_16px_2px_#a259ff99,0_0_32px_4px_#ff7eb399]">
+              <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] mb-3 flex items-center gap-2">Education</h3>
               <div className="mb-2 text-white/90 flex items-center gap-2"><GraduationCap className="w-5 h-5 text-[#a259ff]" /><span className="font-semibold">Branch:</span> {profile?.branch}</div>
               <div className="mb-2 text-white/90 flex items-center gap-2"><Calendar className="w-5 h-5 text-[#a259ff]" /><span className="font-semibold">Year:</span> {profile?.year}</div>
               <div className="mb-2 text-white/90 flex items-center gap-2"><School className="w-5 h-5 text-[#a259ff]" /><span className="font-semibold">University:</span> {profile?.university}</div>
             </div>
             {/* Skills */}
-            <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
-              <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Skills</h3>
+            <div className="rounded-2xl bg-[#18181b] shadow-md p-7 border border-white hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-white hover:outline-[#ff7eb3] hover:shadow-[0_0_16px_2px_#a259ff99,0_0_32px_4px_#ff7eb399]">
+              <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] mb-3 flex items-center gap-2">Skills</h3>
               {Array.isArray(profile?.skills) && profile.skills.length > 0 ? (
                 <div className="flex flex-wrap gap-3 mt-1">
                   {profile.skills.map((skill, idx) => (
-                    <span key={idx} className="bg-[#a259ff33] text-[#a259ff] px-4 py-1 rounded-full text-sm font-semibold border border-[#a259ff55] shadow-sm">{skill}</span>
+                    <span key={idx} className="bg-[#ff7eb3]/20 text-[#ff7eb3] px-4 py-1 rounded-full text-sm font-semibold border border-[#ff7eb3]/40 shadow-sm">{skill}</span>
                   ))}
                 </div>
               ) : <span className="text-white/60">None</span>}
             </div>
             {/* Projects */}
-            <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
-              <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Projects</h3>
+            <div className="rounded-2xl bg-[#18181b] shadow-md p-7 border border-white hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-white hover:outline-[#ff7eb3] hover:shadow-[0_0_16px_2px_#a259ff99,0_0_32px_4px_#ff7eb399]">
+              <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] mb-3 flex items-center gap-2">Projects</h3>
               {Array.isArray(profile?.projectFiles) && profile.projectFiles.length > 0 ? (
                 <ul className="space-y-2">
                   {profile.projectFiles.map((file, idx) => (
                     <li key={idx} className="flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-[#a259ff]" />
+                      <FileText className="w-5 h-5 text-[#ff7eb3]" />
                       <a href={file.url || file} target="_blank" rel="noopener noreferrer" className="text-white/90 underline">{file.name || file}</a>
                     </li>
                   ))}
@@ -391,13 +424,13 @@ export default function StudentProfileDashboard() {
               ) : <span className="text-white/60">No projects uploaded.</span>}
             </div>
             {/* Certifications */}
-            <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
-              <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Certifications</h3>
+            <div className="rounded-2xl bg-[#18181b] shadow-md p-7 border border-white hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-white hover:outline-[#ff7eb3] hover:shadow-[0_0_16px_2px_#a259ff99,0_0_32px_4px_#ff7eb399]">
+              <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] mb-3 flex items-center gap-2">Certifications</h3>
               {Array.isArray(profile?.certificationFiles) && profile.certificationFiles.length > 0 ? (
                 <ul className="space-y-2">
                   {profile.certificationFiles.map((file, idx) => (
                     <li key={idx} className="flex items-center gap-2">
-                      <Award className="w-5 h-5 text-[#a259ff]" />
+                      <Award className="w-5 h-5 text-[#ff7eb3]" />
                       <a href={file.url || file} target="_blank" rel="noopener noreferrer" className="text-white/90 underline">{file.name || file}</a>
                     </li>
                   ))}
@@ -405,13 +438,13 @@ export default function StudentProfileDashboard() {
               ) : <span className="text-white/60">No certifications uploaded.</span>}
             </div>
             {/* Resume */}
-            <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
-              <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Resume</h3>
+            <div className="rounded-2xl bg-[#18181b] shadow-md p-7 border border-white hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-white hover:outline-[#ff7eb3] hover:shadow-[0_0_16px_2px_#a259ff99,0_0_32px_4px_#ff7eb399]">
+              <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] mb-3 flex items-center gap-2">Resume</h3>
               {Array.isArray(profile?.resumeFiles) && profile.resumeFiles.length > 0 ? (
                 <ul className="space-y-2">
                   {profile.resumeFiles.map((file, idx) => (
                     <li key={idx} className="flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-[#a259ff]" />
+                      <FileText className="w-5 h-5 text-[#ff7eb3]" />
                       <a href={file.url || file} target="_blank" rel="noopener noreferrer" className="text-white/90 underline">{file.name || file}</a>
                     </li>
                   ))}
@@ -419,22 +452,17 @@ export default function StudentProfileDashboard() {
               ) : <span className="text-white/60">No resume uploaded.</span>}
             </div>
             {/* Profile & Preferences */}
-            <div className="rounded-2xl bg-gradient-to-br from-[#23272f] via-[#23272f99] to-[#a259ff22] shadow-md p-7 hover:scale-[1.02] transition-transform border border-[#a259ff44]">
-              <h3 className="text-xl font-bold text-[#a259ff] mb-3 flex items-center gap-2">Profile & Preferences</h3>
+            <div className="rounded-2xl bg-[#18181b] shadow-md p-7 border border-white hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-white hover:outline-[#ff7eb3] hover:shadow-[0_0_16px_2px_#a259ff99,0_0_32px_4px_#ff7eb399]">
+              <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] mb-3 flex items-center gap-2">Profile & Preferences</h3>
               <div className="text-white/90 mb-2 flex items-center gap-2"><FileText className="w-5 h-5 text-[#a259ff]" /> <span>Bio:</span> {profile?.bio}</div>
-              <div className="text-white/90 flex items-center gap-2"><Target className="w-5 h-5 text-[#a259ff]" /> <span>Career Goals:</span> {profile?.careerGoals}</div>
+              <div className="text-white/90 flex items-center gap-2"><Target className="w-5 h-5 text-[#ff7eb3]" /> <span>Career Goals:</span> {profile?.careerGoals}</div>
             </div>
           </div>
         </div>
-        <style>{`
-          body {
-            background: linear-gradient(135deg, #18181b 0%, #23272f 50%, #a259ff22 100%);
-          }
-        `}</style>
       </section>
       {/* Edit Profile Modal */}
       {editOpen && (
-        <div className="modal-blur-bg flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xl">
           <form
             onSubmit={handleSave}
             onKeyDown={e => {
@@ -612,11 +640,11 @@ export default function StudentProfileDashboard() {
         </div>
       )}
       {/* Footer Buttons */}
-      <footer className="w-full max-w-5xl mx-auto px-4 sm:px-10 pb-10 flex flex-col sm:flex-row gap-4">
-        <button className="profile-btn flex-1 bg-white text-black font-bold rounded-2xl py-4 text-lg flex items-center justify-center gap-2 shadow hover:scale-105 transition" onClick={handleEdit}>
+      <footer className="w-full max-w-5xl mx-auto px-4 sm:px-10 pb-10 flex flex-col sm:flex-row gap-4 mt-16">
+        <button className="profile-btn flex-1 bg-white text-black font-bold rounded-2xl py-5 text-2xl flex items-center justify-center gap-2 shadow hover:scale-105 transition" onClick={handleEdit}>
           Edit Profile
         </button>
-        <button className="profile-btn flex-1 bg-[#a259ff] text-white font-extrabold rounded-2xl py-4 text-lg flex items-center justify-center gap-2 shadow hover:scale-105 transition" onClick={handleLogout}>
+        <button className="profile-btn flex-1 bg-red-600 text-white font-extrabold rounded-2xl py-5 text-2xl flex items-center justify-center gap-2 shadow hover:scale-105 transition" onClick={handleLogout}>
           Logout
         </button>
       </footer>

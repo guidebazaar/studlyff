@@ -167,6 +167,7 @@ const ProjectHunt: React.FC = () => {
   const [showChatModal, setShowChatModal] = useState(false);
   const [activeChatProject, setActiveChatProject] = useState<any>(null);
   const [chatUser, setChatUser] = useState(null);
+  const [requestedProjects, setRequestedProjects] = useState<{ [key: string]: boolean }>({});
 
   // Filter state
   const [category, setCategory] = useState("all");
@@ -211,7 +212,7 @@ const ProjectHunt: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#18181b] to-[#23272f] text-white">
+    <div className="min-h-screen flex flex-col bg-black text-white">
       <Navbar />
       {/* Hero Section */}
       <section className="w-full py-20 px-4 bg-gradient-to-b from-brand-purple/80 to-transparent relative">
@@ -358,22 +359,18 @@ const ProjectHunt: React.FC = () => {
                 <span className="text-sm text-white/60">Team: {proj.teamSize}+</span>
               </CardContent>
               <CardFooter className="flex gap-2 justify-end">
-                {/* Contribute button logic */}
-                {contributeRequests[proj.title]?.some(r => r.id === currentUser.id) ? (
-                  <Button size="sm" disabled>
-                    {contributeRequests[proj.title].find(r => r.id === currentUser.id)?.status === 'pending' ? 'Requested' : 'Accepted'}
-                  </Button>
-                ) : (
-                  <Button size="sm" onClick={() => {
-                    setContributeRequests(prev => ({
-                      ...prev,
-                      [proj.title]: [
-                        ...(prev[proj.title] || []),
-                        { id: currentUser.id, name: currentUser.name, status: 'pending' }
-                      ]
-                    }));
-                  }}>Contribute</Button>
-                )}
+                <button
+                  className={`px-6 py-2 font-bold rounded-full shadow transition-all text-base ${requestedProjects[proj.title] ? 'bg-orange-500 text-white' : 'bg-white text-black hover:bg-gray-100'}`}
+                  style={{ minWidth: 120 }}
+                  onClick={() => {
+                    if (!requestedProjects[proj.title]) {
+                      setRequestedProjects(prev => ({ ...prev, [proj.title]: true }));
+                    }
+                  }}
+                  disabled={!!requestedProjects[proj.title]}
+                >
+                  {requestedProjects[proj.title] ? 'Requested' : 'Contribute'}
+                </button>
               </CardFooter>
             </Card>
           ))}
@@ -400,7 +397,6 @@ const ProjectHunt: React.FC = () => {
               <CardContent className="flex flex-col gap-2">
                 <span className="text-xs text-white/60">{proj.type}</span>
                 {/* If current user is owner, show requests */}
-                {/* For demo, assume all MY_PROJECTS are owned by currentUser */}
                 {contributeRequests[proj.title]?.length > 0 && (
                   <div className="mt-2">
                     <div className="font-semibold text-white mb-1">Contribute Requests:</div>

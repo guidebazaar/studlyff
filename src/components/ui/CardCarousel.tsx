@@ -12,6 +12,8 @@ import {
   Pagination,
 } from "swiper/modules";
 import { Badge } from "@/components/ui/badge";
+import Lenis from 'lenis';
+import { useEffect, useRef } from 'react';
 
 interface CarouselImage {
   src: string;
@@ -37,6 +39,21 @@ export const CardCarousel: React.FC<CarouselProps> = ({
   showPagination = true, // keep prop for API compatibility, but force false below
   showNavigation = true,
 }) => {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      gestureOrientation: 'vertical',
+    });
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
   const css = `
   .swiper {
     width: 100%;
@@ -88,8 +105,9 @@ export const CardCarousel: React.FC<CarouselProps> = ({
     font-weight: bold;
   }
   `;
+  const FALLBACK_IMAGE = '/placeholder.svg';
   return (
-    <>
+    <div ref={carouselRef}>
       <style>{css}</style>
       <Swiper
         spaceBetween={10}
@@ -137,6 +155,7 @@ export const CardCarousel: React.FC<CarouselProps> = ({
                   className="w-full h-48 object-cover rounded-xl mb-4"
                   alt={image.card.title}
                   loading="lazy"
+                  onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = FALLBACK_IMAGE; }}
                 />
                 <h3 className="text-xl font-bold text-white mb-2">{image.card.title}</h3>
                 <p className="text-white/80 mb-4">{image.card.summary}</p>
@@ -151,6 +170,7 @@ export const CardCarousel: React.FC<CarouselProps> = ({
                   className="size-full rounded-xl transition-transform duration-300 group-hover:scale-105"
                   alt={image.alt}
                   loading="lazy"
+                  onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = FALLBACK_IMAGE; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-80" />
               </div>
@@ -159,6 +179,6 @@ export const CardCarousel: React.FC<CarouselProps> = ({
         ))}
         {/* Navigation Arrows removed as requested */}
       </Swiper>
-    </>
+    </div>
   );
 }; 

@@ -107,7 +107,7 @@ const Marketplace = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#18181b] to-[#23272f] text-white overflow-hidden">
+    <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-grid-white/[0.02] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
@@ -331,7 +331,7 @@ const Marketplace = () => {
                       scale: 1.02,
                       boxShadow: "0 0 25px rgba(142, 68, 173, 0.25)"  
                     }}
-                    className="rounded-xl bg-white/5 backdrop-blur-lg border border-white/10 p-5 hover:border-brand-purple/50 transition-all duration-300"
+                    className="rounded-xl bg-white/5 backdrop-blur-lg border border-white/10 p-5 hover:border-brand-purple/50 transition-all duration-300 rounded-2xl"
                     onClick={() => setActiveItem(activeItem === listing.id ? null : listing.id)}
                   >
                     <div className="flex gap-4">

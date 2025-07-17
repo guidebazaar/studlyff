@@ -178,7 +178,7 @@ const Podcasts = () => {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
               >
-                <Card className="glass-card border-none overflow-hidden group cursor-pointer">
+                <Card className="glass-card border-none overflow-hidden group cursor-pointer rounded-2xl">
                   <div className="relative">
                     <img
                       src={podcast.image}

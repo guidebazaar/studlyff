@@ -35,7 +35,7 @@ const SIPCalculator = ({ onBack }: SIPCalculatorProps) => {
       exit={{ opacity: 0, x: -20 }}
       className="max-w-2xl mx-auto"
     >
-      <Card className="bg-gray-900 border-gray-700">
+      <Card className="bg-gray-900 border-gray-700 rounded-2xl">
         <CardHeader>
           <div className="flex items-center gap-4">
             <Button 

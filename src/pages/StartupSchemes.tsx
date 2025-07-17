@@ -145,7 +145,7 @@ const StartupSchemes = () => {
             className="grid md:grid-cols-2 gap-6"
           >
             {filteredSchemes.map((scheme) => (
-              <Card key={scheme.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300">
+              <Card key={scheme.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300 rounded-2xl">
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
                     <CardTitle className="text-xl font-bold text-white">{scheme.title}</CardTitle>

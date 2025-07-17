@@ -100,7 +100,7 @@ const YouTubeShorts = () => {
                   className="block w-full text-left"
                   style={{ background: 'none', border: 'none', padding: 0 }}
                 >
-                  <Card className="glass-card border-none overflow-hidden group cursor-pointer p-0">
+                  <Card className="glass-card border-none overflow-hidden group cursor-pointer p-0 rounded-2xl">
                     <div className="relative w-full rounded-xl overflow-hidden shadow-lg border border-white/10 bg-white" style={{ aspectRatio: '9/16', minHeight: 80, maxWidth: 180, margin: '0 auto' }}>
                     <img
                       src={short.thumbnail}

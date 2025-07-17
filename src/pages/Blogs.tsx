@@ -139,7 +139,7 @@ const Blogs = () => {
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
             {sortedBlogs.map((blog) => (
-              <Card key={blog.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300 p-5 sm:p-4">
+              <Card key={blog.id} className="bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-brand-purple/40 transition-all duration-300 p-5 sm:p-4 rounded-2xl">
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
                     <span className="px-2 py-1 rounded-full text-xs font-medium bg-brand-pink/20 text-brand-pink">
