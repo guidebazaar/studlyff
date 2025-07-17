@@ -25,6 +25,9 @@ function LenisProvider({ children }: { children: React.ReactNode }) {
       infinite: false,
       smoothWheel: true,
     });
+    document.body.classList.add('scroll-smooth');
+    // Optionally add snap classes globally for immersive section stops
+    document.body.classList.add('snap-y', 'snap-mandatory');
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -32,6 +35,7 @@ function LenisProvider({ children }: { children: React.ReactNode }) {
     requestAnimationFrame(raf);
     return () => {
       lenis.destroy();
+      document.body.classList.remove('scroll-smooth', 'snap-y', 'snap-mandatory');
     };
   }, []);
   return <>{children}</>;
@@ -40,7 +44,7 @@ function LenisProvider({ children }: { children: React.ReactNode }) {
 root.render(
   <React.StrictMode>
     <LenisProvider>
-      <App />
+    <App />
     </LenisProvider>
   </React.StrictMode>
 );

@@ -115,7 +115,7 @@ const TrendingContent = () => {
   return (
     <>
       {/* YouTube Shorts Section */}
-      <section className="py-20">
+      <section className="py-10">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center">
@@ -200,7 +200,7 @@ const TrendingContent = () => {
       </section>
 
       {/* Popular Blogs Section */}
-      <section className="py-20">
+      <section className="pt-6 pb-10">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center">
@@ -214,7 +214,7 @@ const TrendingContent = () => {
             </div>
             <InteractiveHoverButton
               text="Show More"
-              onClick={() => navigate('/blogs')}
+              onClick={() => { navigate('/blogs'); window.scrollTo(0, 0); }}
               className="w-20 px-3 py-1.5 text-xs flex items-center gap-1 rounded-full md:w-48 md:px-6 md:py-2 md:text-lg"
             >
               <ArrowRight className="h-4 w-4" />

@@ -269,38 +269,23 @@ export default function StudentProfileDashboard() {
     <div className="relative min-h-screen w-full font-sans overflow-x-hidden bg-black">
       {/* Animated Gradient Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none" />
-      {/* Dashboard Heading */}
-      <header className="w-full px-4 sm:px-10 pt-8 pb-4 flex justify-between items-center border-b border-[#a259ff] bg-black/90 backdrop-blur-xl rounded-b-3xl shadow-xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
-          <SplitText
-            text="DASHBOARD"
-            className="text-5xl font-extrabold bg-gradient-to-r from-brand-purple via-brand-pink to-white bg-clip-text text-transparent tracking-wide drop-shadow-lg uppercase"
-            delay={80}
-            animationFrom={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
-            animationTo={{ opacity: 1, transform: 'translate3d(0, 0, 0)' }}
-            easing="easeOutCubic"
-            threshold={0.3}
-            rootMargin="-100px"
-            textAlign="center"
-          />
-        </motion.div>
+      {/* Responsive Dashboard Heading Bar */}
+      <div className="w-full flex items-center px-4 sm:px-10 pt-2 pb-2 border-b border-[#a259ff] bg-black/90 backdrop-blur-xl rounded-b-3xl shadow-xl mb-4 relative">
+        <span className="absolute left-0 top-1/2 -translate-y-1/2" style={{ width: '2.5rem' }}></span>
+        <span className="mx-auto text-2xl sm:text-4xl font-extrabold text-white tracking-wide uppercase text-center block w-full">DASHBOARD</span>
         <button
-          className="text-white text-2xl font-bold hover:text-[#a259ff] transition drop-shadow-lg"
+          className="absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 text-white text-2xl font-bold hover:text-[#a259ff] transition drop-shadow-lg flex-shrink-0"
           onClick={() => window.history.back()}
           title="Go Back"
         >
-          <X className="w-8 h-8" />
+          <X className="w-7 h-7 sm:w-8 sm:h-8" />
         </button>
-      </header>
+      </div>
       {/* Main Dashboard Section */}
       <section className="w-full min-h-[90vh] px-0 sm:px-4 pt-10">
-        <div className="rounded-3xl bg-black backdrop-blur-xl shadow-[0_0_32px_4px_#a259ff55] border border-white p-0 md:p-8 mx-0 w-full">
+        <div className="rounded-3xl bg-black backdrop-blur-xl shadow-[0_0_32px_4px_#a259ff55] border border-white p-2 sm:p-4 md:p-8 mx-0 w-full">
           {/* Profile Card */}
-          <div className="flex flex-col lg:flex-row items-center gap-10 bg-gradient-to-br from-black via-[#23272f] to-[#2d1a4a] rounded-2xl shadow-2xl p-10 mb-12 border border-[#a259ff] hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-[#a259ff] hover:outline-[#ff7eb3] hover:shadow-[0_0_24px_4px_#a259ff99,0_0_48px_8px_#ff7eb399] backdrop-blur-2xl w-full">
+          <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-10 bg-gradient-to-br from-black via-[#23272f] to-[#2d1a4a] rounded-2xl shadow-2xl p-4 sm:p-8 md:p-10 mb-8 sm:mb-12 border border-[#a259ff] hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-[#a259ff] hover:outline-[#ff7eb3] hover:shadow-[0_0_24px_4px_#a259ff99,0_0_48px_8px_#ff7eb399] backdrop-blur-2xl w-full">
             <div className="relative">
               <img src={profile?.profilePicture || 'https://placehold.co/120x120/A855F7/FFFFFF?text=User'} alt="Profile" className="h-36 w-36 rounded-full border-4 border-[#a259ff] bg-[#23272f] object-cover shadow-2xl" />
               <span className="absolute bottom-2 right-2 bg-[#ff7eb3] text-white rounded-full px-3 py-1 text-xs font-bold shadow-lg animate-pulse">{profile?.year || ''}</span>
@@ -333,7 +318,7 @@ export default function StudentProfileDashboard() {
             </div>
           </div>
           {/* Responsive Info Grid - 3 columns on xl, 2 on md, 1 on mobile */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-8 md:gap-10 w-full">
             {/* Contact & Social */}
             <div className="rounded-2xl bg-[#18181b] shadow-md p-7 flex flex-col items-center border border-white hover:border-[#ff7eb3] transition-all duration-300 outline outline-2 outline-white hover:outline-[#ff7eb3] hover:shadow-[0_0_16px_2px_#a259ff99,0_0_32px_4px_#ff7eb399]">
               <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_#fff,0_0_16px_#a259ff] mb-3 flex items-center gap-2">Contact & Social</h3>

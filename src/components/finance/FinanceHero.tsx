@@ -24,12 +24,25 @@ const FinanceHero = ({ showAdvanced, setShowAdvanced }: FinanceHeroProps) => {
     >
       {/* Spline Animation Background */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none flex items-center justify-center">
-        <div style={{ transform: 'scale(1.45)', width: '100%', height: '100%' }}>
+        <div
+          className="w-full h-full flex items-center justify-center"
+          style={{
+            transform: 'scale(2.3)',
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+          }}
+        >
           <Spline
             scene="https://prod.spline.design/6Mmaj0Y7QBhnRSLP/scene.splinecode"
             className="w-full h-full"
           />
         </div>
+        {/* Hide Spline watermark on all devices */}
+        <style>{`
+          .spline-watermark, .spline-watermark__container, [class*='watermark'] {
+            display: none !important;
+          }
+        `}</style>
       </div>
 
       {/* Grid Pattern Overlay */}

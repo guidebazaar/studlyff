@@ -91,7 +91,7 @@ const StatsSection = () => {
                 <div ref={containerRef} className="w-full overflow-hidden">
                     <motion.div
                         ref={cardsRef}
-                        className="flex gap-0"
+                        className="flex gap-2 sm:gap-4 md:gap-0"
                         animate={{ x: [0, -cardsWidth] }}
                         transition={{ repeat: Infinity, ease: "linear", duration: DURATION }}
                         style={{ willChange: 'transform' }}
@@ -102,7 +102,7 @@ const StatsSection = () => {
                             return (
                                 <motion.div
                                     key={stat.label + i}
-                                    className="min-w-[12.5vw] w-[12.5vw] max-w-none rounded-none border-0 flex flex-col items-center py-8 px-2 hover:scale-105 transition-all duration-300 group snap-center"
+                                    className="min-w-[70vw] w-[70vw] sm:min-w-[30vw] sm:w-[30vw] md:min-w-[12.5vw] md:w-[12.5vw] max-w-none rounded-none border-0 flex flex-col items-center py-6 sm:py-8 px-3 sm:px-2 hover:scale-105 transition-all duration-300 group snap-center"
                                 >
                                     <span className={`text-3xl md:text-4xl mb-2 drop-shadow-lg bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>{stat.icon}</span>
                                     <span

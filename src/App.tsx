@@ -32,6 +32,7 @@ import ProjectHunt from "./pages/ProjectHunt";
 import StudentDashboard from "./pages/StudentDashboard";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { Navigate } from "react-router-dom";
+import Studverse from "./pages/Studverse";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +71,7 @@ const AppContent: React.FC = () => {
         <Route path="/youtube-shorts" element={<ProtectedRoute><YouTubeShorts /></ProtectedRoute>} />
         <Route path="/podcasts" element={<ProtectedRoute><Podcasts /></ProtectedRoute>} />
         <Route path="/student-discounts" element={<ProtectedRoute><StudentDiscounts /></ProtectedRoute>} />
+        <Route path="/studverse" element={<ProtectedRoute><Studverse /></ProtectedRoute>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
