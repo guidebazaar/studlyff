@@ -10,6 +10,7 @@ import { SplitText } from "@/components/ui/split-text";
 import { motion } from "framer-motion";
 import ChatModal from '@/components/network/ChatModal';
 import { AnimatePresence } from "framer-motion";
+import { Linkedin } from "lucide-react";
 
 const TAGLINES = [
   "AI", "Blockchain", "Web Development", "UI/UX", "Sustainability"
@@ -17,70 +18,52 @@ const TAGLINES = [
 
 const PROJECTS = [
   {
-    title: "AI-Powered Study Buddy",
-    description: "A chatbot that helps students with study planning and Q&A. Built with React, Node.js, and OpenAI APIs. Looking for frontend and AI engineers!",
+    title: " Digital Wellness for India’s Seniors",
+    description: "A digital wellness platform designed for India’s aging population—offering teleconsultations, spiritual care, fitness routines, cognitive games, and AI-powered companionship to ensure a healthy and dignified lifestyle for senior citizens.",
     skills: ["React", "Node.js", "NLP", "OpenAI API"],
     roles: ["Frontend", "Backend", "AI Engineer"],
-    teamSize: 5,
-    status: "Recruiting",
-    category: "ai",
-    collaboration: "remote",
-    college: "IIT Bombay"
+    linkedin: "https://www.linkedin.com/in/esaieshwar?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
-    title: "Campus Carbon Tracker",
-    description: "Track and reduce your college's carbon footprint. Join us to build a dashboard and mobile app for sustainability!",
+    title: " Gen Z's Gateway to Sports & Community",
+    description: "A vibrant, mobile-first platform that helps Gen Z discover local sports events, shop exclusive sportswear, join athlete-led communities, and participate in real-world tournaments—all in one immersive experience.",
     skills: ["Python", "Data Viz", "APIs", "Flutter"],
     roles: ["Data Scientist", "Designer", "Mobile Dev"],
-    teamSize: 4,
-    status: "Open",
-    category: "sustainability",
-    collaboration: "inperson",
-    college: "IIT Delhi"
+    linkedin: "https://www.linkedin.com/in/dasari-yeswanth-1217h10?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
-    title: "Decentralized Voting Platform",
-    description: "A blockchain-based voting system for campus elections. Need smart contract and UI/UX talent.",
+    title: "The AI-First SaaS Engine from India",
+    description: "A globally scalable SaaS website for enterprise-grade, AI-first business tools—built in India for the world. Offers solutions in automation, analytics, workflow orchestration, and AI copilots across industries.",
     skills: ["Solidity", "React", "Web3.js"],
     roles: ["Smart Contract Dev", "UI/UX Designer"],
-    teamSize: 6,
-    status: "Recruiting",
-    category: "blockchain",
-    collaboration: "remote",
-    college: "BITS Pilani"
+    linkedin: "https://www.linkedin.com/in/yashwanth-maram-b4a96b33b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
-    title: "Student Marketplace",
-    description: "A web app for students to buy/sell books and gadgets. Join for backend and product roles!",
+    title: "Diagnostics-Driven Consumer Health Platform",
+    description: "A health-tech platform offering personalized wellness kits powered by diagnostic insights—focusing on prevention, early detection, and holistic well-being from the comfort of your home",
     skills: ["Node.js", "MongoDB", "React"],
     roles: ["Backend", "Product Manager"],
-    teamSize: 5,
-    status: "Open",
-    category: "webdev",
-    collaboration: "remote",
-    college: "IIT Madras"
+    linkedin: "https://www.linkedin.com/in/dasari-yeswanth-1217h10?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
-    title: "Mental Health App",
-    description: "Mobile app for student mental wellness. Looking for Flutter and content creators.",
+    title: " Inclusive Gaming for India’s Women",
+    description: "An empowering platform for India’s growing female gamer community—offering curated games, safe spaces, live events, tournaments, mentorship, and social engagement tailored for inclusivity.",
     skills: ["Flutter", "Firebase", "Content Writing"],
     roles: ["Mobile Dev", "Content Creator"],
-    teamSize: 3,
-    status: "Recruiting",
-    category: "ai",
-    collaboration: "inperson",
-    college: "IIT Kanpur"
+    linkedin: "https://www.linkedin.com/in/tella-sindhu-priya-09997933b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
-    title: "Campus Events Portal",
-    description: "Centralized portal for all campus events. Need fullstack and UI/UX help!",
+    title: " Citizen-Led GovTech for Smarter Governance",
+    description: "A crowdsourced civic platform that captures public sentiment, issues, and needs directly from social media and routes them to relevant government departments using AI-based trend analysis and public dashboards.",
+    skills: ["React", "Node.js", "Figma"],
+    roles: ["Fullstack", "UI/UX Designer"]
+  },
+  {
+    title: "The Visual Professional Network for Gen Z",
+    description: "A next-gen professional networking platform that fuses Instagram’s aesthetic with LinkedIn’s utility—built for Gen Z creators, freelancers, and early-career professionals to showcase portfolios, network, and collaborate..",
     skills: ["React", "Node.js", "Figma"],
     roles: ["Fullstack", "UI/UX Designer"],
-    teamSize: 7,
-    status: "Open",
-    category: "uiux",
-    collaboration: "remote",
-    college: "IIT Kharagpur"
+    linkedin: "https://www.linkedin.com/in/arpithachouhan26?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
 ];
 
@@ -356,86 +339,21 @@ const ProjectHunt: React.FC = () => {
                     <span key={r} className="bg-brand-purple/20 text-brand-purple px-2 py-1 rounded">{r}</span>
                   ))}
                 </div>
-                <span className="text-sm text-white/60">Team: {proj.teamSize}+</span>
+                {/* Remove the Team: label and value */}
               </CardContent>
               <CardFooter className="flex gap-2 justify-end">
-                <button
-                  className={`px-6 py-2 font-bold rounded-full shadow transition-all text-base ${requestedProjects[proj.title] ? 'bg-orange-500 text-white' : 'bg-white text-black hover:bg-gray-100'}`}
-                  style={{ minWidth: 120 }}
-                  onClick={() => {
-                    if (!requestedProjects[proj.title]) {
-                      setRequestedProjects(prev => ({ ...prev, [proj.title]: true }));
-                    }
-                  }}
-                  disabled={!!requestedProjects[proj.title]}
-                >
-                  {requestedProjects[proj.title] ? 'Requested' : 'Contribute'}
-                </button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* My Projects Section */}
-      <section className="w-full max-w-5xl mx-auto px-4 py-10">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">My Projects</h2>
-          <div className="flex gap-2">
-            {['All', 'Joined', 'Posted'].map(f => (
-              <Button key={f} size="sm" variant={myProjectsFilter === f ? 'default' : 'outline'} onClick={() => setMyProjectsFilter(f)}>{f}</Button>
-            ))}
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {MY_PROJECTS.filter(p => myProjectsFilter === 'All' || p.type === myProjectsFilter).map((proj, idx) => (
-            <Card key={idx} className="bg-gradient-to-br from-gray-900/80 via-black/80 to-gray-900/80 border border-purple-700/30 rounded-2xl shadow-md">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <span className="font-semibold text-white">{proj.title}</span>
-                <span className={`text-xs px-2 py-1 rounded ${proj.status === 'In Progress' ? 'bg-yellow-400/20 text-yellow-400' : proj.status === 'Completed' ? 'bg-green-400/20 text-green-400' : 'bg-brand-purple/20 text-brand-purple'} font-bold`}>{proj.status}</span>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-2">
-                <span className="text-xs text-white/60">{proj.type}</span>
-                {/* If current user is owner, show requests */}
-                {contributeRequests[proj.title]?.length > 0 && (
-                  <div className="mt-2">
-                    <div className="font-semibold text-white mb-1">Contribute Requests:</div>
-                    {contributeRequests[proj.title].map((req, i) => (
-                      <div key={i} className="flex items-center gap-2 mb-1">
-                        <span className="text-white/80">{req.name}</span>
-                        {req.status === 'pending' && (
-                          <>
-                            <Button size="sm" onClick={() => {
-                              setContributeRequests(prev => ({
-                                ...prev,
-                                [proj.title]: prev[proj.title].map(r => r.id === req.id ? { ...r, status: 'accepted' } : r)
-                              }));
-                              setOpenChats(prev => ({
-                                ...prev,
-                                [proj.title]: [...(prev[proj.title] || []), req.id]
-                              }));
-                            }}>Accept</Button>
-                            <Button size="sm" variant="outline" onClick={() => {
-                              setContributeRequests(prev => ({
-                                ...prev,
-                                [proj.title]: prev[proj.title].map(r => r.id === req.id ? { ...r, status: 'rejected' } : r)
-                              }));
-                            }}>Reject</Button>
-                          </>
-                        )}
-                        {req.status === 'accepted' && (
-                          <Button size="sm" variant="secondary" onClick={() => setShowChatModal(true)}>Chat</Button>
-                        )}
-                        {req.status === 'rejected' && (
-                          <span className="text-red-400 text-xs">Rejected</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                {/* LinkedIn button only */}
+                {proj.linkedin && (
+                  <a
+                    href={proj.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-2 inline-flex items-center justify-center rounded-full bg-blue-700 hover:bg-blue-800 text-white p-2 transition-colors"
+                    title="View LinkedIn Profile"
+                  >
+                    <Linkedin className="w-5 h-5" />
+                  </a>
                 )}
-              </CardContent>
-              <CardFooter className="flex flex-row items-center justify-between">
-                <Button size="sm" variant="outline" onClick={() => { setActiveChatProject(proj); setShowChatModal(true); }}>Chat</Button>
               </CardFooter>
             </Card>
           ))}
